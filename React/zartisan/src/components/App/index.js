@@ -10,15 +10,15 @@ import React from 'react';
 
 // Données
 
-
 /**
  * Code
  */
 const App = () => {
-  return <div id="app">
-    <h1 id="app-title">Z'Artisan</h1>
-
-  </div>;
+	return (
+		<div id="app">
+			<h1 id="app-title"> Z 'Artisan</h1>
+		</div>
+	);
 };
 
 /**
