@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -167,6 +169,39 @@ class User implements UserInterface
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $updatedAt;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Job", inversedBy="user", cascade={"persist", "remove"})
+     */
+    private $job;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Advice", mappedBy="userAuthor")
+     */
+    private $advices;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Advice", mappedBy="userPro")
+     */
+    private $advice;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Rate", mappedBy="userAuthor")
+     */
+    private $rates;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Rate", mappedBy="userPro")
+     */
+    private $rate;
+
+    public function __construct()
+    {
+        $this->advices = new ArrayCollection();
+        $this->advice = new ArrayCollection();
+        $this->rates = new ArrayCollection();
+        $this->rate = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -568,5 +603,95 @@ class User implements UserInterface
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+    public function getJob(): ?Job
+    {
+        return $this->job;
+    }
+
+    public function setJob(?Job $job): self
+    {
+        $this->job = $job;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Advice[]
+     */
+    public function getAdvices(): Collection
+    {
+        return $this->advices;
+    }
+
+    public function addAdvice(Advice $advice): self
+    {
+        if (!$this->advices->contains($advice)) {
+            $this->advices[] = $advice;
+            $advice->setUserAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdvice(Advice $advice): self
+    {
+        if ($this->advices->contains($advice)) {
+            $this->advices->removeElement($advice);
+            // set the owning side to null (unless already changed)
+            if ($advice->getUserAuthor() === $this) {
+                $advice->setUserAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Advice[]
+     */
+    public function getAdvice(): Collection
+    {
+        return $this->advice;
+    }
+
+    /**
+     * @return Collection|Rate[]
+     */
+    public function getRates(): Collection
+    {
+        return $this->rates;
+    }
+
+    public function addRate(Rate $rate): self
+    {
+        if (!$this->rates->contains($rate)) {
+            $this->rates[] = $rate;
+            $rate->setUserAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRate(Rate $rate): self
+    {
+        if ($this->rates->contains($rate)) {
+            $this->rates->removeElement($rate);
+            // set the owning side to null (unless already changed)
+            if ($rate->getUserAuthor() === $this) {
+                $rate->setUserAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Rate[]
+     */
+    public function getRate(): Collection
+    {
+        return $this->rate;
     }
 }

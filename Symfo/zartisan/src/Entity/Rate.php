@@ -31,6 +31,18 @@ class Rate
      */
     private $updatedAt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="rates")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $userAuthor;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="rate")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $userPro;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -68,6 +80,30 @@ class Rate
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getUserAuthor(): ?User
+    {
+        return $this->userAuthor;
+    }
+
+    public function setUserAuthor(?User $userAuthor): self
+    {
+        $this->userAuthor = $userAuthor;
+
+        return $this;
+    }
+
+    public function getUserPro(): ?User
+    {
+        return $this->userPro;
+    }
+
+    public function setUserPro(?User $userPro): self
+    {
+        $this->userPro = $userPro;
 
         return $this;
     }

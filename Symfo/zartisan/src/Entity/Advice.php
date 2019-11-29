@@ -36,6 +36,18 @@ class Advice
      */
     private $createdAt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="advices")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $userAuthor;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="advice")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $userPro;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -85,6 +97,30 @@ class Advice
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUserAuthor(): ?User
+    {
+        return $this->userAuthor;
+    }
+
+    public function setUserAuthor(?User $userAuthor): self
+    {
+        $this->userAuthor = $userAuthor;
+
+        return $this;
+    }
+
+    public function getUserPro(): ?User
+    {
+        return $this->userPro;
+    }
+
+    public function setUserPro(?User $userPro): self
+    {
+        $this->userPro = $userPro;
 
         return $this;
     }
