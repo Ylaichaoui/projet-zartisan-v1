@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
-import votes from 'src/store/votes';
+import jobs from 'src/store/jobs';
 
 export default combineReducers({
-  votes
+  jobs
 });

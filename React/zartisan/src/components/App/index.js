@@ -7,21 +7,19 @@ import React from 'react';
  * Imports locaux
  */
 // Composants React
-import VoteWidget from 'src/components/VoteWidget';
+
 // Données
-// Styles et assets
-import './app.sass';
+
 
 /**
  * Code
  */
-const App = ({ promo }) => {
+const App = () => {
   return <div id="app">
-    <h1 id="app-title">Modèle React</h1>
-    <p id="app-content"><em>Salut</em> {promo} !</p>
-    <VoteWidget />
+    <h1 id="app-title">Z'Artisan</h1>
+
   </div>;
-}
+};
 
 /**
  * Export
