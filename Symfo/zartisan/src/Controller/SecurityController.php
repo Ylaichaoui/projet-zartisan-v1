@@ -33,7 +33,7 @@ class SecurityController extends AbstractController
             );
             $user->setIsConfirmMail(FALSE);
             $user->setIsStatus(FALSE);
-            $user->setIsVerified(TRUE);
+            $user->setIsVerified(FALSE);
             $user->setIsReported(FALSE);
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -60,7 +60,7 @@ class SecurityController extends AbstractController
     {
         //if ($this->getUser()) {
              //return $this->redirectToRoute('main');
-        //}  
+        //}
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();

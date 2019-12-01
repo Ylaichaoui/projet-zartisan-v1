@@ -12,10 +12,6 @@ security:
                 property: email
     firewalls:
 
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-            
         login:
             pattern:  ^/api/login
             stateless: true
@@ -24,6 +20,16 @@ security:
                 check_path:               /api/login_check
                 success_handler:          lexik_jwt_authentication.handler.authentication_success
                 failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+        api:
+            pattern:   ^/api
+            stateless: true
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+            
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
@@ -31,16 +37,12 @@ security:
                 path: app_logout
                 # where to redirect after logout
                 # target: app_any_route
-        api:
-            pattern:   ^/api
-            stateless: true
-            guard:
-                authenticators:
-                    - lexik_jwt_authentication.jwt_token_authenticator
-
 
         main:
             anonymous: true
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
             logout:
                 path: app_logout
 
