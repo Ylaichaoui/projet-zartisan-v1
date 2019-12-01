@@ -18,11 +18,16 @@ const { Text } = Typography;
 
 const Header = () => {
 	const [ visible, setVisible ] = useState(false);
-
+	/**
+	 * open menu burger
+	 */
 	const showDrawer = () => {
 		setVisible(true);
 	};
 
+	/**
+	 * close menu burger
+	 */
 	const onClose = () => {
 		setVisible(false);
 	};
