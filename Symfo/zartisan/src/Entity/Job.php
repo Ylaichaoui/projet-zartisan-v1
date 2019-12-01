@@ -41,6 +41,11 @@ class Job
      * @ORM\JoinColumn(nullable=false)
      */
     private $category;
+    
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     public function getId(): ?int
     {

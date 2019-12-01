@@ -197,6 +197,7 @@ class User implements UserInterface
 
     public function __construct()
     {
+        $this->createdAt = new \DateTime();
         $this->advices = new ArrayCollection();
         $this->advice = new ArrayCollection();
         $this->rates = new ArrayCollection();
