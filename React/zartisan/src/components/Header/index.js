@@ -41,7 +41,7 @@ const Header = () => {
 						<Row type="flex" justify="center" align="top">
 							<img src={logo} alt="zartisan image" className="logo-zartisan" />
 						</Row>
-						<Row type="flex" justify="center" align="top">
+						<Row type="flex" justify="center" style={{ margin: '1.5em' }} align="top">
 							<Text>
 								<a href="#">Connection</a>
 							</Text>
