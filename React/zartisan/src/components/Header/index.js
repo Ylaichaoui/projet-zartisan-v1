@@ -29,7 +29,7 @@ const Header = () => {
 
 	return (
 		<div>
-			<Row className="header">
+			<Row type="flex" justify="space-around" className="header">
 				<Col span={6}>
 					{/** Button Burger */}
 					<Button className="header-burger-button" onClick={showDrawer}>
