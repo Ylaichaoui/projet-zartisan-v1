@@ -48,7 +48,7 @@ const Header = () => {
 						</Row>
 						<Row type="flex" justify="center" style={{ margin: '1.5em' }} align="top">
 							<Text>
-								<a href="#">Connection</a>
+								<a href="#">Connexion</a>
 							</Text>
 						</Row>
 						<Row type="flex" justify="center" align="top">
