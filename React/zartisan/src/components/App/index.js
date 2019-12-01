@@ -1,29 +1,29 @@
 /**
- * Imports de dépendances
+ * Imports of dependencies
  */
-import React from "react";
+import React from 'react';
 
 /**
- * Imports locaux
+ * Local imports
  */
-// Composants React
-import Header from "src/components/Header";
-import Home from "src/components/Home";
-import Footer from "src/components/Footer";
+// React Components
+import Header from 'src/components/Header';
+import Home from 'src/components/Home';
+import Footer from 'src/components/Footer';
 
-// Données
+// Data
 
 /**
  * Code
  */
 const App = () => {
-  return (
-    <div id="app">
-      <Header />
-      <Home />
-      <Footer />
-    </div>
-  );
+	return (
+		<div id="app">
+			<Header />
+			<Home />
+			<Footer />
+		</div>
+	);
 };
 
 /**
