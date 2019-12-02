@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Z'artisan : Connexion{% endblock %}
 
 {% block body %}
-<form method="post">
+<form method="post" id="form_login">
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
@@ -39,4 +39,9 @@
         Sign in
     </button>
 </form>
+{% endblock %}
+
+{% block javascripts %}
+<script src="http://localhost:3000/vendors.js"></script>
+<script src="http://localhost:3000/app.js"></script>
 {% endblock %}
