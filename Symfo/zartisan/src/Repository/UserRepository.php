@@ -47,4 +47,19 @@ class UserRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+    * @return User[] Returns an array of Movie objects
+    */
+    public function isFound(int $siret)
+    {
+        $result = $this->createQueryBuilder('u')
+        ->where('u.siret = :siret')
+        ->setParameter('siret', $siret)
+        ->getQuery()
+        ->getResult();
+
+        return $result[0];
+    }
+
 }
