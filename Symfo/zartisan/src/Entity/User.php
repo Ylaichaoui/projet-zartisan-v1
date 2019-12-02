@@ -7,6 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+use Symfony\Component\Serializer\Annotation\Groups;
+
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
@@ -16,16 +19,19 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("user_artisan_single")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups("user_artisan_single")
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups("user_artisan_single")
      */
     private $roles = [];
 
@@ -37,26 +43,31 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("user_artisan_single")
      */
     private $mailToken;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("user_artisan_single")
      */
     private $isConfirmMail;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("user_artisan_single")
      */
     private $isStatus;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("user_artisan_single")
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("user_artisan_single")
      */
     private $lastname;
 
@@ -67,116 +78,139 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups("user_artisan_single")
      */
     private $company;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups("user_artisan_single")
      */
     private $companyDescription;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups("user_artisan_single")
      */
     private $siret;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups("user_artisan_single")
      */
     private $naf;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("user_artisan_single")
      */
     private $adressSupp;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups("user_artisan_single")
      */
     private $specialDistribution;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups("user_artisan_single")
      */
     private $extNumberWay;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups("user_artisan_single")
      */
     private $numberWay;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups("user_artisan_single")
      */
     private $typeWay;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("user_artisan_single")
      */
     private $way;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups("user_artisan_single")
      */
     private $postalCode;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups("user_artisan_single")
      */
     private $city;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups("user_artisan_single")
      */
     private $phone;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("user_artisan_single")
      */
     private $isVerified;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("user_artisan_single")
      */
     private $picture;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("user_artisan_single")
      */
     private $pictureFolder;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups("user_artisan_single")
      */
     private $region;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups("user_artisan_single")
      */
     private $averageRate;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("user_artisan_single")
      */
     private $isReported;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("user_artisan_single")
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups("user_artisan_single")
      */
     private $updatedAt;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Job", inversedBy="user", cascade={"persist", "remove"})
+     * @Groups("user_artisan_single")
      */
     private $job;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Advice", mappedBy="userAuthor")
+     * @Groups("user_artisan_single")
      */
     private $advices;
 
@@ -187,6 +221,7 @@ class User implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Rate", mappedBy="userAuthor")
+     * @Groups("user_artisan_single")
      */
     private $rates;
 
@@ -197,6 +232,7 @@ class User implements UserInterface
 
     public function __construct()
     {
+        $this->createdAt = new \DateTime();
         $this->advices = new ArrayCollection();
         $this->advice = new ArrayCollection();
         $this->rates = new ArrayCollection();

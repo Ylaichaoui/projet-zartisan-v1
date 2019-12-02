@@ -40,6 +40,7 @@ class Category
 
     public function __construct()
     {
+        $this->createdAt = new \DateTime();
         $this->jobs = new ArrayCollection();
     }
 

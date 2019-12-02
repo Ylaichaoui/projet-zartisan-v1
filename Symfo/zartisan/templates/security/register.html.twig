@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}S'enregistrer{% endblock %}
+
+{% block body %}
+    <div class="container col-12">
+        <div class="row col-12">
+            {{ form_start(formRegister, { attr: { class: 'log-form col-4'}}) }}
+                {% if app.user %}
+                    <div class="mb-3">
+                        Vous êtes a présent enregistré
+                        {{ app.user.email }}
+                    </div>
+                {% endif %}
+
+                <label for="inputUserEmail">Utilisateur</label>
+                {{ form_widget(formRegister.email, { attr: {
+                    placeholder: 'Email',
+                    autofocus: true,
+                    id: "inputUserEmail",
+                    class: "form-control"
+                }}) }}
+
+                <label for="inputPassword">Mot de passe</label>
+                {{ form_widget(formRegister.password, { attr: {
+                    placeholder: 'Mot de passe',
+                    autofocus: true,
+                    id: "inputPassword",
+                    class: "form-control"
+                }}) }}
+
+                {#
+                Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+                See https://symfony.com/doc/current/security/remember_me.html
+
+                <div class="checkbox mb-3">
+                    <label>
+                        <input type="checkbox" name="_remember_me"> Remember me
+                    </label>
+                </div>
+            #}
+                {{ form_widget(formRegister.send, { attr: {
+                    class: "btn btn-lg btn-dark log-form-btn col-12"
+                }}) }}
+            {{ form_end(formRegister) }}
+        </div>
+    </div>
+{% endblock %}
