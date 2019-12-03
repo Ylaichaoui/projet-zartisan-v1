@@ -16,12 +16,12 @@ class ExterneApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/sirene", name="sirene")
+     * @Route("/sirene", name="sirene")
      */
     public function ApiIndexSirene()
     {
-        $sirene = $this->apiSireneManager; 
+        $sirene = $this->apiSireneManager;
         // TODO Manually add siret for add data on bdd ! need to be link with mail & pasword !    
-        //$sirene->setMovieDataApi(57210489100013);
+        $sirene->setSireneDataApi(83099391100015);
     }
 }

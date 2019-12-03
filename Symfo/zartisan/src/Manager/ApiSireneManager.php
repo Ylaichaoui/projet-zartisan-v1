@@ -2,6 +2,7 @@
 
 namespace App\Manager;
 
+use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -9,18 +10,21 @@ class ApiSireneManager
 {
     private $apiData;
     private $siret;
+    private $user;
 
     private $userRepository;
+    private $apiCompanyManager;
 
-    protected $apiVersion = "3";
-    protected $apiBearer = "5a8c90c5-48d4-3966-b476-6f90dbdb966c";
+    private $apiVersion = "3";
+    private $apiBearer = "5a8c90c5-48d4-3966-b476-6f90dbdb966c";
 
     private $em;
 
-    public function __construct(EntityManagerInterface $em, UserRepository $userRepository)
+    public function __construct(EntityManagerInterface $em, UserRepository $userRepository, ApiCompanyManager $apiCompanyManager)
     {
         $this->em = $em;
         $this->userRepository = $userRepository;
+        $this->apiCompanyManager = $apiCompanyManager;
     }
 
     public function requestSireneApi()
@@ -152,7 +156,7 @@ class ApiSireneManager
         return $spcDistrib;
     }
 
-    public function setMovieDataApi($siret)
+    public function setSireneDataApi($siret)
     {
         $this->siret = $siret;
         $this->apiData = $this->requestSireneApi();
@@ -161,6 +165,7 @@ class ApiSireneManager
             // Get the user where is register with this siret
             $user = $this->userRepository->isFound($this->siret);
             // Save all data from api
+            
             $user->setCompany($this->getCompagnyFromApi());
             $user->setNaf($this->getNafEncodeFromApi());
             $user->setAdressSupp($this->getCompAdresseFromApi());
@@ -172,11 +177,16 @@ class ApiSireneManager
             $user->setCity($this->getCommuneFromApi());
             $user->setSpecialDistribution($this->getSpcDistribFromApi());
             
-            // TODO : Create the link to the other api to get naf and complete the job & catogory
-            // $this->apiNomenclaturesManager->setCastingDataApi($this->getNafFromApi());
-            $this->em->persist($user);
-            $this->em->flush();
+            // TODO : Change api service or buy some credit for presentation day
+            // Connection to ApiCompagnyManager to get info for user (phone + mail)
+            // The api fonctionnality work fully but the cost of api service is really expensive
+            // 
+            // $this->apiCompanyManager->setCompanyDataApi($user);
 
+
+            // $this->apiNomenclaturesManager->setNomenclaturesDataApi($this->getNafFromApi());
+            $this->em->persist($user);
+            //$this->em->flush();
             return $user; 
         }
         return $this->apiData;
