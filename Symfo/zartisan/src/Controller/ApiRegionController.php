@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
 * @Route("/v1/region", name="api_region_")
@@ -112,12 +112,13 @@ class ApiRegionController extends AbstractController
      */
     public function getRegionList()
     {
-        return $this->json($this->regions , 200, []);
+        // Return a json of unique value from region array
+        return $this->json(array_unique($this->regions) , 200, []);
     }
 
-
-    public function getRegionFromCode(int $postalCode)
+    public function getRegionFromCode($id)
     {
+        $postalCode = $id;
         if(!is_numeric($postalCode)){
             return false;
         }
