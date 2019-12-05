@@ -49,27 +49,27 @@ const Home = () => {
 	);
 	return (
 		<div className="home">
-			<Row className="home-france">
-				<img src={france} className="france-picture" />
-			</Row>
 			<Row type="flex" justify="space-around" align="middle">
-				<Dropdown overlay={menuRegion} placement="topLeft">
+				<Dropdown overlay={menuRegion} placement="bottomLeft">
 					<Button className="home-button-region" style={{ backgroundColor: '#ad2102', color: 'white' }}>
-						Choisissez une Région <Icon type="up" />
+						Choisissez une Région <Icon type="down" />
 					</Button>
 				</Dropdown>
 
-				<Dropdown overlay={menuJobs} placement="topLeft">
+				<Dropdown overlay={menuJobs} placement="bottomLeft">
 					<Button
 						className="ant-dropdown-link home-button-jobs"
 						style={{ color: '#ad2102', fontWeight: 'bold' }}
 						href="#"
 					>
-						Choisissez un métier <Icon type="up" />
+						Choisissez un métier <Icon type="down" />
 					</Button>
 				</Dropdown>
 
 				<Button style={{ color: 'white', backgroundColor: '#595959', border: 'none' }}>Recherche</Button>
+			</Row>
+			<Row className="home-france">
+				<img src={france} className="france-picture" />
 			</Row>
 		</div>
 	);
