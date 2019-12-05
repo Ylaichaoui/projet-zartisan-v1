@@ -19,32 +19,22 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    // /**
-    //  * @return User[] Returns an array of User objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
+    /**
+    * @return User[] Returns an array of Job objects
     */
-
-    /*
-    public function findOneBySomeField($value): ?User
+    public function search(string $job, string $region)
     {
+        // TODO select join table job to get the job querry
         return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+                ->andWhere('u.region LIKE :region')
+                ->andwhere('u.isStatus = :enabled')
+                ->join('u.job', 'j')
+                ->andWhere('j.name LIKE :job')
+                ->setParameter('job', $job)
+                ->setParameter('region', $region)
+                ->OrderBy('u.averageRate', DESC)
+                ->OrderBy('u.isVerified', DESC)
+                ->getQuery()
+                ->getResult();
     }
-    */
 }
