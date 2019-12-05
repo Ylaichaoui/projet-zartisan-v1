@@ -89,12 +89,6 @@ class User implements UserInterface
     private $companyDescription;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @Groups("user_artisan_single")
-     */
-    private $siret;
-
-    /**
      * @ORM\Column(type="string", length=50, nullable=true)
      * @Groups("user_artisan_single")
      */
@@ -229,6 +223,17 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity="App\Entity\Rate", mappedBy="userPro")
      */
     private $rate;
+
+    /**
+     * @ORM\Column(type="bigint", nullable=true)
+     * @Groups("user_artisan_single")
+     */
+    private $siret;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $nickname;
 
     public function __construct()
     {
@@ -409,18 +414,6 @@ class User implements UserInterface
     public function setCompanyDescription(?string $companyDescription): self
     {
         $this->companyDescription = $companyDescription;
-
-        return $this;
-    }
-
-    public function getSiret(): ?int
-    {
-        return $this->siret;
-    }
-
-    public function setSiret(?int $siret): self
-    {
-        $this->siret = $siret;
 
         return $this;
     }
@@ -729,5 +722,29 @@ class User implements UserInterface
     public function getRate(): Collection
     {
         return $this->rate;
+    }
+
+    public function getSiret(): ?string
+    {
+        return $this->siret;
+    }
+
+    public function setSiret(?string $siret): self
+    {
+        $this->siret = $siret;
+
+        return $this;
+    }
+
+    public function getNickname(): ?string
+    {
+        return $this->nickname;
+    }
+
+    public function setNickname(?string $nickname): self
+    {
+        $this->nickname = $nickname;
+
+        return $this;
     }
 }

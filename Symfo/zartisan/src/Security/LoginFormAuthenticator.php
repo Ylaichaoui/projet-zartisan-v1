@@ -86,8 +86,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         }
 
         if (in_array('ROLE_ADMIN', $token->getRoleNames())) {
+            // return new RedirectResponse('http://localhost:3001');
             return new RedirectResponse($this->urlGenerator->generate('main'));
         } else {
+            // return new RedirectResponse('http://localhost:3001');
             return new RedirectResponse($this->urlGenerator->generate('main'));
         }
     }

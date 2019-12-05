@@ -1,24 +1,36 @@
 /**
- * Imports de dépendances
+ * Imports of dependencies
  */
-import React from 'react';
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 /**
- * Imports locaux
+ * Local imports
  */
-// Composants React
+// React Components
+import Header from "src/components/Header";
+import Home from "src/components/Home";
+import Footer from "src/components/Footer";
 
-// Données
-
+// Data
 
 /**
  * Code
  */
 const App = () => {
-  return <div id="app">
-    <h1 id="app-title">Z'Artisan</h1>
-
-  </div>;
+  return (
+    <div id="app">
+      <Header />
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+        </Switch>
+      </Router>
+      <Footer />;
+    </div>
+  );
 };
 
 /**

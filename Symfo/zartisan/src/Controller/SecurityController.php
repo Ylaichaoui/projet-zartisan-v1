@@ -23,7 +23,6 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
             $user->setEmail($form->get('email')->getData());
             $user->setPassword(
                 $passwordEncoder->encodePassword(
@@ -40,14 +39,10 @@ class SecurityController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // do anything else you need here, like send an email
-
+            // return new RedirectResponse('http://localhost:3001');
             return $this->redirectToRoute('main');
         }
 
-        /*return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
-        ]);*/
         return $this->render('security/register.html.twig', [
             'formRegister' => $form->createView()
         ]);
@@ -62,9 +57,8 @@ class SecurityController extends AbstractController
              //return $this->redirectToRoute('main');
         //}
 
-        // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
+        
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
