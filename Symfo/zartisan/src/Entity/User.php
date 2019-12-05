@@ -197,12 +197,6 @@ class User implements UserInterface
     private $updatedAt;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Job", inversedBy="user", cascade={"persist", "remove"})
-     * @Groups("user_artisan_single")
-     */
-    private $job;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Advice", mappedBy="userAuthor")
      * @Groups("user_artisan_single")
      */
@@ -235,6 +229,12 @@ class User implements UserInterface
      * @Groups("user_user_single")
      */
     private $nickname;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Job", inversedBy="users")
+     * @Groups("user_artisan_single")
+     */
+    private $job;
 
     public function __construct()
     {
@@ -640,18 +640,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getJob(): ?Job
-    {
-        return $this->job;
-    }
-
-    public function setJob(?Job $job): self
-    {
-        $this->job = $job;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Advice[]
      */
@@ -750,6 +738,18 @@ class User implements UserInterface
     public function setNickname(?string $nickname): self
     {
         $this->nickname = $nickname;
+
+        return $this;
+    }
+
+    public function getJob(): ?Job
+    {
+        return $this->job;
+    }
+
+    public function setJob(?Job $job): self
+    {
+        $this->job = $job;
 
         return $this;
     }

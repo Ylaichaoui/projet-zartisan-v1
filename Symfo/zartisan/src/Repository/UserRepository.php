@@ -40,17 +40,18 @@ class UserRepository extends ServiceEntityRepository
     public function search(string $job, string $region)
     {
         // TODO select join table job to get the job querry
-        return $this->createQueryBuilder('u')
+        $result = $this->createQueryBuilder('u')
                 ->andWhere('u.region LIKE :region')
                 ->andwhere('u.isStatus = :enabled')
                 ->join('u.job', 'j')
                 ->andWhere('j.name LIKE :job')
                 ->setParameter('job', $job)
+                ->setParameter('enabled', TRUE)
                 ->setParameter('region', $region)
                 ->OrderBy('u.averageRate', 'DESC')
-                ->OrderBy('u.isVerified', 'DESC')
-                ->getQuery()
-                ->getResult();
+                ->OrderBy('u.isVerified', 'DESC');
+      
+        return $result->getQuery()->getResult();
     }
 
     /**
