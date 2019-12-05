@@ -20,6 +20,20 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
+      /**
+     * @return User[] Returns  an array of User individual list all users
+     */
+    public function findAllUser()
+    {
+        $qb = $this->createQueryBuilder('u')
+        ->andWhere('u.roles LIKE :role')
+        ->andwhere('u.isStatus = :enabled')
+        ->setParameter('role', '%"'.'ROLE_USER'.'"%')
+        ->setParameter('enabled', true);
+        
+        return $qb->getQuery()->getResult();
+    }
+
     /**
     * @return User[] Returns an array of Job objects
     */

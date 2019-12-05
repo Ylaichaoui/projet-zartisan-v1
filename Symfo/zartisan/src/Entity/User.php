@@ -19,19 +19,19 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single", "user_user_single"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single", "user_user_single"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single", "user_user_single"})
      */
     private $roles = [];
 
@@ -43,31 +43,31 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single", "user_user_single"})
      */
     private $mailToken;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single", "user_user_single"})
      */
     private $isConfirmMail;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single", "user_user_single"})
      */
     private $isStatus;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single", "user_user_single"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single", "user_user_single"})
      */
     private $lastname;
 
@@ -96,55 +96,55 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single", "user_user_single"})
      */
     private $adressSupp;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single", "user_user_single"})
      */
     private $specialDistribution;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single", "user_user_single"})
      */
     private $extNumberWay;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single", "user_user_single"})
      */
     private $numberWay;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single", "user_user_single"})
      */
     private $typeWay;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single", "user_user_single"})
      */
     private $way;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single", "user_user_single"})
      */
     private $postalCode;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single", "user_user_single"})
      */
     private $city;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single", "user_user_single"})
      */
     private $phone;
 
@@ -156,7 +156,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single", "user_user_single"})
      */
     private $picture;
 
@@ -232,6 +232,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups("user_user_single")
      */
     private $nickname;
 
@@ -242,6 +243,11 @@ class User implements UserInterface
         $this->advice = new ArrayCollection();
         $this->rates = new ArrayCollection();
         $this->rate = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->email;
     }
 
     public function getId(): ?int
