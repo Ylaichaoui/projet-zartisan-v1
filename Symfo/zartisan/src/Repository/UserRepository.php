@@ -33,10 +33,11 @@ class UserRepository extends ServiceEntityRepository
                 ->andWhere('j.name LIKE :job')
                 ->setParameter('job', $job)
                 ->setParameter('region', $region)
-                ->OrderBy('u.averageRate', DESC)
-                ->OrderBy('u.isVerified', DESC)
+                ->OrderBy('u.averageRate', 'DESC')
+                ->OrderBy('u.isVerified', 'DESC')
                 ->getQuery()
                 ->getResult();
+    }
 
     /**
     * @return User[] Returns an array of User objects
