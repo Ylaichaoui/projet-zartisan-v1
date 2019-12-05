@@ -31,7 +31,7 @@ class SecurityController extends AbstractController
                 )
             );
             $user->setIsConfirmMail(FALSE);
-            $user->setIsStatus(FALSE);
+            $user->setIsStatus(TRUE);
             $user->setIsVerified(FALSE);
             $user->setIsReported(FALSE);
 
