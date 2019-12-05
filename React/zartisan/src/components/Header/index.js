@@ -10,7 +10,7 @@ import 'antd/dist/antd.css';
  */
 import './style.sass';
 import logo from './picture/logo-zartisan.svg';
-
+import FormLogin from 'src/components/FormLogin';
 /**
  * Code
  */
