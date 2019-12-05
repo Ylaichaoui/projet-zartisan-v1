@@ -37,6 +37,7 @@ class ApiArtisanController extends AbstractController
         return $this->json($arrayUsers , 200, []);
     }
 
+    
     /**
      * @Route("/recherche", name="recherche")
      */
@@ -45,17 +46,17 @@ class ApiArtisanController extends AbstractController
         $arrayUsers = [];
         if ($content = $request->getContent()) {
             $parametersAsArray = json_decode($content, true);
-
+            
             $job = $parametersAsArray['job'];
             $region = $parametersAsArray['region'];
-
-            $arrayUsers = $userRepository->search($job,$region);
             
-            return $this->json($arrayUsers , 200, []);
+            $arrayUsers = $userRepository->search($job,$region);
+
+            return $this->json($arrayUsers, 200, [],['groups' => 'user_artisan_search']);
         }
         return $this->json(['error' => 'unexpected information for edit request'], 304, []);
     }
-
+    
     /**
      * @Route("/edit", name="edit")
      */
@@ -67,10 +68,16 @@ class ApiArtisanController extends AbstractController
             $userId = $parametersAsArray['id'];
             $user = $userRepository->find($userId);
 
-            $user->setCompanyDescription($parametersAsArray['companyDescription']);
+            if(isset ($parametersAsArray['companyDescription'])){
+                $user->setCompanyDescription($parametersAsArray['companyDescription']);
+            }
+
             // TODO : Add this in register after set company
             // $user->setPictureFolder($user->getCompany());
-            $user->setPicture($parametersAsArray['picture']);
+            if (isset($parametersAsArray['picture'])) {
+                $user->setPicture($parametersAsArray['picture']);
+            }
+
             $user->setUpdatedAt(new \DateTime());
 
             $em->persist($user);
@@ -90,5 +97,4 @@ class ApiArtisanController extends AbstractController
 
         return $this->json($data , 200, [], ['groups' => 'user_artisan_single']);
     }
-
 }
