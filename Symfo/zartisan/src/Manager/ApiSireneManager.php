@@ -2,29 +2,34 @@
 
 namespace App\Manager;
 
-use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+
+use App\Manager\ApiCompanyManager;
+use App\Manager\ApiNomenclaturesManager;
+
 
 class ApiSireneManager
 {
     private $apiData;
     private $siret;
-    private $user;
 
     private $userRepository;
     private $apiCompanyManager;
+    private $apiNomenclaturesManager;
 
     private $apiVersion = "3";
     private $apiBearer = "5a8c90c5-48d4-3966-b476-6f90dbdb966c";
 
     private $em;
 
-    public function __construct(EntityManagerInterface $em, UserRepository $userRepository, ApiCompanyManager $apiCompanyManager)
+    public function __construct(EntityManagerInterface $em, UserRepository $userRepository, 
+    ApiCompanyManager $apiCompanyManager, ApiNomenclaturesManager $apiNomenclaturesManager)
     {
         $this->em = $em;
         $this->userRepository = $userRepository;
         $this->apiCompanyManager = $apiCompanyManager;
+        $this->apiNomenclaturesManager = $apiNomenclaturesManager;
     }
 
     public function requestSireneApi()
@@ -167,7 +172,7 @@ class ApiSireneManager
             // Save all data from api
             
             $user->setCompany($this->getCompagnyFromApi());
-            $user->setNaf($this->getNafEncodeFromApi());
+            $user->setNaf($this->getNafFromApi());
             $user->setAdressSupp($this->getCompAdresseFromApi());
             $user->setNumberWay($this->getNVoieFromApi());
             $user->setExtNumberWay($this->getExtVoieFromApi());
@@ -183,12 +188,14 @@ class ApiSireneManager
             // 
             // $this->apiCompanyManager->setCompanyDataApi($user);
 
+            // Connection to ApiNomenclaturesManager to reister job & category
+            $this->apiNomenclaturesManager->setNomenclaturesDataApi($user);
 
-            // $this->apiNomenclaturesManager->setNomenclaturesDataApi($this->getNafFromApi());
             $this->em->persist($user);
-            //$this->em->flush();
-            return $user; 
+            $this->em->flush();
+            return $user;
         }
+        // TODO Return a formated JSON with status code for error
         return $this->apiData;
     }
 }

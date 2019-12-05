@@ -23,5 +23,8 @@ class ExterneApiController extends AbstractController
         $sirene = $this->apiSireneManager;
         // TODO Manually add siret for add data on bdd ! need to be link with mail & pasword !    
         $sirene->setSireneDataApi(83099391100015);
+        dd("END POINT");
+        // TODO Need to redirect to the artisan profile
+        return $this->redirectToRoute('main');
     }
 }
