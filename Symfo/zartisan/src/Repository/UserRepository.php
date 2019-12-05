@@ -12,6 +12,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
+
 class UserRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -33,9 +34,27 @@ class UserRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+    * @return User[] Returns an array of Job objects
+    */
+    public function search(string $job, string $region)
+    {
+        // TODO select join table job to get the job querry
+        return $this->createQueryBuilder('u')
+                ->andWhere('u.region LIKE :region')
+                ->andwhere('u.isStatus = :enabled')
+                ->join('u.job', 'j')
+                ->andWhere('j.name LIKE :job')
+                ->setParameter('job', $job)
+                ->setParameter('region', $region)
+                ->OrderBy('u.averageRate', 'DESC')
+                ->OrderBy('u.isVerified', 'DESC')
+                ->getQuery()
+                ->getResult();
+    }
 
     /**
-    * @return User[] Returns an array of Movie objects
+    * @return User[] Returns an array of User objects
     */
     public function isFound(int $siret)
     {
@@ -45,7 +64,10 @@ class UserRepository extends ServiceEntityRepository
         ->getQuery()
         ->getResult();
 
-        return $result[0];
+        if(!isset($result[0])){
+            return NULL;
+        }else{
+            return $result[0];
+        }
     }
-
 }
