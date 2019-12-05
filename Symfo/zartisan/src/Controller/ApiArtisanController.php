@@ -51,8 +51,9 @@ class ApiArtisanController extends AbstractController
 
             $arrayUsers = $userRepository->search($job,$region);
             
-            //return $this->json($arrayUsers , 200, []);
+            return $this->json($arrayUsers , 200, []);
         }
+        return $this->json(['error' => 'unexpected information for edit request'], 304, []);
     }
 
     /**
@@ -60,23 +61,23 @@ class ApiArtisanController extends AbstractController
      */
     public function edit(UserRepository $userRepository, Request $request, EntityManagerInterface $em)
     {
-        $arrayUsers = [];
         if ($content = $request->getContent()) {
             $parametersAsArray = json_decode($content, true);
 
             $userId = $parametersAsArray['id'];
             $user = $userRepository->find($userId);
-            dd($user);
 
             $user->setCompanyDescription($parametersAsArray['companyDescription']);
-            $user->setPicture();
-            $user->setPictureFolder();
-            $user->setUpdatedAt();
+            // TODO : Add this in register after set company
+            // $user->setPictureFolder($user->getCompany());
+            $user->setPicture($parametersAsArray['picture']);
+            $user->setUpdatedAt(new \DateTime());
 
             $em->persist($user);
             $em->flush();
-            //return $this->json($arrayUsers , 200, []);
+            return $this->json($user, 200, []);
         }
+        return $this->json(['error' => 'unexpected information for edit request'], 304, []);
     }
     
     /**
@@ -84,6 +85,7 @@ class ApiArtisanController extends AbstractController
      */
     public function single(User $user, SerializerInterface $serializer)
     {
+
         $data = $serializer->serialize($user, 'json', ['groups' => 'user_artisan_single']);
 
         return $this->json($data , 200, [], ['groups' => 'user_artisan_single']);
