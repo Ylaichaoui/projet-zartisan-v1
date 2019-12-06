@@ -55,7 +55,7 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
-    * @return User[] Returns an array of User objects
+    * @return User Returns an array of User objects
     */
     public function isFound(int $siret)
     {
@@ -73,7 +73,7 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
-    * @return User[] Returns an array of User objects
+    * @return User Returns an array of User objects
     */
     public function isFoundMail(string $email)
     {

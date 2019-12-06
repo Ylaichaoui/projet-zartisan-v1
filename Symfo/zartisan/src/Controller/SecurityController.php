@@ -31,7 +31,7 @@ class SecurityController extends AbstractController
         if ($content = $request->getContent()) {
             $parametersAsArray = json_decode($content, true);
 
-            // Look if email siret
+            // Look if exist email
             if($userRepository->isFoundMail($parametersAsArray['email'])){
                 return $this->json(['error' => 'Email already exist'], 409, []);
             }
@@ -76,7 +76,7 @@ class SecurityController extends AbstractController
         if ($content = $request->getContent()) {
             $parametersAsArray = json_decode($content, true);
 
-            // Look if email siret
+            // Look if exist siret
             if($userRepository->isFoundMail($parametersAsArray['email'])){
                 return $this->json(['error' => 'Email already exist'], 409, []);
             }
