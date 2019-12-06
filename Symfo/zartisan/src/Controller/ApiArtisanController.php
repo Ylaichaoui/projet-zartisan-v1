@@ -50,6 +50,7 @@ class ApiArtisanController extends AbstractController
             $job = $parametersAsArray['job'];
             $region = $parametersAsArray['region'];
             
+
             $arrayUsers = $userRepository->search($job,$region);
 
             return $this->json($arrayUsers, 200, [],['groups' => 'user_artisan_search']);
@@ -92,9 +93,6 @@ class ApiArtisanController extends AbstractController
      */
     public function single(User $user, SerializerInterface $serializer)
     {
-
-        $data = $serializer->serialize($user, 'json', ['groups' => 'user_artisan_single']);
-
-        return $this->json($data , 200, [], ['groups' => 'user_artisan_single']);
+        return $this->json($user , 200, [], ['groups' => 'user_artisan_single']);
     }
 }

@@ -48,6 +48,7 @@ class Job
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="job")
      */
     private $users;
+
     
     public function __construct()
     {
