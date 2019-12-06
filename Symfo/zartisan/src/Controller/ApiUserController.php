@@ -11,7 +11,6 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-
 /**
 * @Route("/v1/user", name="api_user_")
 */
@@ -142,6 +141,7 @@ class ApiUserController extends AbstractController
                     $user->setPicture($picture);
                 }
                 if ($nickname != $user->getNickname()) {
+                  
                     {
                         $user->setNickname($nickname);
                     }
