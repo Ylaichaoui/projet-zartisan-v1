@@ -61,6 +61,17 @@ const Home = () => {
 
 	const [ regionChange, setRegion ] = useState('Choisissez une Région');
 
+	var data = null;
+	var xhr = new XMLHttpRequest();
+	xhr.withCredentials = true;
+	xhr.addEventListener('readystatechange', function() {
+		if (this.readyState === this.DONE) {
+			console.log(this.responseText);
+		}
+	});
+	xhr.open('GET', 'http://localhost:8001/v1/region/list');
+	xhr.send(data);
+
 	return (
 		<div className="home">
 			<Row type="flex" justify="space-around" align="middle">
