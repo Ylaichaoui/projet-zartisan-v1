@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Icon, Input, Button } from 'antd';
 import 'antd/dist/antd.css';
 
-const FormLogin = () => {
+const FormLogin = ({ handleSubmitLogin }) => {
 	return (
 		<div>
-			<Form method="POST" onSubmit="">
+			<Form method="POST" onSubmit={handleSubmitLogin}>
 				<Form.Item>
 					<Input
 						prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}

@@ -4,7 +4,7 @@
 import React, { useState } from 'react';
 import { Row, Col, Button, Icon, Drawer, Typography, Modal } from 'antd';
 import 'antd/dist/antd.css';
-
+import axios from 'axios';
 /**
  * Local imports
  */
@@ -17,9 +17,18 @@ import FormLogin from 'src/components/FormLogin';
 const { Text } = Typography;
 
 const Header = () => {
+	/**Hooks for display or not menu burger */
 	const [ visible, setVisible ] = useState(false);
+
+	/**Hooks for display or not modal login */
 	const [ modalLogin, setModalLogin ] = useState(false);
+
+	/**Hooks for display or not modal register */
 	const [ modalRegister, setModalRegister ] = useState(false);
+
+	/**Hooks authentification */
+	const [ authentification, setAuthentification ] = useState(false);
+
 	/**
 	 * open menu burger
 	 */
@@ -33,17 +42,62 @@ const Header = () => {
 	const onClose = () => {
 		setVisible(false);
 	};
-
+	/**
+	 * open form login popup
+	 */
 	const showModalLogin = () => {
 		setModalLogin(true);
+		onClose();
 	};
-
+	/**
+	 * open form register popup
+	 */
 	const showModalRegister = () => {
 		setModalRegister(true);
 	};
+	/**
+	 * close form popup
+	 */
 	const handleCancel = () => {
 		setModalRegister(false);
 		setModalLogin(false);
+	};
+
+	/**
+	 * user authentification
+	 */
+	const authValide = () => {
+		setAuthentification(true);
+	};
+
+	//const handleSubmitLogin allows to send an axios request
+	const handleSubmitLogin = (event) => {
+		event.preventDefault();
+		console.log('submit');
+
+		axios({
+			method: 'post',
+			url: 'http://localhost:8001/api/login_check', // first check with static home page
+			data: {
+				username: 'matthieu@gmail.com',
+				password: 'toto13'
+			}
+		})
+			.then((response) => {
+				console.log(response);
+				if (response.status === 200) {
+					console.log('ok');
+					authValide();
+					handleCancel();
+				}
+			})
+			.catch(function(error) {
+				// handle error
+				console.log(error);
+			})
+			.finally(function() {
+				// always executed
+			});
 	};
 
 	return (
@@ -62,18 +116,28 @@ const Header = () => {
 						</Row>
 						<Row type="flex" justify="center" style={{ margin: '1.5em' }} align="top">
 							<Text>
-								<a href="#" onClick={showModalLogin}>
-									Connexion
-								</a>
+								{authentification === false && (
+									<a href="#" onClick={showModalLogin}>
+										Connexion
+									</a>
+								)}
 								<Modal footer={null} title="Connexion" visible={modalLogin} onCancel={handleCancel}>
-									<FormLogin />
+									<FormLogin handleSubmitLogin={handleSubmitLogin} />
 								</Modal>
+
+								{console.log(authentification)}
+
+								{authentification === true && <a href="#">Profil</a>}
 							</Text>
 						</Row>
 						<Row type="flex" justify="center" align="top">
-							<a href="#" onClick={showModalRegister}>
-								Inscription
-							</a>
+							{authentification === false && (
+								<a href="#" onClick={showModalRegister}>
+									Inscription
+								</a>
+							)}
+							{authentification === true && <a href="#">Deconnexion</a>}
+
 							<Modal footer={null} title="Inscription" visible={modalRegister} onCancel={handleCancel}>
 								<Row type="flex" justify="center" align="top">
 									<Button style={{ width: '40%' }}>Particulier</Button>

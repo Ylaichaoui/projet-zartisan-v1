@@ -4,7 +4,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Row, Button, Icon, Menu, Dropdown } from 'antd';
-import axios from 'axios';
+
 /**
  * Local imports
  */
@@ -61,23 +61,7 @@ const Home = () => {
 	);
 
 	const [ regionChange, setRegion ] = useState('Choisissez une Région');
-
-	var data = JSON.stringify(false);
-
-var xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("GET", "http://localhost:8001/v1/region/list");
-xhr.setRequestHeader("content-type", "application/json");
-
-xhr.send(data);
-
+  
 	return (
 		<div className="home">
 			<Row type="flex" justify="space-around" align="middle">
