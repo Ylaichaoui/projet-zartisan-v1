@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -49,15 +50,19 @@ class MainController extends AbstractController
     /**
     * @Route("/v1/confirmMail", name="api_mail_confirm")
     */
-    public function sendMailValidation(UserRepository $userRepository, Request $request)
+    public function sendMailValidation(UserRepository $userRepository, Request $request, EntityManagerInterface $em)
     { 
         if ($content = $request->getContent()) {
             $parametersAsArray = json_decode($content, true);
             $user = $userRepository->isFoundMail($parametersAsArray['email']);
-
+            
             // Generate random token 
             $token = $this->mail_validate(60);
+            
             $user->setMailToken($token);
+            $em->persist($user);
+            $em->flush();
+            
 
             $mail = new PHPMailer(true);
             $mail->IsMail(); 
@@ -76,7 +81,6 @@ class MainController extends AbstractController
             $use = "mailreset";
             $mail->Body = "<p>Afin de valider votre compte, merci de bien vouloir cliquer sur ce lien : \n\n</p> <a href='https://www.checkmylife.net/confirm.php?token=$token&use=$use'>Cliquer ici réinitialiser le mot de passe</a>";
             $mail->AltBody = "Afin de valider votre compte, merci de bien vouloir cliquer sur ce lien \n\n https://www.checkmylife.net/confirm.php?token=".$token."&use=".$use;
-            $userinfo = array();
             if(!$mail->Send()){
                 return $this->json(['error' => 'mail not send'], 304, []);
             }else{
@@ -88,7 +92,7 @@ class MainController extends AbstractController
     /**
     * @Route("/v1/resetPass", name="api_reset_pass")
     */
-    public function sendResetPass(UserRepository $userRepository, Request $request)
+    public function sendResetPass(UserRepository $userRepository, Request $request, EntityManagerInterface $em)
     {
         if ($content = $request->getContent()) {
             $parametersAsArray = json_decode($content, true);
@@ -97,6 +101,8 @@ class MainController extends AbstractController
             // Generate random token
             $token = $this->mail_validate(60);
             $user->setMailToken($token);
+            $em->persist($user);
+            $em->flush();
 
             $mail = new PHPMailer(true);
             $mail->IsMail();
@@ -115,7 +121,6 @@ class MainController extends AbstractController
             $use = "passreset";
             $mail->Body = "<p>Suite a votre demande de réinitialisation de mot de passe : \n\n</p> <a href='https://www.checkmylife.net/confirm.php?token=$token&use=$use'>Cliquer ici réinitialiser le mot de passe</a>";
             $mail->AltBody = "Suite a votre demande de réinitialisation de mot de passe : \n\n https://www.checkmylife.net/confirm.php?token=".$token."&use=".$use;
-            $userinfo = array();
             if (!$mail->Send()) {
                 return $this->json(['error' => 'mail not send'], 304, []);
             } else {
@@ -128,7 +133,7 @@ class MainController extends AbstractController
     /**
     * @Route("/Confirmation", name="api_confirm_route")
     */
-    public function comfirmRoute(UserRepository $userRepository, UserPasswordEncoderInterface $passwordEncoder, Request $request)
+    public function comfirmRoute(UserRepository $userRepository, UserPasswordEncoderInterface $passwordEncoder, Request $request, EntityManagerInterface $em)
     {
         if ($content = $request->getContent()) {
             $parametersAsArray = json_decode($content, true);
@@ -138,6 +143,8 @@ class MainController extends AbstractController
                 if ($parametersAsArray['use'] == "mailconfirm") {
                     $user->setIsConfirmMail(TRUE);
                     $user->setMailToken(NULL);
+                    $em->persist($user);
+                    $em->flush();
                     return $this->redirect($this->generateUrl('main'));
                 }
                 if ($parametersAsArray['use'] == "passreset") {
@@ -148,6 +155,8 @@ class MainController extends AbstractController
                         )
                     );
                     $user->setMailToken(NULL);
+                    $em->persist($user);
+                    $em->flush();
                     return $this->redirect($this->generateUrl('logout'));
                 }
             }
