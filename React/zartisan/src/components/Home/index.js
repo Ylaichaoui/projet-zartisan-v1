@@ -1,9 +1,10 @@
 /**
  * Imports of dependencies
  */
-import React from 'react';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Row, Button, Icon, Menu, Dropdown } from 'antd';
-
+import axios from 'axios';
 /**
  * Local imports
  */
@@ -20,13 +21,23 @@ const Home = () => {
 	/**
 	 * menu of dropdown region
 	 */
-	const menuRegion = (
-		<Menu>
-			<Menu.Item key="1">Haut de france</Menu.Item>
-			<Menu.Item key="2">Bretagne</Menu.Item>
-			<Menu.Item key="3">Normandie</Menu.Item>
-		</Menu>
-	);
+	const changeRegion = (event) => {
+		setRegion(event.item.props.value);
+	};
+
+	const regions = useSelector((state) => state.regions);
+	console.log(regions);
+
+	const itemRegions = regions.map((region) => {
+		return (
+			<Menu.Item onClick={changeRegion} key={region.id} value={region.name}>
+				{region.name}
+			</Menu.Item>
+		);
+	});
+	console.log(itemRegions);
+
+	const menuRegion = <Menu>{itemRegions}</Menu>;
 	/**
 		 * menu of dropdown jobs
 		 */
@@ -47,29 +58,32 @@ const Home = () => {
 			</SubMenu>
 		</Menu>
 	);
+
+	const [ regionChange, setRegion ] = useState('Choisissez une Région');
+
 	return (
 		<div className="home">
-			<Row className="home-france">
-				<img src={france} className="france-picture" />
-			</Row>
 			<Row type="flex" justify="space-around" align="middle">
-				<Dropdown overlay={menuRegion} placement="topLeft">
+				<Dropdown overlay={menuRegion} placement="bottomLeft">
 					<Button className="home-button-region" style={{ backgroundColor: '#ad2102', color: 'white' }}>
-						Choisissez une Région <Icon type="up" />
+						{regionChange} <Icon type="down" />
 					</Button>
 				</Dropdown>
 
-				<Dropdown overlay={menuJobs} placement="topLeft">
+				<Dropdown overlay={menuJobs} placement="bottomLeft">
 					<Button
 						className="ant-dropdown-link home-button-jobs"
 						style={{ color: '#ad2102', fontWeight: 'bold' }}
 						href="#"
 					>
-						Choisissez un métier <Icon type="up" />
+						Choisissez un métier <Icon type="down" />
 					</Button>
 				</Dropdown>
 
 				<Button style={{ color: 'white', backgroundColor: '#595959', border: 'none' }}>Recherche</Button>
+			</Row>
+			<Row className="home-france">
+				<img src={france} className="france-picture" />
 			</Row>
 		</div>
 	);
