@@ -10,6 +10,7 @@ import { Row, Button, Icon, Menu, Dropdown } from 'antd';
  */
 import './style.sass';
 import france from './picture/france.svg';
+import StoreTable from 'antd/lib/table/Table';
 
 /**
  * Code
@@ -60,26 +61,7 @@ const Home = () => {
 	);
 
 	const [ regionChange, setRegion ] = useState('Choisissez une Région');
-
-	/*
-	axios({
-		method: 'get',
-		url: 'http://localhost:8001/v1/region/list'
-	})
-		.then((response) => {
-			console.log(response);
-			if (response.status === 200) {
-				console.log('ok');
-			}
-		})
-		.catch(function(error) {
-			// handle error
-			console.log(error);
-		})
-		.finally(function() {
-			// always executed
-		});
-*/
+  
 	return (
 		<div className="home">
 			<Row type="flex" justify="space-around" align="middle">
