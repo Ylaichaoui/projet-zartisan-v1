@@ -232,7 +232,6 @@ class User implements UserInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Job", inversedBy="users")
-     * @Groups("user_artisan_single")
      */
     private $job;
 
