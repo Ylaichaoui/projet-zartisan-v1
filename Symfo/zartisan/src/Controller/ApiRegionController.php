@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+
 /**
 * @Route("/v1/region", name="api_region_")
 */
@@ -120,12 +121,12 @@ class ApiRegionController extends AbstractController
     {
         $postalCode = $id;
         if(!is_numeric($postalCode)){
-            return false;
+            return NULL;
         }
         if(isset($this->regions[$postalCode])){
             return $this->regions[$postalCode];
         }else{
-            return false;
+            return NULL;
         }
     }
 }
