@@ -25,8 +25,8 @@ const options = [
 				label: 'Plombier'
 			},
 			{
-				value: 'electricient',
-				label: 'Electricient'
+				value: 'electricien',
+				label: 'Electricien'
 			}
 		]
 	},
