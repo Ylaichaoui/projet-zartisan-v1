@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { Row, Col, Button, Icon, Drawer, Typography, Modal } from 'antd';
 import 'antd/dist/antd.css';
 import axios from 'axios';
+
 /**
  * Local imports
  */
@@ -140,10 +141,14 @@ const Header = () => {
 
 							<Modal footer={null} title="Inscription" visible={modalRegister} onCancel={handleCancel}>
 								<Row type="flex" justify="center" align="top">
-									<Button style={{ width: '40%' }}>Particulier</Button>
+									<Button href="/inscription/particulier" style={{ width: '40%' }}>
+										Particulier
+									</Button>
 								</Row>
 								<Row type="flex" justify="center" align="top">
-									<Button style={{ width: '40%', margin: '1.5em' }}>Professionnel</Button>
+									<Button href="/inscription/professionnel" style={{ width: '40%', margin: '1.5em' }}>
+										Professionnel
+									</Button>
 								</Row>
 							</Modal>
 						</Row>
