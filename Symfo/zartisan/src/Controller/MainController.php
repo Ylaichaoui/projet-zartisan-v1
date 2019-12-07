@@ -110,7 +110,6 @@ class MainController extends AbstractController
             $user->setMailToken($token);
             $em->persist($user);
             $em->flush();
-
             
             $message = (new \Swift_Message('Zartisan: Réinitialisation du mot de passe'))
                 ->setFrom('staff@zartisan.com')
@@ -141,6 +140,7 @@ class MainController extends AbstractController
         if ($request->query->all() != NULL) {
             $user = $userRepository->isFoundToken($request->query->get('token'));
             if($user != NULL){
+                // If url return get where use = mailconfirm
                 if ($request->query->get('use') == "mailconfirm") {
                     $user->setIsConfirmMail(TRUE);
                     $user->setMailToken(NULL);
@@ -148,8 +148,10 @@ class MainController extends AbstractController
                     $em->flush();
                     return $this->redirect($this->generateUrl('main'));
                 }
+                // If url return get where use = passreset
                 if ($request->query->get('use') == "passreset") {
                     if($request->query->get('password') != NULL){
+                        // Patch sometime some + are replace by void caractere
                         $password = str_replace(" ", "+" ,$request->query->get('password'));
                         $user->setPassword($password);
                         $user->setMailToken(null);
