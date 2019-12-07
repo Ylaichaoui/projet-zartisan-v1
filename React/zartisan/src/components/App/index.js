@@ -12,6 +12,8 @@ import Header from 'src/components/Header';
 import Home from 'src/components/Home';
 import Footer from 'src/components/Footer';
 
+import FormRegisterUser from 'src/components/FormRegisterUser';
+import FormRegisterArtisan from 'src/components/FormRegisterArtisan';
 // Data
 
 /**
@@ -25,6 +27,12 @@ const App = () => {
 				<Switch>
 					<Route exact path="/">
 						<Home />
+					</Route>
+					<Route exact path="/inscription/particulier">
+						<FormRegisterUser />
+					</Route>
+					<Route exact path="/inscription/professionnel">
+						<FormRegisterArtisan />
 					</Route>
 				</Switch>
 			</Router>
