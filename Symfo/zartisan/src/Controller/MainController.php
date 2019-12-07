@@ -1,16 +1,18 @@
 <?php
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use PHPMailer\PHPMailer\PHPMailer;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class MainController extends AbstractController
 {
+    // Set private data for send mail mail 
+    private $baseUrl = "http://localhost:8001/confirmation";
+
     /**
      * @Route("/", name="main")
      */
@@ -41,43 +43,42 @@ class MainController extends AbstractController
     }
 
     // Generate random token for valid mail
-    function mail_validate($taille = 0){
+    function setToken($taille = 0){
         $alpha = "0123456789azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN";
         return substr(str_shuffle(str_repeat($alpha,$taille)),0,$taille);
     }
 
     /**
-    * @Route("/v1/confirmMail", name="api_mail_confirm")
+    * @Route("/confirmMail", name="mail_confirm")
     */
-    public function sendMailValidation(UserRepository $userRepository, Request $request)
+    public function sendMailValidation(UserRepository $userRepository, Request $request, EntityManagerInterface $em
+    , \Swift_Mailer $mailer)
     { 
         if ($content = $request->getContent()) {
             $parametersAsArray = json_decode($content, true);
             $user = $userRepository->isFoundMail($parametersAsArray['email']);
-
+            
             // Generate random token 
-            $token = $this->mail_validate(60);
+            $token = $this->setToken(60);
+            // Send what action do
+            $use = "mailconfirm";
+            
             $user->setMailToken($token);
+            $em->persist($user);
+            $em->flush();
+            
+            $message = (new \Swift_Message('Zartisan: Confirmation d\'email'))
+                ->setFrom('staff@zartisan.com')
+                ->setTo($user->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'emails/confirmMailSend.html.twig',
+                        ['name' => $user->getEmail(), 'token' => $token, 'use' => $use , "baseUrl" => $this->baseUrl ]
+                    ),
+                    'text/html'
+                );
 
-            $mail = new PHPMailer(true);
-            $mail->IsMail(); 
-            // Parameter le Mailer for use smtp SMTP 
-            $mail->SMTPDebug = 2;
-            $mail->CharSet = 'UTF-8';
-            $mail->Host = 'smtp.ionos.fr'; // Set SMTP Server
-            $mail->SMTPAuth = true; // Activate SMTP Auth
-            $mail->SMTPSecure = 'ssl'; // Allow SSL
-            $mail->Port = 465;
-            $mail->setFrom('Staff@Zartisan.com', 'Staff@Zartisan.com'); // Edit send user info
-            $mail->addAddress($user->getEmail(), $user->getEmail()); // Add receive
-            $mail->addReplyTo('Staff@Zartisan.com', 'No reply'); // Author email
-            $mail->isHTML(true); // Set format HTML
-            $mail->Subject = 'Confirmation d\'email';
-            $use = "mailreset";
-            $mail->Body = "<p>Afin de valider votre compte, merci de bien vouloir cliquer sur ce lien : \n\n</p> <a href='https://www.checkmylife.net/confirm.php?token=$token&use=$use'>Cliquer ici réinitialiser le mot de passe</a>";
-            $mail->AltBody = "Afin de valider votre compte, merci de bien vouloir cliquer sur ce lien \n\n https://www.checkmylife.net/confirm.php?token=".$token."&use=".$use;
-            $userinfo = array();
-            if(!$mail->Send()){
+            if(!$mailer->send($message)){
                 return $this->json(['error' => 'mail not send'], 304, []);
             }else{
                 return $this->json(['success' => 'mail send'], 200, []);
@@ -86,39 +87,44 @@ class MainController extends AbstractController
     }
 
     /**
-    * @Route("/v1/resetPass", name="api_reset_pass")
+    * @Route("/resetPassMail", name="api_reset_pass")
     */
-    public function sendResetPass(UserRepository $userRepository, Request $request)
+    public function sendResetPass(UserRepository $userRepository, Request $request, EntityManagerInterface $em
+    , \Swift_Mailer $mailer, UserPasswordEncoderInterface $passwordEncoder)
     {
         if ($content = $request->getContent()) {
             $parametersAsArray = json_decode($content, true);
             $user = $userRepository->isFoundMail($parametersAsArray['email']);
+            
+            if(!isset ($parametersAsArray['password'])){
+                return $this->json(['error' => 'password not valid'], 304, []);
+            }
 
-            // Generate random token
-            $token = $this->mail_validate(60);
-            $user->setMailToken($token);
-
-            $mail = new PHPMailer(true);
-            $mail->IsMail();
-            // Parameter le Mailer for use smtp SMTP
-            $mail->SMTPDebug = 2;
-            $mail->CharSet = 'UTF-8';
-            $mail->Host = 'smtp.ionos.fr'; // Set SMTP Server
-            $mail->SMTPAuth = true; // Activate SMTP Auth
-            $mail->SMTPSecure = 'ssl'; // Allow SSL
-            $mail->Port = 465;
-            $mail->setFrom('Staff@Zartisan.com', 'Staff@Zartisan.com'); // Edit send user info
-            $mail->addAddress($user->getEmail(), $user->getEmail()); // Add receive
-            $mail->addReplyTo('Staff@Zartisan.com', 'No reply'); // Author email
-            $mail->isHTML(true); // Set format HTML
-            $mail->Subject = 'Réinitialisation de votre mot de passe';
+            $password = $passwordEncoder->encodePassword($user, $parametersAsArray['password']);
+            $user->setPassword($password);
+            // Generate random token 
+            $token = $this->setToken(60);
+            // Send what action do
             $use = "passreset";
-            $mail->Body = "<p>Suite a votre demande de réinitialisation de mot de passe : \n\n</p> <a href='https://www.checkmylife.net/confirm.php?token=$token&use=$use'>Cliquer ici réinitialiser le mot de passe</a>";
-            $mail->AltBody = "Suite a votre demande de réinitialisation de mot de passe : \n\n https://www.checkmylife.net/confirm.php?token=".$token."&use=".$use;
-            $userinfo = array();
-            if (!$mail->Send()) {
+            
+            $user->setMailToken($token);
+            $em->persist($user);
+            $em->flush();
+            
+            $message = (new \Swift_Message('Zartisan: Réinitialisation du mot de passe'))
+                ->setFrom('staff@zartisan.com')
+                ->setTo($user->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'emails/passMailSend.html.twig',
+                        ['name' => $user->getEmail(), 'token' => $token, 'password' => $password, 'use' => $use, "baseUrl" => $this->baseUrl ]
+                    ),
+                    'text/html'
+                );
+
+            if(!$mailer->send($message)){
                 return $this->json(['error' => 'mail not send'], 304, []);
-            } else {
+            }else{
                 return $this->json(['success' => 'mail send'], 200, []);
             }
         }
@@ -126,33 +132,38 @@ class MainController extends AbstractController
 
         
     /**
-    * @Route("/Confirmation", name="api_confirm_route")
+    * @Route("/confirmation", name="api_confirm_route")
     */
-    public function comfirmRoute(UserRepository $userRepository, UserPasswordEncoderInterface $passwordEncoder, Request $request)
+    public function comfirmRoute(UserRepository $userRepository
+    , Request $request, EntityManagerInterface $em)
     {
-        if ($content = $request->getContent()) {
-            $parametersAsArray = json_decode($content, true);
-
-            $user = $userRepository->isFoundToken($parametersAsArray['token']);
+        if ($request->query->all() != NULL) {
+            $user = $userRepository->isFoundToken($request->query->get('token'));
             if($user != NULL){
-                if ($parametersAsArray['use'] == "mailconfirm") {
+                // If url return get where use = mailconfirm
+                if ($request->query->get('use') == "mailconfirm") {
                     $user->setIsConfirmMail(TRUE);
                     $user->setMailToken(NULL);
+                    $em->persist($user);
+                    $em->flush();
                     return $this->redirect($this->generateUrl('main'));
                 }
-                if ($parametersAsArray['use'] == "passreset") {
-                    $user->setPassword(
-                        $passwordEncoder->encodePassword(
-                            $user,
-                            $parametersAsArray['password']
-                        )
-                    );
-                    $user->setMailToken(NULL);
-                    return $this->redirect($this->generateUrl('logout'));
+                // If url return get where use = passreset
+                if ($request->query->get('use') == "passreset") {
+                    if($request->query->get('password') != NULL){
+                        // Patch sometime some + are replace by void caractere
+                        $password = str_replace(" ", "+" ,$request->query->get('password'));
+                        $user->setPassword($password);
+                        $user->setMailToken(null);
+                        $em->persist($user);
+                        $em->flush();
+                        return $this->redirect($this->generateUrl('app_logout'));
+                    }
+                    return $this->json(['error' => 'Password try to be modify by wrong way'], 404, []);
                 }
             }
-            return $this->json(['error' => 'no'], 304, []);
+            return $this->json(['error' => 'No user for this token'], 304, []);
         }
-        return $this->json(['error' => 'no'], 304, []);
+        return $this->json(['error' => 'No querry on this request'], 304, []);
     }
 }
