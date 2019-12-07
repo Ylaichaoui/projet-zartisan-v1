@@ -44,17 +44,18 @@ const Header = () => {
 		setVisible(false);
 	};
 	/**
-	 * open form login popup
+	 * open form login popup and close menu burger
 	 */
 	const showModalLogin = () => {
 		setModalLogin(true);
 		onClose();
 	};
 	/**
-	 * open form register popup
+	 * open form register popup and close menu burger
 	 */
 	const showModalRegister = () => {
 		setModalRegister(true);
+		onClose();
 	};
 	/**
 	 * close form popup
@@ -70,6 +71,10 @@ const Header = () => {
 	const authValide = () => {
 		setAuthentification(true);
 	};
+
+	function onChange(value) {
+		console.log(value);
+	}
 
 	//const handleSubmitLogin allows to send an axios request
 	const handleSubmitLogin = (event) => {
