@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        {% block stylesheets %}
+        {% endblock %}
+    </head>
+    <body>
+        {% block body %}
+            <div><h2>Bienvenu</h2></div>
+            <div><p>Afin de valider votre nouveau mot de passe, <a href="{{baseUrl}}?token={{token}}&use={{use}}&password={{password}}"> cliquez ici </a></p></div>
+        {% endblock %}
+    </body>
+</html>
+
