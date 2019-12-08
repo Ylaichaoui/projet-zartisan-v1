@@ -73,6 +73,11 @@ const Header = () => {
 		setAuthentification(true);
 	};
 
+	const deconnexion = () => {
+		setAuthentification(false);
+		onClose();
+	};
+
 	function onChange(value) {
 		//console.log(value);
 	}
@@ -177,7 +182,7 @@ const Header = () => {
 									Inscription
 								</a>
 							)}
-							{authentification === true && <a href="#">Deconnexion</a>}
+							{authentification === true && <a onClick={deconnexion}>Deconnexion</a>}
 
 							<Modal footer={null} title="Inscription" visible={modalRegister} onCancel={handleCancel}>
 								<Row type="flex" justify="center" align="top">
