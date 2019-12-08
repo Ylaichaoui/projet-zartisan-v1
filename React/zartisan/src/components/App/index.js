@@ -22,8 +22,8 @@ import FormRegisterArtisan from 'src/components/FormRegisterArtisan';
 const App = () => {
 	return (
 		<div id="app">
-			<Header />
 			<Router>
+				<Header />
 				<Switch>
 					<Route exact path="/">
 						<Home />
@@ -34,9 +34,12 @@ const App = () => {
 					<Route exact path="/inscription/professionnel">
 						<FormRegisterArtisan />
 					</Route>
+					<Route>
+						<div>404</div>
+					</Route>
 				</Switch>
+				<Footer />
 			</Router>
-			<Footer />
 		</div>
 	);
 };

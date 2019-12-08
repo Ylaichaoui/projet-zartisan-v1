@@ -5,13 +5,14 @@ import React, { useState } from 'react';
 import { Row, Col, Button, Icon, Drawer, Typography, Modal } from 'antd';
 import 'antd/dist/antd.css';
 import axios from 'axios';
-
+import { Link, withRouter } from 'react-router-dom';
 /**
  * Local imports
  */
 import './style.sass';
 import logo from './picture/logo-zartisan.svg';
 import FormLogin from 'src/components/FormLogin';
+
 /**
  * Code
  */
@@ -75,6 +76,39 @@ const Header = () => {
 	function onChange(value) {
 		console.log(value);
 	}
+	/**
+	 * button for navigate towards form register artisan (use withRouter for manage history url)
+	 */
+	const ButtonGoToArtisanForm = withRouter(({ history }) => {
+		return (
+			<Button
+				onClick={() => {
+					handleCancel();
+					return history.push('/inscription/professionnel');
+				}}
+				style={{ width: '40%', margin: '1.5em' }}
+			>
+				Professionnel
+			</Button>
+		);
+	});
+
+	/**
+	 * button for navigate towards form register user (use withRouter for manage history url)
+	 */
+	const ButtonGoToUserForm = withRouter(({ history }) => {
+		return (
+			<Button
+				onClick={() => {
+					handleCancel();
+					return history.push('/inscription/particulier');
+				}}
+				style={{ width: '40%' }}
+			>
+				Particulier
+			</Button>
+		);
+	});
 
 	//const handleSubmitLogin allows to send an axios request
 	const handleSubmitLogin = (event) => {
@@ -146,14 +180,10 @@ const Header = () => {
 
 							<Modal footer={null} title="Inscription" visible={modalRegister} onCancel={handleCancel}>
 								<Row type="flex" justify="center" align="top">
-									<Button href="/inscription/particulier" style={{ width: '40%' }}>
-										Particulier
-									</Button>
+									<ButtonGoToUserForm />
 								</Row>
 								<Row type="flex" justify="center" align="top">
-									<Button href="/inscription/professionnel" style={{ width: '40%', margin: '1.5em' }}>
-										Professionnel
-									</Button>
+									<ButtonGoToArtisanForm />
 								</Row>
 							</Modal>
 						</Row>
@@ -162,7 +192,9 @@ const Header = () => {
 
 				{/** logo header */}
 				<Col span={18}>
-					<img src={logo} alt="zartisan image" className="logo-zartisan" />
+					<Link to="/">
+						<img src={logo} alt="zartisan image" className="logo-zartisan" />
+					</Link>
 				</Col>
 			</Row>
 		</div>
