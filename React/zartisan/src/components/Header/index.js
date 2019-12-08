@@ -150,7 +150,7 @@ const Header = () => {
 
 	return (
 		<div>
-			<Row type="flex" justify="space-around" className="header">
+			<Row className="header" type="flex" justify="space-around">
 				<Col span={6}>
 					{/** Button Burger */}
 					<Button className="header-burger-button" onClick={showDrawer}>
