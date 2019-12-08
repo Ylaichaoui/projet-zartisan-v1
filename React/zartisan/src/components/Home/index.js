@@ -43,7 +43,7 @@ const options = [
 ];
 
 function onChange(value) {
-	console.log(value);
+	//console.log(value);
 }
 
 const Home = () => {
@@ -55,7 +55,7 @@ const Home = () => {
 	};
 
 	const regions = useSelector((state) => state.regions);
-	console.log(regions);
+	//console.log(regions);
 
 	const itemRegions = regions.map((region) => {
 		return (
@@ -64,7 +64,7 @@ const Home = () => {
 			</Menu.Item>
 		);
 	});
-	console.log(itemRegions);
+	//console.log(itemRegions);
 
 	const menuRegion = <Menu>{itemRegions}</Menu>;
 	/**

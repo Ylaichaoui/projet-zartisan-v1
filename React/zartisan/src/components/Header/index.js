@@ -74,7 +74,7 @@ const Header = () => {
 	};
 
 	function onChange(value) {
-		console.log(value);
+		//console.log(value);
 	}
 	/**
 	 * button for navigate towards form register artisan (use withRouter for manage history url)
@@ -111,33 +111,36 @@ const Header = () => {
 	});
 
 	//const handleSubmitLogin allows to send an axios request
-	const handleSubmitLogin = (event) => {
-		event.preventDefault();
-		console.log('submit');
+	const handleSubmitLogin = (email, password) => {
+		const data = {
+			username: email,
+			password
+		};
 
-		axios({
-			method: 'post',
-			url: 'http://localhost:8001/api/login_check', // first check with static home page
-			data: {
-				username: 'matthieu@gmail.com',
-				password: 'toto13'
-			}
-		})
-			.then((response) => {
-				console.log(response);
-				if (response.status === 200) {
-					console.log('ok');
-					authValide();
-					handleCancel();
-				}
+		return (event) => {
+			event.preventDefault();
+			console.log(data);
+			axios({
+				method: 'post',
+				url: 'http://localhost:8001/api/login_check', // first check with static home page
+				data
 			})
-			.catch(function(error) {
-				// handle error
-				console.log(error);
-			})
-			.finally(function() {
-				// always executed
-			});
+				.then((response) => {
+					console.log(response);
+					if (response.status === 200) {
+						console.log('ok');
+						authValide();
+						handleCancel();
+					}
+				})
+				.catch(function(error) {
+					// handle error
+					//console.log(error);
+				})
+				.finally(function() {
+					// always executed
+				});
+		};
 	};
 
 	return (
@@ -164,8 +167,6 @@ const Header = () => {
 								<Modal footer={null} title="Connexion" visible={modalLogin} onCancel={handleCancel}>
 									<FormLogin handleSubmitLogin={handleSubmitLogin} />
 								</Modal>
-
-								{console.log(authentification)}
 
 								{authentification === true && <a href="#">Profil</a>}
 							</Text>
