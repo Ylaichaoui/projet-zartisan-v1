@@ -117,9 +117,9 @@ class ApiRegionController extends AbstractController
         return $this->json(array_unique($this->regions) , 200, []);
     }
 
-    public function getRegionFromCode($id)
+    public function getRegionFromCode($postalCode)
     {
-        $postalCode = $id;
+        $postalCode = intval(substr($postalCode, 0, 2));
         if(!is_numeric($postalCode)){
             return NULL;
         }
