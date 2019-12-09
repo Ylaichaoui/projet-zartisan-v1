@@ -5,3 +5,9 @@ export const sendRegisterUser = (email, password) => ({
 	email,
 	password
 });
+
+export const CONNECT = 'register/actions/CONNECT';
+
+export const connect = () => ({
+	type: 'CONNECT'
+});

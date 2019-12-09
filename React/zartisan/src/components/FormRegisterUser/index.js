@@ -4,6 +4,7 @@
 import React, { useState } from 'react';
 import { Form, Input, Row, Button } from 'antd';
 import { useDispatch } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 /**
  * Local imports
@@ -26,6 +27,7 @@ const FormRegisterUser = () => {
 			if (password === passwordCheck && password !== '') {
 				console.log('mots est correct');
 				dispatch(sendRegisterUser(email, password));
+				return <Redirect to="/" />;
 			}
 		};
 	};

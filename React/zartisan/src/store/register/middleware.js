@@ -11,12 +11,12 @@ import { SEND_REGISTER_USER } from 'src/store/register/actions';
 export default (store) => (next) => (action) => {
 	switch (action.type) {
 		case SEND_REGISTER_USER: {
-			console.log(store);
 			const data = {
 				email: action.email,
 				password: action.password
 			};
 			console.log(data);
+
 			axios({
 				method: 'post',
 				url: 'http://localhost:8001/register/user', // first check with static home page
@@ -38,6 +38,7 @@ export default (store) => (next) => (action) => {
 								console.log(response);
 								if (response.status === 200) {
 									console.log('ok');
+									store.dispatch({ type: 'register/actions/CONNECT' });
 								}
 							})
 							.catch(function(error) {

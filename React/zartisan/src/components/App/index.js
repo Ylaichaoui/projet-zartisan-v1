@@ -1,9 +1,9 @@
 /**
  * Imports of dependencies
  */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-
+import { useSelector } from 'react-redux';
 /**
  * Local imports
  */
@@ -21,6 +21,9 @@ import FormRegisterArtisan from 'src/components/FormRegisterArtisan';
  * Code
  */
 const App = () => {
+	const connect = useSelector((state) => state.connect);
+	//console.log(connect);
+
 	return (
 		<div id="app">
 			<Router>
@@ -30,8 +33,7 @@ const App = () => {
 						<Home />
 					</Route>
 					<Route exact path="/inscription/particulier">
-						<FormRegisterUser />
-						{/*submit ? <Redirect to="/" /> : <FormRegisterUser />*/}
+						{connect == true ? <Redirect to="/" /> : <FormRegisterUser />}
 					</Route>
 					<Route exact path="/inscription/professionnel">
 						<FormRegisterArtisan />
