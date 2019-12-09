@@ -88,7 +88,7 @@ class ApiArtisanController extends AbstractController
     /**
      * @Route("/single", name="single")
      */
-    public function single(User $user, Request $request, UserRepository $userRepository)
+    public function single(Request $request, UserRepository $userRepository)
     {
         if ($request->getContent()) {
             
