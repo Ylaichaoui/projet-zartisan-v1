@@ -2,14 +2,14 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
+use App\Controller\ApiRegionController;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 
 /**
 * @Route("/v1/user", name="api_user_")
@@ -18,7 +18,6 @@ class ApiUserController extends AbstractController
 {
     /**
      * @Route("/list", name="all")
-     *
      * list all users ROLE_USER and enabled
      */
     public function all(UserRepository $userRepository)
@@ -43,23 +42,21 @@ class ApiUserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="single")
-     *
+     * @Route("/single", name="single")
      * list a user
      */
-    public function single(User $user, SerializerInterface $serializer, Request $request, UserRepository $userRepository)
+    public function single(Request $request, UserRepository $userRepository)
     {
         if ($request->getContent()) {
-            $userId = $request->request->get('id');
 
-            $user = $userRepository->find($userId);
+            // verify if  email is in the BDD
+            $user = $userRepository->isFoundMail($request->request->get('email'));
 
-            // si user existe on injecte les modifications
+            // if  user exist we return user
             if ($user != null) {
-                $data = $serializer->serialize($user, 'json', ['groups' => 'user_user_single']);
-                return $this->json($data, 200, [], ['groups' => 'user_user_single']);
+                return $this->json($user, 200, [], ['groups' => 'user_user_single']);
             } else {
-                return $this->json(['error' => 'unexpected information for edit request'], 404);
+                return $this->json(['error' => 'user not found'],404);
             }
         } else {
             return $this->json(['error' => 'unexpected information for edit request'], 304);
@@ -67,90 +64,47 @@ class ApiUserController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{id}", name="edit")
-     *
+     * @Route("/edit", name="edit")
      * modification profil user
      */
-    public function edit(User $user, Request $request, EntityManagerInterface $em, UserRepository $userRepository)
+    public function edit(Request $request, UserRepository $userRepository, EntityManagerInterface $em)
     {
 
-       
-        // si la requete est ok
         if ($request->getContent()) {
-            $userId = $request->request->get('id');
-            $user = $userRepository->find($userId);
 
-            // si user existe on injecte les modifications
-            if ($user != null) {
-                $email = $request->request->get('email');
-                $firstname = $request->get('firstname');
-                $lastname = $request->get('lastname');
-                $birthday = $request->get('birthday');
-                $adressSupp = $request->get('adressSupp');
-                $specialDistribution = $request->get('specialDistribution');
-                $extNumberWay = $request->get('extNumberWay');
-                $numberWay = $request->get('numberWay');
-                $typeWay = $request->get('typeWay');
-                $way= $request->get('way');
-                $postalCode = $request->get('postalCode');
-                $city = $request->get('city');
-                $phone = $request->get('phone');
-                $picture = $request->get('picture');
-                $nickname = $request->get('nickname');
-                    
-                if ($email != $user->getEmail()) {
-                    $user->setEmail($email);
-                }
-                if ($firstname != $user->getFirstname()) {
-                    $user->setFirstname($firstname);
-                }
-                if ($lastname != $user->getLastname()) {
-                    $user->setLastname($lastname);
-                }
-                if ($birthday != $user->getBirthday()) {
-                    $user->setBirthday($birthday);
-                }
-                if ($adressSupp != $user->getAdressSupp()) {
-                    $user->setAdressSupp($adressSupp);
-                }
-                if ($specialDistribution != $user->getSpecialDistribution()) {
-                    $user->setSpecialDistribution($specialDistribution);
-                }
-                if ($extNumberWay != $user->getExtNumberWay()) {
-                    $user->setExtNumberWay($extNumberWay);
-                }
-                if ($numberWay != $user->getNumberWay()) {
-                    $user->setNumberWay($numberWay);
-                }
-                if ($typeWay != $user->getTypeWay()) {
-                    $user->setTypeWay($typeWay);
-                }
-                if ($way != $user->getWay()) {
-                    $user->setWay($way);
-                }
-                if ($postalCode != $user->getPostalCode()) {
-                    $user->setPostalCode($postalCode);
-                }
-                if ($city != $user->getCity()) {
-                    $user->setCity($city);
-                }
-                if ($phone != $user->getPhone()) {
-                    $user->setPhone($phone);
-                }
-                if ($picture != $user->getPicture()) {
-                    $user->setPicture($picture);
-                }
-                if ($nickname != $user->getNickname()) {
-                  
-                    {
-                        $user->setNickname($nickname);
-                    }
 
-                    $user->setUpdatedAt(new \DateTime());
-                }
+            // verify if  email is in the BDD
+            $user = $userRepository->isFoundMail($request->request->get('email'));
+
+            $apiRegionController = new ApiRegionController();
+            $region = $apiRegionController->getRegionFromCode($request->get('postalCode'));
+            // search in the BDD id and email and role and status and confirmail
+            $userRole = $user->getRoles();
+            $userStatus= $user->getIsStatus();   
+
+            // if role  == user and user is enable
+            if ($userRole[0] == "ROLE_USER" && $userStatus == 'true') {
+                $user->setEmail($request->request->get('email'));
+                $user->setFirstname($request->get('firstname'));
+                $user->setLastname($request->get('lastname'));
+                $user->setBirthday($request->get('birthday'));              
+                $user->setAdressSupp($request->get('adressSupp'));  
+                $user->setSpecialDistribution($request->get('specialDistribution'));
+                $user->setExtNumberWay($request->get('extNumberWay'));
+                $user->setNumberWay($request->get('numberWay'));
+                $user->setTypeWay($request->get('typeWay'));
+                $user->setWay($request->get('way'));
+                $user->setPostalCode($request->get('postalCode'));
+                $user->setRegion($region);
+                $user->setCity($request->get('city'));
+                $user->setPhone($request->get('phone'));
+                $user->setPicture($request->get('picture'));
+                $user->setNickname($request->get('nickname'));
+                $user->setUpdatedAt(new \DateTime());
+
                 
                 $em->flush();
-                return $this->json($user, 200);
+                return $this->json($user, 200, [], ['groups' => 'user_user_single']);
             } else {
                 return $this->json(['error' => 'unexpected information for edit request'], 404);
             }
@@ -160,23 +114,22 @@ class ApiUserController extends AbstractController
     }
     
     /**
-     * @Route("/delete/{id}", name="delete")
-     *
+     * @Route("/delete", name="delete")
      * Disable user, keep the datas
      */
-    public function delete(User $user, EntityManagerInterface $em, Request $request, UserRepository $userRepository)
+    public function delete(EntityManagerInterface $em, Request $request, UserRepository $userRepository)
     {
         // si la requete est ok
         if ($request->getContent()) {
-            $userId = $request->request->get('id');
-            $user = $userRepository->find($userId);
+            // verify if  email is in the BDD
+            $user = $userRepository->isFoundMail($request->request->get('email'));
 
             // si user existe on modifie la base de données
-            if ($user != null) {
+            if ($user != null) 
+            {
                 $user->setIsStatus(false);
-                //$em->persist($user);
                 $em->flush();
-                return $this->json($user, 200);
+                return $this->json(['success' => 'utilisatuer disable'],200);
             } else {
                 return $this->json(['error' => 'unexpected information for edit request'], 404);
             }
@@ -184,4 +137,5 @@ class ApiUserController extends AbstractController
             return $this->json(['error' => 'unexpected information for edit request'], 304);
         }
     }
+
 }
