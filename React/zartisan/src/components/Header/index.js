@@ -6,6 +6,7 @@ import { Row, Col, Button, Icon, Drawer, Typography, Modal } from 'antd';
 import 'antd/dist/antd.css';
 import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 /**
  * Local imports
  */
