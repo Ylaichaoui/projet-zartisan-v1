@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 /**
-* @Route("/v1/region", name="api_region_")
+* @Route("api/v1/region", name="api_region_")
 */
 class ApiRegionController extends AbstractController
 {
