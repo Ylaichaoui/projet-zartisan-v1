@@ -4,8 +4,9 @@
 import React, { useState } from 'react';
 import { Row, Col, Button, Icon, Drawer, Typography, Modal } from 'antd';
 import 'antd/dist/antd.css';
-import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { sendLogin, deconnect } from 'src/store/register/actions';
 /**
  * Local imports
  */
@@ -19,6 +20,10 @@ import FormLogin from 'src/components/FormLogin';
 const { Text } = Typography;
 
 const Header = () => {
+	const connect = useSelector((state) => state.connect);
+	const dispatch = useDispatch();
+	console.log(connect);
+
 	/**Hooks for display or not menu burger */
 	const [ visible, setVisible ] = useState(false);
 
@@ -29,8 +34,8 @@ const Header = () => {
 	const [ modalRegister, setModalRegister ] = useState(false);
 
 	/**Hooks authentification */
-	const [ authentification, setAuthentification ] = useState(false);
-
+	const [ authentification, setAuthentification ] = useState(connect);
+	console.log(authentification);
 	/**
 	 * open menu burger
 	 */
@@ -66,21 +71,20 @@ const Header = () => {
 		setModalLogin(false);
 	};
 
-	/**
-	 * user authentification
-	 */
-	const authValide = () => {
-		setAuthentification(true);
-	};
-
 	const deconnexion = () => {
-		setAuthentification(false);
 		onClose();
+		dispatch(deconnect());
 	};
 
-	function onChange(value) {
-		//console.log(value);
-	}
+	//const handleSubmitLogin allows to send an axios request
+	const handleSubmitLogin = (email, password) => {
+		return (event) => {
+			event.preventDefault();
+			dispatch(sendLogin(email, password));
+			handleCancel();
+		};
+	};
+
 	/**
 	 * button for navigate towards form register artisan (use withRouter for manage history url)
 	 */
@@ -115,39 +119,6 @@ const Header = () => {
 		);
 	});
 
-	//const handleSubmitLogin allows to send an axios request
-	const handleSubmitLogin = (email, password) => {
-		const data = {
-			username: email,
-			password
-		};
-
-		return (event) => {
-			event.preventDefault();
-			console.log(data);
-			axios({
-				method: 'post',
-				url: 'http://localhost:8001/api/login_check', // first check with static home page
-				data
-			})
-				.then((response) => {
-					console.log(response);
-					if (response.status === 200) {
-						console.log('ok');
-						authValide();
-						handleCancel();
-					}
-				})
-				.catch(function(error) {
-					// handle error
-					//console.log(error);
-				})
-				.finally(function() {
-					// always executed
-				});
-		};
-	};
-
 	return (
 		<div>
 			<Row className="header" type="flex" justify="space-around">
@@ -164,7 +135,7 @@ const Header = () => {
 						</Row>
 						<Row type="flex" justify="center" style={{ margin: '1.5em' }} align="top">
 							<Text>
-								{authentification === false && (
+								{connect === false && (
 									<a href="#" onClick={showModalLogin}>
 										Connexion
 									</a>
@@ -173,16 +144,16 @@ const Header = () => {
 									<FormLogin handleSubmitLogin={handleSubmitLogin} />
 								</Modal>
 
-								{authentification === true && <a href="#">Profil</a>}
+								{connect === true && <a href="#">Profil</a>}
 							</Text>
 						</Row>
 						<Row type="flex" justify="center" align="top">
-							{authentification === false && (
+							{connect === false && (
 								<a href="#" onClick={showModalRegister}>
 									Inscription
 								</a>
 							)}
-							{authentification === true && <a onClick={deconnexion}>Deconnexion</a>}
+							{connect === true && <a onClick={deconnexion}>Deconnexion</a>}
 
 							<Modal footer={null} title="Inscription" visible={modalRegister} onCancel={handleCancel}>
 								<Row type="flex" justify="center" align="top">

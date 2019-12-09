@@ -1,7 +1,7 @@
 /**
  * Imports of dependencies
  */
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 /**
@@ -36,7 +36,7 @@ const App = () => {
 						{connect == true ? <Redirect to="/" /> : <FormRegisterUser />}
 					</Route>
 					<Route exact path="/inscription/professionnel">
-						<FormRegisterArtisan />
+						{connect == true ? <Redirect to="/" /> : <FormRegisterArtisan />}
 					</Route>
 					<Route>
 						<div>404</div>
