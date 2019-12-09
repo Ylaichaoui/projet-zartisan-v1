@@ -3,20 +3,48 @@
  */
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Row, Button, Icon, Menu, Dropdown } from 'antd';
+import { Row, Button, Icon, Menu, Dropdown, Cascader } from 'antd';
 
 /**
  * Local imports
  */
 import './style.sass';
 import france from './picture/france.svg';
-import StoreTable from 'antd/lib/table/Table';
 
 /**
  * Code
  */
 
-const { SubMenu } = Menu;
+const options = [
+	{
+		value: 'batiment',
+		label: 'Batiment',
+		children: [
+			{
+				value: 'plombier',
+				label: 'Plombier'
+			},
+			{
+				value: 'electricien',
+				label: 'Electricien'
+			}
+		]
+	},
+	{
+		value: 'alimentaire',
+		label: 'Alimentaire',
+		children: [
+			{
+				value: 'boulanger',
+				label: 'Boulanger'
+			}
+		]
+	}
+];
+
+function onChange(value) {
+	//console.log(value);
+}
 
 const Home = () => {
 	/**
@@ -27,7 +55,7 @@ const Home = () => {
 	};
 
 	const regions = useSelector((state) => state.regions);
-	console.log(regions);
+	//console.log(regions);
 
 	const itemRegions = regions.map((region) => {
 		return (
@@ -36,32 +64,15 @@ const Home = () => {
 			</Menu.Item>
 		);
 	});
-	console.log(itemRegions);
+	//console.log(itemRegions);
 
 	const menuRegion = <Menu>{itemRegions}</Menu>;
 	/**
 		 * menu of dropdown jobs
 		 */
-	const menuJobs = (
-		<Menu style={{ width: '55%' }}>
-			<SubMenu title="Batiment">
-				<Menu.Item>Maçon</Menu.Item>
-				<Menu.Item>Electricien</Menu.Item>
-				<Menu.Item>Plombier</Menu.Item>
-			</SubMenu>
-			<SubMenu title="Alimentaire">
-				<Menu.Item>Boulanger</Menu.Item>
-				<Menu.Item>Charcutier</Menu.Item>
-			</SubMenu>
-			<SubMenu title="Aménagement d'intérieur">
-				<Menu.Item>Designer d'intérieur</Menu.Item>
-				<Menu.Item>Menuisier</Menu.Item>
-			</SubMenu>
-		</Menu>
-	);
 
 	const [ regionChange, setRegion ] = useState('Choisissez une Région');
-  
+
 	return (
 		<div className="home">
 			<Row type="flex" justify="space-around" align="middle">
@@ -70,21 +81,21 @@ const Home = () => {
 						{regionChange} <Icon type="down" />
 					</Button>
 				</Dropdown>
-
-				<Dropdown overlay={menuJobs} placement="bottomLeft">
-					<Button
-						className="ant-dropdown-link home-button-jobs"
-						style={{ color: '#ad2102', fontWeight: 'bold' }}
-						href="#"
-					>
-						Choisissez un métier <Icon type="down" />
-					</Button>
-				</Dropdown>
-
-				<Button style={{ color: 'white', backgroundColor: '#595959', border: 'none' }}>Recherche</Button>
+				<Cascader
+					className="home-cascader-jobs"
+					options={options}
+					onChange={onChange}
+					placeholder="Choisissez un métier"
+				/>
 			</Row>
-			<Row className="home-france">
+			<Row type="flex" justify="space-around" align="middle" className="home-france">
 				<img src={france} className="france-picture" />
+				<Button
+					className="home-button-search"
+					style={{ color: 'white', backgroundColor: '#595959', border: 'none' }}
+				>
+					Recherche
+				</Button>
 			</Row>
 		</div>
 	);
