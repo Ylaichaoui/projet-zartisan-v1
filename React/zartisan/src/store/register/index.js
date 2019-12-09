@@ -1,5 +1,5 @@
 import { CONNECT } from 'src/store/register/actions';
-
+import { DECONNEXION } from 'src/store/register/actions';
 const initialState = false;
 
 export default (state = initialState, action) => {
@@ -7,8 +7,10 @@ export default (state = initialState, action) => {
 
 	switch (action.type) {
 		case CONNECT: {
-			state = true;
-			console.log(state);
+			return (state = true);
+		}
+		case DECONNEXION: {
+			return (state = false);
 		}
 		default: {
 			return state;

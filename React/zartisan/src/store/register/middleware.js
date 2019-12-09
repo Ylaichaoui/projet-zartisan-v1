@@ -8,9 +8,39 @@ import axios from 'axios';
  */
 import { SEND_REGISTER_USER } from 'src/store/register/actions';
 import { SEND_REGISTER_ARTISAN } from 'src/store/register/actions';
+import { SEND_LOGIN } from 'src/store/register/actions';
+import { CONNECT } from 'src/store/register/actions';
 
 export default (store) => (next) => (action) => {
 	switch (action.type) {
+		/**
+		 * Connexion
+		 */
+		case SEND_LOGIN: {
+			axios({
+				method: 'post',
+				url: 'http://localhost:8001/api/login_check', // first check with static home page
+				data: {
+					username: action.email,
+					password: action.password
+				}
+			})
+				.then((response) => {
+					console.log(response);
+					if (response.status === 200) {
+						console.log('ok');
+						store.dispatch({ type: CONNECT });
+					}
+				})
+				.catch(function(error) {
+					// handle error
+					//console.log(error);
+				})
+				.finally(function() {
+					// always executed
+				});
+		}
+
 		/**
          * User register
          */
@@ -42,7 +72,7 @@ export default (store) => (next) => (action) => {
 								console.log(response);
 								if (response.status === 200) {
 									console.log('ok');
-									store.dispatch({ type: 'register/actions/CONNECT' });
+									store.dispatch({ type: CONNECT });
 								}
 							})
 							.catch(function(error) {
@@ -95,7 +125,7 @@ export default (store) => (next) => (action) => {
 								console.log(response);
 								if (response.status === 200) {
 									console.log('ok artisan');
-									store.dispatch({ type: 'register/actions/CONNECT' });
+									store.dispatch({ type: CONNECT });
 								}
 							})
 							.catch(function(error) {

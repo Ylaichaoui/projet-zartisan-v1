@@ -15,8 +15,18 @@ export const sendRegisterArtisan = (email, password, siret) => ({
 	siret
 });
 
+export const SEND_LOGIN = 'register/actions/SEND_LOGIN';
+
+export const sendLogin = (email, password) => ({
+	type: CONNECT,
+	username: email,
+	password
+});
+
 export const CONNECT = 'register/actions/CONNECT';
 
-export const connect = () => ({
-	type: 'CONNECT'
+export const DECONNEXION = 'register/actions/DECONNEXION';
+
+export const deconnect = () => ({
+	type: DECONNEXION
 });
