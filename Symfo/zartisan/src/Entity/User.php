@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
-
 use Symfony\Component\Serializer\Annotation\Groups;
 
 
@@ -19,7 +18,7 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"user_artisan_single", "user_user_single"})
+     * @Groups({"user_artisan_single", "user_user_single", "user_advice"})
      */
     private $id;
 
@@ -73,6 +72,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Groups("user_user_single")
      */
     private $birthday;
 
@@ -186,13 +186,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single", "user_user_single"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single", "user_user_single"})
      */
     private $updatedAt;
 

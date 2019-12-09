@@ -20,9 +20,9 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-      /**
-     * @return User[] Returns  an array of User individual list all users
-     */
+    /**
+    * @return User[] Returns  an array of User individual list all users
+    */
     public function findAllUser()
     {
         $qb = $this->createQueryBuilder('u')
@@ -65,6 +65,23 @@ class UserRepository extends ServiceEntityRepository
         ->getQuery()
         ->getResult();
 
+        if(!isset($result[0])){
+            return NULL;
+        }else{
+            return $result[0];
+        }
+    }
+
+    /**
+    * @return User Returns an array of User objects
+    */
+    public function isFoundMail(string $email)
+    {
+        $result = $this->createQueryBuilder('u')
+        ->where('u.email = :email')
+        ->setParameter('email', $email)
+        ->getQuery()
+        ->getResult();
         if(!isset($result[0])){
             return NULL;
         }else{

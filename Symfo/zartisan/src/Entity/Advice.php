@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AdviceRepository")
@@ -13,11 +14,13 @@ class Advice
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("user_advice")
      */
     private $id;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups("user_advice")
      */
     private $body;
 
@@ -38,7 +41,7 @@ class Advice
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="advices")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false))
      */
     private $userAuthor;
 
