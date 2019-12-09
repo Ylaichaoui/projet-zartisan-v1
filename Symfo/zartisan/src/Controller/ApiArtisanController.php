@@ -7,7 +7,6 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -37,40 +36,46 @@ class ApiArtisanController extends AbstractController
         return $this->json($arrayUsers , 200, []);
     }
 
+    
     /**
      * @Route("/recherche", name="recherche")
      */
     public function search(UserRepository $userRepository, Request $request)
     {
         $arrayUsers = [];
-        if ($content = $request->getContent()) {
-            $parametersAsArray = json_decode($content, true);
-
-            $job = $parametersAsArray['job'];
-            $region = $parametersAsArray['region'];
+        if ($request->getContent()) {
+            
+            $job = $request->request->get('job');
+            $region = $request->request->get('region');
+            
 
             $arrayUsers = $userRepository->search($job,$region);
-            
-            return $this->json($arrayUsers , 200, []);
+
+            return $this->json($arrayUsers, 200, [],['groups' => 'user_artisan_search']);
         }
         return $this->json(['error' => 'unexpected information for edit request'], 304, []);
     }
-
+    
     /**
      * @Route("/edit", name="edit")
      */
     public function edit(UserRepository $userRepository, Request $request, EntityManagerInterface $em)
     {
-        if ($content = $request->getContent()) {
-            $parametersAsArray = json_decode($content, true);
+        if ($request->getContent()) {
 
-            $userId = $parametersAsArray['id'];
+            $userId = $request->request->get('id');
             $user = $userRepository->find($userId);
 
-            $user->setCompanyDescription($parametersAsArray['companyDescription']);
+            if($request->request->get('companyDescription')){
+                $user->setCompanyDescription($request->request->get('companyDescription'));
+            }
+
             // TODO : Add this in register after set company
             // $user->setPictureFolder($user->getCompany());
-            $user->setPicture($parametersAsArray['picture']);
+            if ($request->request->get('picture')) {
+                $user->setPicture($request->request->get('picture'));
+            }
+
             $user->setUpdatedAt(new \DateTime());
 
             $em->persist($user);
@@ -81,14 +86,27 @@ class ApiArtisanController extends AbstractController
     }
     
     /**
-     * @Route("/{id}", name="single")
+     * @Route("/single", name="single")
      */
-    public function single(User $user, SerializerInterface $serializer)
+    public function single(Request $request, UserRepository $userRepository)
     {
+        if ($request->getContent()) {
+            
+            if ($request->request->get('email')) {
+                $user = $userRepository->isFoundMail($request->request->get('email'));
+                
+                if ($user == NULL) {
 
-        $data = $serializer->serialize($user, 'json', ['groups' => 'user_artisan_single']);
+                    return $this->json(['error' => 'no user register'], 304, []);
 
-        return $this->json($data , 200, [], ['groups' => 'user_artisan_single']);
+                }
+
+                return $this->json($user , 200, [], ['groups' => 'user_artisan_single']);
+            }
+            return $this->json(['error' => 'no email found'], 304, []);
+        }
+        return $this->json(['error' => 'no request'], 304, []);
     }
+
 
 }

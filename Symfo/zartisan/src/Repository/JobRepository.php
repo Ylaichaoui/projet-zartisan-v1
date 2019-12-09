@@ -20,7 +20,7 @@ class JobRepository extends ServiceEntityRepository
     }
 
     /**
-    * @return Job[] Returns an array of Job objects
+    * @return Job Returns an array of Job objects
     */
     public function isFound(string $name)
     {
@@ -36,4 +36,23 @@ class JobRepository extends ServiceEntityRepository
             return $result[0];
         }
     }
+
+    /**
+    * @return Job[] Returns an array of Category objects
+    */
+    public function findFromCategory(int $category)
+    {
+        $result = $this->createQueryBuilder('j')
+        ->where('j.category = :category')
+        ->setParameter('category', $category)
+        ->getQuery()
+        ->getResult();
+
+        if(!isset($result)){
+            return NULL;
+        }else{
+            return $result;
+        }
+    }
+    
 }

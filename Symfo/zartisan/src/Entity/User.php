@@ -18,7 +18,7 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"user_artisan_single", "user_user_single", "user_advice"})
+     * @Groups({"user_artisan_single", "user_user_single", "user_advice","user_artisan_search"})
      */
     private $id;
 
@@ -72,19 +72,19 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     * @Groups("user_user_single")
+     * @Groups({"user_user_single","user_artisan_single"})
      */
     private $birthday;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single","user_artisan_search"})
      */
     private $company;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single","user_artisan_search"})
      */
     private $companyDescription;
 
@@ -150,13 +150,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single","user_artisan_search"})
      */
     private $isVerified;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"user_artisan_single", "user_user_single"})
+     * @Groups({"user_artisan_single", "user_user_single","user_artisan_search"})
      */
     private $picture;
 
@@ -168,13 +168,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single","user_artisan_search"})
      */
     private $region;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single","user_artisan_search"})
      */
     private $averageRate;
 
@@ -232,7 +232,6 @@ class User implements UserInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Job", inversedBy="users")
-     * @Groups("user_artisan_single")
      */
     private $job;
 

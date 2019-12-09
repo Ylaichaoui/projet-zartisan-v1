@@ -11,7 +11,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 
-
 /**
 * @Route("/v1/user", name="api_user_")
 */
@@ -73,6 +72,7 @@ class ApiUserController extends AbstractController
 
         if ($request->getContent()) {
 
+
             // verify if  email is in the BDD
             $user = $userRepository->isFoundMail($request->request->get('email'));
 
@@ -101,6 +101,7 @@ class ApiUserController extends AbstractController
                 $user->setPicture($request->get('picture'));
                 $user->setNickname($request->get('nickname'));
                 $user->setUpdatedAt(new \DateTime());
+
                 
                 $em->flush();
                 return $this->json($user, 200, [], ['groups' => 'user_user_single']);

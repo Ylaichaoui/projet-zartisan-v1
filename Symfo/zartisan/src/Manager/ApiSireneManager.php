@@ -2,6 +2,7 @@
 
 namespace App\Manager;
 
+use App\Controller\ApiRegionController;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -179,6 +180,12 @@ class ApiSireneManager
             $user->setTypeWay($this->getTypeVoieFromApi());
             $user->setWay($this->getLibVoieFromApi());
             $user->setPostalCode($this->getPostalcodeFromApi());
+
+            // Get Postalcode to request controller to register region
+            $apiRegionController = new ApiRegionController();
+            $region = $apiRegionController->getRegionFromCode($user->getPostalCode());
+            $user->setRegion($region);
+
             $user->setCity($this->getCommuneFromApi());
             $user->setSpecialDistribution($this->getSpcDistribFromApi());
             

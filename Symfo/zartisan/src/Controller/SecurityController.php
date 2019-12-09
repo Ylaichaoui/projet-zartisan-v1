@@ -2,50 +2,107 @@
 
 namespace App\Controller;
 
+use App\Controller\ExterneApiController;
 use App\Entity\User;
-use App\Form\RegistrationFormType;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class SecurityController extends AbstractController
 {
-    /**
-     * @Route("/register", name="app_register")
-     */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
-    {
-        $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
-        $form->handleRequest($request);
+    private $externeApiController;
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user->setEmail($form->get('email')->getData());
+    public function __construct(ExterneApiController $externeApiController)
+    {
+        $this->externeApiController = $externeApiController;
+    }
+
+    /**
+     * @Route("/register/artisan", name="app_register_artisan")
+     */
+    public function registerArtisan(Request $request, UserPasswordEncoderInterface $passwordEncoder, 
+    UserRepository $userRepository): Response
+    {
+        if ($content = $request->getContent()) {
+            $parametersAsArray = json_decode($content, true);
+
+            // Look if exist email
+            if($userRepository->isFoundMail($parametersAsArray['email'])){
+                return $this->json(['error' => 'Email already exist'], 409, []);
+            }
+            // Look if exist siret
+            if($userRepository->isFound($parametersAsArray['siret'])){
+                return $this->json(['error' => 'Siret already exist'], 409, []);
+            }
+            $user = new User();
+
+            $user->setEmail($parametersAsArray['email']);
             $user->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
-                    $form->get('password')->getData()
+                    $parametersAsArray['password']
                 )
             );
-            $user->setIsConfirmMail(FALSE);
-            $user->setIsStatus(TRUE);
-            $user->setIsVerified(FALSE);
-            $user->setIsReported(FALSE);
+            $user->setSiret($parametersAsArray['siret']);
+            $user->setRoles(["ROLE_ARTISAN"]);
+            $user->setIsConfirmMail(false);
+            $user->setIsStatus(true);
+            $user->setIsVerified(false);
+            $user->setIsReported(false);
+        
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            // Get  & save information to register in DB from externals api
+            $this->externeApiController->ApiIndexSirene($user->getSiret());
+
+            return $this->json($user , 200, [], ['groups' => 'user_artisan_single']);
+        }
+        return $this->json(['error' => 'unexpected information for artisan register request'], 304, []);
+    }
+
+    /**
+     * @Route("/register/user", name="app_register_user")
+     */
+    public function registerUser(Request $request, UserPasswordEncoderInterface $passwordEncoder, SerializerInterface $serializer, 
+    UserRepository $userRepository): Response
+    {
+        if ($content = $request->getContent()) {
+            $parametersAsArray = json_decode($content, true);
+
+            // Look if exist siret
+            if($userRepository->isFoundMail($parametersAsArray['email'])){
+                return $this->json(['error' => 'Email already exist'], 409, []);
+            }
+            $user = new User();
+
+            $user->setEmail($parametersAsArray['email']);
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $parametersAsArray['password']
+                )
+            );
+            $user->setIsConfirmMail(false);
+            $user->setRoles(["ROLE_USER"]);
+            $user->setIsStatus(true);
+            $user->setIsVerified(false);
+            $user->setIsReported(false);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // return new RedirectResponse('http://localhost:3001');
-            return $this->redirectToRoute('main');
+            // Serialize data to dont have circle
+            return $this->json($user , 200, [], ['groups' => 'user_user_single']);
         }
-
-        return $this->render('security/register.html.twig', [
-            'formRegister' => $form->createView()
-        ]);
+        return $this->json(['error' => 'unexpected information for user register request'], 304, []);
     }
 
     /**

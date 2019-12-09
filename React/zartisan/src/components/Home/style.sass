@@ -1,19 +1,23 @@
+@import src/styles/vars
 .home
-  height: 76vh
-  background-color: #ffbb96
+  height: $height-content
+  background-color: $background-color-content
 
   &-france
     width: 85%
-    margin: auto
-    padding-top: 2em
-    height: 70%
+    margin: 0 auto
+    padding-top: 0.5em
+    height: 65%
 
   &-button-region
     width: 90%
+    margin-top: 1.5em
 
-  &-button-jobs
+  &-cascader-jobs
     width: 90%
-    margin: 1.5em
+    margin: 1em
+    &:focus
+      color: $button-color-primary
 
 .france-picture
 
