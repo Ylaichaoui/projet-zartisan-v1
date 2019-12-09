@@ -2,7 +2,7 @@
  * Imports of dependencies
  */
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 
 /**
  * Local imports
@@ -14,6 +14,7 @@ import Footer from 'src/components/Footer';
 
 import FormRegisterUser from 'src/components/FormRegisterUser';
 import FormRegisterArtisan from 'src/components/FormRegisterArtisan';
+
 // Data
 
 /**
@@ -30,6 +31,7 @@ const App = () => {
 					</Route>
 					<Route exact path="/inscription/particulier">
 						<FormRegisterUser />
+						{/*submit ? <Redirect to="/" /> : <FormRegisterUser />*/}
 					</Route>
 					<Route exact path="/inscription/professionnel">
 						<FormRegisterArtisan />

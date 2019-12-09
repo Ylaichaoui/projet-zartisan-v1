@@ -1,18 +1,13 @@
+import { createStore, compose, applyMiddleware } from 'redux';
 
-import { createStore, compose } from 'redux';
-
-
-// Logique de stockage et de manipulation des données de l'application.
 import reducer from './reducer';
 
+import middlewareRegister from 'src/store/register/middleware';
 
 const withReduxDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
+const middlewares = applyMiddleware(middlewareRegister);
 // Création du store de l'application, avec son state privé.
-const reactModelStore = createStore(
-  reducer,
-  withReduxDevTools()
-);
+const reactModelStore = createStore(reducer, withReduxDevTools(middlewares));
 
 // Juste pour debugguer, ne pas laisser en production.
 console.log('Store', reactModelStore);
