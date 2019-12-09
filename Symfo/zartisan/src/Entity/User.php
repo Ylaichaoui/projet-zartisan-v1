@@ -73,6 +73,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * Groups("user_artisan_single")
      */
     private $birthday;
 
