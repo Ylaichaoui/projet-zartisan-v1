@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class MainController extends AbstractController
+class MailController extends AbstractController
 {
     // Set private data for send mail mail 
     private $baseUrl = "http://localhost:8001/confirmation";
