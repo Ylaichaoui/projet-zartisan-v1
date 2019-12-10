@@ -2,10 +2,11 @@ import { createStore, compose, applyMiddleware } from "redux";
 
 import reducer from "./reducer";
 import middlewareRegister from "src/store/register/middleware";
+import middlewareRegions from "src/store/regions/middleware";
 
 const withReduxDevTools =
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const middlewares = applyMiddleware(middlewareRegister);
+const middlewares = applyMiddleware(middlewareRegister, middlewareRegions);
 // Création du store de l'application, avec son state privé.
 const reactModelStore = createStore(reducer, withReduxDevTools(middlewares));
 

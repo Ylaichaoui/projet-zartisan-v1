@@ -29,6 +29,8 @@ export default store => next => action => {
           console.log(response);
           if (response.status === 200) {
             console.log("connexion-login");
+            cookies.set("TOKEN", response.data.token);
+            console.log(cookies.set("TOKEN", response.data.token));
             store.dispatch({ type: CONNECT });
           }
         })

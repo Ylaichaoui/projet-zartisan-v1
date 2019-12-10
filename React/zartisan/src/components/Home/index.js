@@ -4,13 +4,14 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Row, Button, Icon, Menu, Dropdown, Cascader } from "antd";
-import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
 /**
  * Local imports
  */
 import "./style.sass";
 import france from "./picture/france.svg";
-
+import { getRegions } from "src/store/regions/actions";
+import cookies from "js-cookie";
 /**
  * Code
  */
@@ -54,6 +55,7 @@ const Home = () => {
     setRegion(event.item.props.value);
   };
 
+  const dispatch = useDispatch();
   const regions = useSelector(state => state.regions);
   //console.log(regions);
 
@@ -74,8 +76,8 @@ const Home = () => {
   const [regionChange, setRegion] = useState("Choisissez une Région");
 
   useEffect(() => {
-    Cookies.get("TOKEN");
-    //console.log("cest un token " + cookie);
+    dispatch(getRegions(cookies.get("TOKEN")));
+    //console.log(getRegions(Cookies.get("TOKEN");));
   });
 
   return (
