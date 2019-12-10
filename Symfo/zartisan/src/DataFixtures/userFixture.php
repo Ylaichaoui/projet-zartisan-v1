@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Manager\ApiSireneManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class userFixture
@@ -65,11 +66,13 @@ class userFixture
 
     private $apiSireneManager;
     private $passwordEncoder;
+    private $em;
 
-    public function __construct(ApiSireneManager $apiSireneManager, UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(EntityManagerInterface $em, ApiSireneManager $apiSireneManager, UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->apiSireneManager = $apiSireneManager;
         $this->passwordEncoder = $passwordEncoder;
+        $this->em = $em;
     }
 
     public function setUser(){
@@ -84,6 +87,8 @@ class userFixture
                     '123456'
                 )
             );
+            $this->em->persist($user);
+            $this->em->flush();
         }
     }
 }
