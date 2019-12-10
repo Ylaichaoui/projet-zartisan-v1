@@ -18,15 +18,13 @@ class Rate
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("user_rate")
-     * Groups("user_artisan_single")
+     * @Groups("user_artisan_single")
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups("user_rate")
-     * Groups("user_artisan_single")
+     * @Groups("user_artisan_single")
      */
     private $value;
 
@@ -43,15 +41,14 @@ class Rate
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="rates")
      * @ORM\JoinColumn(nullable=false)
-     * Groups("user_artisan_single")
+     * @Groups("user_artisan_single")
      */
     private $userAuthor;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="rate")
      * @ORM\JoinColumn(nullable=false)
-     * Groups("user_artisan_single")
-     * @Groups("user_rate")
+     * @Groups("user_artisan_single")
      */
     private $userPro;
 
