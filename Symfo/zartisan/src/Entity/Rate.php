@@ -2,7 +2,12 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RateRepository")
@@ -13,12 +18,13 @@ class Rate
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("user_artisan_single")
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * Groups("user_artisan_single")
+     * @Groups("user_artisan_single")
      */
     private $value;
 
@@ -35,13 +41,14 @@ class Rate
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="rates")
      * @ORM\JoinColumn(nullable=false)
-     * Groups("user_artisan_single")
+     * @Groups("user_artisan_single")
      */
     private $userAuthor;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="rate")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("user_artisan_single")
      */
     private $userPro;
 
