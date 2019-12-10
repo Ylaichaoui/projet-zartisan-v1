@@ -1,6 +1,13 @@
 export const GET_REGIONS = "regions/actions/GET_REGIONS";
 
-export const getRegions = cookie => ({
+export const getRegions = (regions = {}) => ({
   type: GET_REGIONS,
-  cookie
+  regions
+});
+
+export const REGIONS = "regions/actions/REGIONS";
+
+export const regions = regions => ({
+  type: REGIONS,
+  regions
 });

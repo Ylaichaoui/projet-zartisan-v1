@@ -3,15 +3,14 @@
  */
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Row, Button, Icon, Menu, Dropdown, Cascader } from "antd";
 import { useDispatch } from "react-redux";
+import { Row, Button, Icon, Menu, Dropdown, Cascader } from "antd";
 /**
  * Local imports
  */
 import "./style.sass";
 import france from "./picture/france.svg";
 import { getRegions } from "src/store/regions/actions";
-import cookies from "js-cookie";
 /**
  * Code
  */
@@ -48,6 +47,14 @@ function onChange(value) {
 }
 
 const Home = () => {
+  useEffect(() => {
+    dispatch(getRegions());
+
+    //console.log(getRegions(Cookies.get("TOKEN");));
+  }, []);
+  const dispatch = useDispatch();
+  const regions = useSelector(state => state.regions);
+  console.log("select", regions);
   /**
    * menu of dropdown region
    */
@@ -55,30 +62,34 @@ const Home = () => {
     setRegion(event.item.props.value);
   };
 
-  const dispatch = useDispatch();
-  const regions = useSelector(state => state.regions);
-  //console.log(regions);
-
-  const itemRegions = regions.map(region => {
-    return (
-      <Menu.Item onClick={changeRegion} key={region.id} value={region.name}>
-        {region.name}
-      </Menu.Item>
-    );
+  const itemRegions = regions.map(regionObject => {
+    const array = [];
+    for (let regionCode in regionObject) {
+      const region = { id: regionCode, name: regionObject[regionCode] };
+      console.log(region);
+      array.push(region);
+    }
+    console.log("spray", array);
+    const item = array.map(region => {
+      console.log("item", region.id);
+      return (
+        <Menu.Item onClick={changeRegion} key={region.id} value={region.name}>
+          {region.name}
+        </Menu.Item>
+      );
+    });
+    return item;
   });
-  //console.log(itemRegions);
+
+  console.log("array", itemRegions);
 
   const menuRegion = <Menu>{itemRegions}</Menu>;
+
   /**
    * menu of dropdown jobs
    */
 
   const [regionChange, setRegion] = useState("Choisissez une Région");
-
-  useEffect(() => {
-    dispatch(getRegions(cookies.get("TOKEN")));
-    //console.log(getRegions(Cookies.get("TOKEN");));
-  });
 
   return (
     <div className="home">
