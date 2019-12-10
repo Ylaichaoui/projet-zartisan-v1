@@ -77,7 +77,7 @@ const Home = () => {
 		<div className="home">
 			<Row type="flex" justify="space-around" align="middle">
 				<Dropdown overlay={menuRegion} placement="bottomLeft">
-					<Button className="home-button-region" style={{ backgroundColor: '#ad2102', color: 'white' }}>
+					<Button className="home-button-region" style={{ backgroundColor: '#bb9574', color: 'white' }}>
 						{regionChange} <Icon type="down" />
 					</Button>
 				</Dropdown>
@@ -92,7 +92,7 @@ const Home = () => {
 				<img src={france} className="france-picture" />
 				<Button
 					className="home-button-search"
-					style={{ color: 'white', backgroundColor: '#595959', border: 'none' }}
+					style={{ color: 'white', backgroundColor: '#bb9574', border: 'none' }}
 				>
 					Recherche
 				</Button>

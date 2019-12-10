@@ -11,6 +11,8 @@ import { useSelector } from 'react-redux';
 import Header from 'src/components/Header';
 import Home from 'src/components/Home';
 import Footer from 'src/components/Footer';
+import ListArtisan from 'src/components/ListArtisan';
+import PageArtisan from 'src/components/PageArtisan';
 
 import FormRegisterUser from 'src/components/FormRegisterUser';
 import FormRegisterArtisan from 'src/components/FormRegisterArtisan';
@@ -37,6 +39,12 @@ const App = () => {
 					</Route>
 					<Route exact path="/inscription/professionnel">
 						<FormRegisterArtisan />
+					</Route>
+					<Route exact path="/liste-artisan">
+						<ListArtisan />
+					</Route>
+					<Route exact path="/page-artisan">
+						<PageArtisan />
 					</Route>
 					<Route>
 						<div>404</div>

@@ -149,13 +149,17 @@ const Header = () => {
 	};
 
 	return (
-		<div>
+		<div id="zheader">
 			<Row className="header" type="flex" justify="space-around">
-				<Col span={6}>
+				<Col span={24}>
 					{/** Button Burger */}
 					<Button className="header-burger-button" onClick={showDrawer}>
-						<Icon type="menu" />
+						<Icon type="menu" theme="outlined" />
 					</Button>
+					{/** logo header */}
+					<Link to="/">
+						<img src={logo} alt="zartisan image" className="logo-zartisan" />
+					</Link>
 
 					{/** Menu of Burger */}
 					<Drawer placement="top" closable={true} onClose={onClose} visible={visible}>
@@ -194,13 +198,6 @@ const Header = () => {
 							</Modal>
 						</Row>
 					</Drawer>
-				</Col>
-
-				{/** logo header */}
-				<Col span={18}>
-					<Link to="/">
-						<img src={logo} alt="zartisan image" className="logo-zartisan" />
-					</Link>
 				</Col>
 			</Row>
 		</div>
