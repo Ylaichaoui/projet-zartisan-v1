@@ -2,42 +2,16 @@
 #    genre_{1..42}: #le nombre d'iteration d'entité souhaité ici : genre_1, genre_2...genre_23
 #        name: '<word()>' <-- numberBetween(0,5), sentence(),(...)  cf (https://github.com/fzaninotto/Faker#basic-usage)
 
-App\Entity\User:
-    user_{1..40}:
-        email: '<email()>'
-        firstname:
-        lastname:
-        birthday:
-        company:
-        companyDescription:
-        numberWay:
-        way:
-        postalCode:
-        city:
-        phone:
-        region:
-        averageRate:
-        job: '@job_*'  
-        createdAt: '<date_create()>'
-
-App\Entity\Category:
-    category_{1..10}:
-        name:  
-        createdAt: '<date_create()>'        
-
 App\Entity\Advice:
-    advice_{1..50}:
-        body:
-        userAuthor: '@user_*'  
+    advice_{1..5}:
+        body: '<text(30)>'
+        userAuthor: '<numberBetween(1,5)>' 
         createdAt: '<date_create()>'
-
-App\Entity\Job:
-    job_{1..20}:
-        name:
-        category: '@category_*'  
-        createdAt: '<date_create()>'
+        userPro: '<numberBetween(1,5)>' 
 
 App\Entity\Rate:
-    rate_{1..20}:
-        value:        
+    rate_{1..5}:
+        value: '<numberBetween(1,5)>'
+        userAuthor: '<numberBetween(1,5)>' 
+        userPro: '<numberBetween(1,5)>' 
 
