@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * @Route("/v1/rate", name="api_rate_")
+ * @Route("api/v1/rate", name="api_rate_")
 */
 class ApiRateController extends AbstractController
 {

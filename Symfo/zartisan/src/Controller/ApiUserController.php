@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 
 /**
-* @Route("/v1/user", name="api_user_")
+* @Route("api/v1/user", name="api_user_")
 */
 class ApiUserController extends AbstractController
 {
