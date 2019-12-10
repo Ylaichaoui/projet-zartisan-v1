@@ -18,7 +18,7 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"user_artisan_single", "user_user_single", "user_advice","user_artisan_search"})
+     * @Groups({"user_artisan_single", "user_user_single", "user_advice","user_artisan_search", "user_rate"})
      */
     private $id;
 
