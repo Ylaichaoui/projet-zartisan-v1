@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Icon, Input, Button } from 'antd';
 import 'antd/dist/antd.css';
+import './style.sass';
 
 const FormLogin = ({ handleSubmitLogin }) => {
 	const [ email, setEmail ] = useState('');
@@ -37,7 +38,7 @@ const FormLogin = ({ handleSubmitLogin }) => {
 						Mot de passe oublié
 					</a>
 				</Form.Item>
-				<Button type="primary" htmlType="submit" className="login-form-button">
+				<Button type="default" htmlType="submit" className="login-form-button">
 					Se connecter
 				</Button>
 			</Form>
