@@ -22,7 +22,6 @@ import FormLogin from "src/components/FormLogin";
 const { Text } = Typography;
 
 const Header = () => {
-
   const connect = useSelector(state => state.connect);
   const dispatch = useDispatch();
   console.log(connect);
@@ -36,9 +35,9 @@ const Header = () => {
   /**Hooks for display or not modal register */
   const [modalRegister, setModalRegister] = useState(false);
 
-  /**Hooks authentification */
-  const [authentification, setAuthentification] = useState(connect);
-  console.log(authentification);
+  /**Hooks welcome */
+  const [connectVisible, setConnectVisible] = useState(false);
+
   /**
    * open menu burger
    */
@@ -59,6 +58,10 @@ const Header = () => {
     setModalLogin(true);
     onClose();
   };
+  const connectModalVisible = () => {
+    setConnectVisible(true);
+  };
+
   /**
    * open form register popup and close menu burger
    */
@@ -72,6 +75,10 @@ const Header = () => {
   const handleCancel = () => {
     setModalRegister(false);
     setModalLogin(false);
+  };
+
+  const closeModalWelcome = () => {
+    setConnectVisible(false);
   };
 
   const deconnexion = () => {
@@ -90,10 +97,11 @@ const Header = () => {
   // Close modalFormLogin after check_login valid, and value connect:true
 
   useEffect(() => {
-    if (connect == true) {
+    if (connect === true) {
       handleCancel();
+      connectModalVisible();
     }
-  });
+  }, [connect]);
 
   /**
    * button for navigate towards form register artisan (use withRouter for manage history url)
@@ -168,6 +176,13 @@ const Header = () => {
                 >
                   <FormLogin handleSubmitLogin={handleSubmitLogin} />
                 </Modal>
+                <Modal
+                  visible={connectVisible}
+                  onCancel={closeModalWelcome}
+                  footer={null}
+                >
+                  <p>Bonjour vous êtes connecté</p>
+                </Modal>
 
                 {connect === true && <a href="#">Profil</a>}
               </Text>
@@ -206,7 +221,6 @@ const Header = () => {
       </Row>
     </div>
   );
-
 };
 
 export default Header;
