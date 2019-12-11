@@ -22,6 +22,7 @@ import FormLogin from "src/components/FormLogin";
 const { Text } = Typography;
 
 const Header = () => {
+  
   const connect = useSelector(state => state.connect);
   const dispatch = useDispatch();
   console.log(connect);

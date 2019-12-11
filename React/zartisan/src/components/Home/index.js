@@ -128,6 +128,7 @@ const Home = () => {
       </Row>
     </div>
   );
+
 };
 
 export default Home;
