@@ -1,12 +1,14 @@
 /**
  * Imports of dependencies
  */
+
 import React, { useState, useEffect } from "react";
 import { Row, Col, Button, Icon, Drawer, Typography, Modal } from "antd";
 import "antd/dist/antd.css";
 import { Link, withRouter } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { sendLogin, deconnect } from "src/store/register/actions";
+
 /**
  * Local imports
  */
@@ -20,6 +22,7 @@ import FormLogin from "src/components/FormLogin";
 const { Text } = Typography;
 
 const Header = () => {
+
   const connect = useSelector(state => state.connect);
   const dispatch = useDispatch();
   console.log(connect);
@@ -203,6 +206,7 @@ const Header = () => {
       </Row>
     </div>
   );
+
 };
 
 export default Header;

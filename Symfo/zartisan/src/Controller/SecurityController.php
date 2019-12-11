@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Controller\ExterneApiController;
 use App\Entity\User;
+use App\Manager\SecurityManager;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,10 +17,12 @@ use Symfony\Component\Serializer\SerializerInterface;
 class SecurityController extends AbstractController
 {
     private $externeApiController;
+    private $securityManager;
 
-    public function __construct(ExterneApiController $externeApiController)
+    public function __construct(ExterneApiController $externeApiController, SecurityManager $securityManager)
     {
         $this->externeApiController = $externeApiController;
+        $this->securityManager = $securityManager;
     }
 
     /**
@@ -28,27 +31,40 @@ class SecurityController extends AbstractController
     public function registerArtisan(Request $request, UserPasswordEncoderInterface $passwordEncoder, 
     UserRepository $userRepository): Response
     {
-        if ($content = $request->getContent()) {
-            $parametersAsArray = json_decode($content, true);
+        if ($request->getContent()) {
 
             // Look if exist email
-            if($userRepository->isFoundMail($parametersAsArray['email'])){
-                return $this->json(['error' => 'Email already exist'], 409, []);
+            $error = $this->securityManager->securityEmail($request->get('email'));
+            if($error){
+                return $this->json(['error' => $error], 409);
+            }
+            if($userRepository->isFoundMail($request->get('email'))){
+                return $this->json(['error' => 'Email already exist'], 409);
+            }
+
+            $siret = preg_replace("/[^d]+/", '', $request->get('siret'));
+            $error = $this->securityManager->securityEmail($siret);
+            if($error){
+                return $this->json(['error' => $error], 409);
             }
             // Look if exist siret
-            if($userRepository->isFound($parametersAsArray['siret'])){
-                return $this->json(['error' => 'Siret already exist'], 409, []);
+            if($userRepository->isFound($siret)){
+                return $this->json(['error' => 'Siret already exist'], 409);
             }
             $user = new User();
 
-            $user->setEmail($parametersAsArray['email']);
+            $user->setEmail($request->get('email'));
+            $error = $this->securityManager->securityPassword($request->get('password'),6,255);
+            if($error){
+                return $this->json(['error' => $error], 409);
+            }
             $user->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
-                    $parametersAsArray['password']
+                    $request->get('password')
                 )
             );
-            $user->setSiret($parametersAsArray['siret']);
+            $user->setSiret($siret);
             $user->setRoles(["ROLE_ARTISAN"]);
             $user->setIsConfirmMail(false);
             $user->setIsStatus(true);
@@ -64,7 +80,7 @@ class SecurityController extends AbstractController
 
             return $this->json($user , 200, [], ['groups' => 'user_artisan_single']);
         }
-        return $this->json(['error' => 'unexpected information for artisan register request'], 304, []);
+        return $this->json(['error' => 'unexpected information for artisan register request'], 304);
     }
 
     /**
@@ -73,20 +89,27 @@ class SecurityController extends AbstractController
     public function registerUser(Request $request, UserPasswordEncoderInterface $passwordEncoder, SerializerInterface $serializer, 
     UserRepository $userRepository): Response
     {
-        if ($content = $request->getContent()) {
-            $parametersAsArray = json_decode($content, true);
+        if ($request->getContent()) {
 
-            // Look if exist siret
-            if($userRepository->isFoundMail($parametersAsArray['email'])){
-                return $this->json(['error' => 'Email already exist'], 409, []);
+            $error = $this->securityManager->securityEmail($request->get('email'));
+            if($error){
+                return $this->json(['error' => $error], 409);
+            }
+            // Look if exist email
+            if($userRepository->isFoundMail($request->get('email'))){
+                return $this->json(['error' => 'Email already exist'], 409);
             }
             $user = new User();
 
-            $user->setEmail($parametersAsArray['email']);
+            $user->setEmail($request->get('email'));
+            $error = $this->securityManager->securityPassword($request->get('password'),6,255);
+            if($error){
+                return $this->json(['error' => $error], 409);
+            }
             $user->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
-                    $parametersAsArray['password']
+                    $request->get('password')
                 )
             );
             $user->setIsConfirmMail(false);
@@ -102,9 +125,10 @@ class SecurityController extends AbstractController
             // Serialize data to dont have circle
             return $this->json($user , 200, [], ['groups' => 'user_user_single']);
         }
-        return $this->json(['error' => 'unexpected information for user register request'], 304, []);
+        return $this->json(['error' => 'unexpected information for user register request'], 304);
     }
 
+    // TODO : DELETE WHEN FRONT READY
     /**
      * @Route("/login", name="app_login")
      */

@@ -6,6 +6,7 @@ import cookies from "js-cookie";
 /**
  * Local imports
  */
+
 import { SEND_REGISTER_USER } from "src/store/register/actions";
 import { SEND_REGISTER_ARTISAN } from "src/store/register/actions";
 import { SEND_LOGIN } from "src/store/register/actions";
@@ -152,4 +153,5 @@ export default store => next => action => {
     }
   }
   next(action);
+
 };

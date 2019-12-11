@@ -6,6 +6,7 @@ export const sendRegisterUser = (email, password) => ({
   password
 });
 
+
 export const SEND_REGISTER_ARTISAN = "register/actions/SEND_REGISTER_ARTISAN";
 
 export const sendRegisterArtisan = (email, password, siret) => ({
@@ -29,4 +30,5 @@ export const DECONNEXION = "register/actions/DECONNEXION";
 
 export const deconnect = () => ({
   type: DECONNEXION
+
 });
