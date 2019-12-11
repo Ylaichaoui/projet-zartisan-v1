@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "easycorp/easyadmin-bundle": "^2.3",
         "lexik/jwt-authentication-bundle": "^2.6",
+        "nelmio/alice": "^3.5",
         "nelmio/cors-bundle": "^2.0",
         "phpmailer/phpmailer": "^6.1",
         "sensio/framework-extra-bundle": "^5.1",
@@ -35,7 +36,6 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.3",
-        "nelmio/alice": "^3.5",
         "symfony/debug-pack": "*",
         "symfony/maker-bundle": "^1.0",
         "symfony/profiler-pack": "*",

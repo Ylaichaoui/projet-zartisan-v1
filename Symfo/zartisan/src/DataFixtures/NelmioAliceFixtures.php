@@ -1,33 +1,22 @@
 <?php
-
 namespace App\DataFixtures;
 
-use App\DataFixtures\UserFixture;
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\Alice\Loader\NativeLoader;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\Persistence\ObjectManager;
 
 class NelmioAliceFixtures extends Fixture
 {
-    private $nativeLoader;
-
-    public function __construct(NativeLoader $nativeLoader)
+    public function load(ObjectManager $manager)
     {
-        $this->nativeLoader = $nativeLoader;
-    }
-
-    public function load(EntityManagerInterface $em, UserFixture $userFixture)
-    {
-        $userFixture->setUser();
-
-        //importe le fichier de fixtures et récupère les entités générés
-        $entities = $this->nativeLoader->loadFile(__DIR__.'/fixtures.yaml')->getObjects();    
-        
+        // $product = new Product();
+        // $manager->persist($product);
+        $loader = new NativeLoader();
+        $entities = $loader->loadFile(__DIR__.'/fixtures.yaml')->getObjects();
         foreach ($entities as $entity) {
-            $em->persist($entity);
+            $manager->persist($entity);
         };
-        
-        //enregistre
-        $em->flush();
+      
+        $manager->flush();
     }
 }

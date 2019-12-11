@@ -1,4 +1,5 @@
 nelmio_alice:
+    locale: 'fr_FR' # Default locale for the Faker Generator
     functions_blacklist:
         - 'current'
         - 'shuffle'
