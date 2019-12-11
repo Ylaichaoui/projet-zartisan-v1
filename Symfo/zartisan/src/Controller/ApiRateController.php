@@ -24,10 +24,10 @@ class ApiRateController extends AbstractController
         if ($request->getContent()) {
 
             // search email user and id artisan in the request
-            $userPro = $userRepository->find($request->request->get('artisanid'));
-            $userAuthor = $userRepository->isFoundMail($request->request->get('email'));
-            $value = $request->request->get('rate');
-            $rateId = $request->request->get('id');
+            $userPro = $userRepository->find($request->get('artisanid'));
+            $userAuthor = $userRepository->isFoundMail($request->get('email'));
+            $value = $request->get('rate');
+            $rateId = $request->get('id');
 
             if ($userAuthor != null) 
             {
@@ -41,7 +41,7 @@ class ApiRateController extends AbstractController
                     $rate->setUserPro($userPro);
                     $em->persist($rate);
                 }else {
-                    $rate = $rateRepository->find($request->request->get('id'));
+                    $rate = $rateRepository->find($request->get('id'));
                     $rate->setValue($value);
                     $rate->setUserAuthor($userAuthor);
                     $rate->setUserPro($userPro);
