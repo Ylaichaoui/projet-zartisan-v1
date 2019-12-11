@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Repository\UserRepository;
+use App\Manager\SecurityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,14 +13,24 @@ class MailController extends AbstractController
 {
     // Set private data for send mail mail 
     private $baseUrl = "http://localhost:8001/confirmation";
+    private $securityManager;
+
+    public function __construct(SecurityManager $securityManager)
+    {
+        $this->securityManager = $securityManager;
+    }
 
     /**
-    * @Route("/v1/checkMail", name="api_mail_check")
+    * @Route("api/v1/checkMail", name="api_mail_check")
     */
     public function mailCheck(UserRepository $userRepository, Request $request)
     {
         if ($request->getContent()) {
-            $user = $userRepository->isFoundMail($request->request->get('email'));
+            $error = $this->securityManager->securityEmail($request->get('email'));
+            if($error){
+                return $this->json(['error' => $error], 409);
+            }
+            $user = $userRepository->isFoundMail($request->get('email'));
 
             if ($user != null) {
                 return $this->json(['success' => 'user found for this email'], 200, []);
@@ -43,7 +54,11 @@ class MailController extends AbstractController
     , \Swift_Mailer $mailer)
     { 
         if ($request->getContent()) {
-            $user = $userRepository->isFoundMail($request->request->get('email'));
+            $error = $this->securityManager->securityEmail($request->get('email'));
+            if($error){
+                return $this->json(['error' => $error], 409);
+            }
+            $user = $userRepository->isFoundMail($request->get('email'));
             
             // Generate random token 
             $token = $this->setToken(60);
@@ -81,13 +96,21 @@ class MailController extends AbstractController
     , \Swift_Mailer $mailer, UserPasswordEncoderInterface $passwordEncoder)
     {
         if ($request->getContent()) {
-            $user = $userRepository->isFoundMail($request->request->get('email'));
+            $error = $this->securityManager->securityEmail($request->get('email'));
+            if($error){
+                return $this->json(['error' => $error], 409);
+            }
+            $user = $userRepository->isFoundMail($request->get('email'));
             
-            if($request->request->get('password')){
+            if($request->get('password')){
                 return $this->json(['error' => 'password not valid'], 304, []);
             }
 
-            $password = $passwordEncoder->encodePassword($user, $request->request->get('password'));
+            $error = $this->securityManager->securityPassword($request->get('password'),6,255);
+            if($error){
+                return $this->json(['error' => $error], 409);
+            }
+            $password = $passwordEncoder->encodePassword($user, $request->get('password'));
             // Generate random token 
             $token = $this->setToken(60);
             // Send what action do

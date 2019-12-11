@@ -45,8 +45,8 @@ class ApiArtisanController extends AbstractController
         $arrayUsers = [];
         if ($request->getContent()) {
             
-            $job = $request->request->get('job');
-            $region = $request->request->get('region');
+            $job = $request->get('job');
+            $region = $request->get('region');
             
 
             $arrayUsers = $userRepository->search($job,$region);
@@ -63,17 +63,17 @@ class ApiArtisanController extends AbstractController
     {
         if ($request->getContent()) {
 
-            $userId = $request->request->get('id');
+            $userId = $request->get('id');
             $user = $userRepository->find($userId);
 
-            if($request->request->get('companyDescription')){
-                $user->setCompanyDescription($request->request->get('companyDescription'));
+            if($request->get('companyDescription')){
+                $user->setCompanyDescription($request->get('companyDescription'));
             }
 
             // TODO : Add this in register after set company
             // $user->setPictureFolder($user->getCompany());
-            if ($request->request->get('picture')) {
-                $user->setPicture($request->request->get('picture'));
+            if ($request->get('picture')) {
+                $user->setPicture($request->get('picture'));
             }
 
             $user->setUpdatedAt(new \DateTime());
@@ -92,8 +92,8 @@ class ApiArtisanController extends AbstractController
     {
         if ($request->getContent()) {
             
-            if ($request->request->get('email')) {
-                $user = $userRepository->isFoundMail($request->request->get('email'));
+            if ($request->get('email')) {
+                $user = $userRepository->isFoundMail($request->get('email'));
                 
                 if ($user == NULL) {
 

@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\Rate;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -19,32 +20,25 @@ class RateRepository extends ServiceEntityRepository
         parent::__construct($registry, Rate::class);
     }
 
-    // /**
-    //  * @return Rate[] Returns an array of Rate objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
+    /**
+    * @return [] Returns an array of User objects
     */
+    public function findByUserPro($userPro)
+    {
+        $result = $this->createQueryBuilder('r')
+        ->join('r.userAuthor', 'u')
+        ->andwhere('u.isStatus = :isStatus')
+        ->andwhere('r.userPro = :userPro')
+        ->setParameter('userPro', $userPro)
+        ->setParameter('isStatus', TRUE)
+        ->select('r.value')
+        ->getQuery()
+        ->getResult();
 
-    /*
-    public function findOneBySomeField($value): ?Rate
-    {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        if(!isset($result[0])){
+            return NULL;
+        }else{
+            return $result;
+        }
     }
-    */
 }

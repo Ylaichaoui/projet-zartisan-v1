@@ -1,17 +1,20 @@
 /**
  * Imports of dependencies
  */
-import React, { useState } from 'react';
-import { Row, Col, Button, Icon, Drawer, Typography, Modal } from 'antd';
-import 'antd/dist/antd.css';
-import axios from 'axios';
-import { Link, withRouter } from 'react-router-dom';
+
+import React, { useState, useEffect } from "react";
+import { Row, Col, Button, Icon, Drawer, Typography, Modal } from "antd";
+import "antd/dist/antd.css";
+import { Link, withRouter } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { sendLogin, deconnect } from "src/store/register/actions";
+
 /**
  * Local imports
  */
-import './style.sass';
-import logo from './picture/logo-zartisan.svg';
-import FormLogin from 'src/components/FormLogin';
+import "./style.sass";
+import logo from "./picture/logo-zartisan.svg";
+import FormLogin from "src/components/FormLogin";
 
 /**
  * Code
@@ -19,189 +22,206 @@ import FormLogin from 'src/components/FormLogin';
 const { Text } = Typography;
 
 const Header = () => {
-	/**Hooks for display or not menu burger */
-	const [ visible, setVisible ] = useState(false);
+  
+  const connect = useSelector(state => state.connect);
+  const dispatch = useDispatch();
+  console.log(connect);
 
-	/**Hooks for display or not modal login */
-	const [ modalLogin, setModalLogin ] = useState(false);
+  /**Hooks for display or not menu burger */
+  const [visible, setVisible] = useState(false);
 
-	/**Hooks for display or not modal register */
-	const [ modalRegister, setModalRegister ] = useState(false);
+  /**Hooks for display or not modal login */
+  const [modalLogin, setModalLogin] = useState(false);
 
-	/**Hooks authentification */
-	const [ authentification, setAuthentification ] = useState(false);
+  /**Hooks for display or not modal register */
+  const [modalRegister, setModalRegister] = useState(false);
 
-	/**
-	 * open menu burger
-	 */
-	const showDrawer = () => {
-		setVisible(true);
-	};
+  /**Hooks welcome */
+  const [connectVisible, setConnectVisible] = useState(false);
 
-	/**
-	 * close menu burger
-	 */
-	const onClose = () => {
-		setVisible(false);
-	};
-	/**
-	 * open form login popup and close menu burger
-	 */
-	const showModalLogin = () => {
-		setModalLogin(true);
-		onClose();
-	};
-	/**
-	 * open form register popup and close menu burger
-	 */
-	const showModalRegister = () => {
-		setModalRegister(true);
-		onClose();
-	};
-	/**
-	 * close form popup
-	 */
-	const handleCancel = () => {
-		setModalRegister(false);
-		setModalLogin(false);
-	};
+  /**
+   * open menu burger
+   */
+  const showDrawer = () => {
+    setVisible(true);
+  };
 
-	/**
-	 * user authentification
-	 */
-	const authValide = () => {
-		setAuthentification(true);
-	};
+  /**
+   * close menu burger
+   */
+  const onClose = () => {
+    setVisible(false);
+  };
+  /**
+   * open form login popup and close menu burger
+   */
+  const showModalLogin = () => {
+    setModalLogin(true);
+    onClose();
+  };
+  const connectModalVisible = () => {
+    setConnectVisible(true);
+  };
 
-	const deconnexion = () => {
-		setAuthentification(false);
-		onClose();
-	};
+  /**
+   * open form register popup and close menu burger
+   */
+  const showModalRegister = () => {
+    setModalRegister(true);
+    onClose();
+  };
+  /**
+   * close form popup
+   */
+  const handleCancel = () => {
+    setModalRegister(false);
+    setModalLogin(false);
+  };
 
-	function onChange(value) {
-		//console.log(value);
-	}
-	/**
-	 * button for navigate towards form register artisan (use withRouter for manage history url)
-	 */
-	const ButtonGoToArtisanForm = withRouter(({ history }) => {
-		return (
-			<Button
-				onClick={() => {
-					handleCancel();
-					return history.push('/inscription/professionnel');
-				}}
-				style={{ width: '40%', margin: '1.5em' }}
-			>
-				Professionnel
-			</Button>
-		);
-	});
+  const closeModalWelcome = () => {
+    setConnectVisible(false);
+  };
 
-	/**
-	 * button for navigate towards form register user (use withRouter for manage history url)
-	 */
-	const ButtonGoToUserForm = withRouter(({ history }) => {
-		return (
-			<Button
-				onClick={() => {
-					handleCancel();
-					return history.push('/inscription/particulier');
-				}}
-				style={{ width: '40%' }}
-			>
-				Particulier
-			</Button>
-		);
-	});
+  const deconnexion = () => {
+    onClose();
+    dispatch(deconnect());
+  };
 
-	//const handleSubmitLogin allows to send an axios request
-	const handleSubmitLogin = (email, password) => {
-		const data = {
-			username: email,
-			password
-		};
+  //const handleSubmitLogin allows to send an axios request
+  const handleSubmitLogin = (email, password) => {
+    return event => {
+      event.preventDefault();
+      dispatch(sendLogin(email, password));
+    };
+  };
 
-		return (event) => {
-			event.preventDefault();
-			console.log(data);
-			axios({
-				method: 'post',
-				url: 'http://localhost:8001/api/login_check', // first check with static home page
-				data
-			})
-				.then((response) => {
-					console.log(response);
-					if (response.status === 200) {
-						console.log('ok');
-						authValide();
-						handleCancel();
-					}
-				})
-				.catch(function(error) {
-					// handle error
-					//console.log(error);
-				})
-				.finally(function() {
-					// always executed
-				});
-		};
-	};
+  // Close modalFormLogin after check_login valid, and value connect:true
 
-	return (
-		<div id="zheader">
-			<Row className="header" type="flex" justify="space-around">
-				<Col span={24}>
-					{/** Button Burger */}
-					<Button className="header-burger-button" onClick={showDrawer}>
-						<Icon type="menu" theme="outlined" />
-					</Button>
-					{/** logo header */}
-					<Link to="/">
-						<img src={logo} alt="zartisan image" className="logo-zartisan" />
-					</Link>
+  useEffect(() => {
+    if (connect === true) {
+      handleCancel();
+      connectModalVisible();
+    }
+  }, [connect]);
 
-					{/** Menu of Burger */}
-					<Drawer placement="top" closable={true} onClose={onClose} visible={visible}>
-						<Row type="flex" justify="center" align="top">
-							<img src={logo} alt="zartisan image" className="logo-zartisan" />
-						</Row>
-						<Row type="flex" justify="center" style={{ margin: '1.5em' }} align="top">
-							<Text>
-								{authentification === false && (
-									<a href="#" onClick={showModalLogin}>
-										Connexion
-									</a>
-								)}
-								<Modal footer={null} title="Connexion" visible={modalLogin} onCancel={handleCancel}>
-									<FormLogin handleSubmitLogin={handleSubmitLogin} />
-								</Modal>
+  /**
+   * button for navigate towards form register artisan (use withRouter for manage history url)
+   */
+  const ButtonGoToArtisanForm = withRouter(({ history }) => {
+    return (
+      <Button
+        onClick={() => {
+          handleCancel();
+          return history.push("/inscription/professionnel");
+        }}
+        style={{ width: "40%", margin: "1.5em" }}
+      >
+        Professionnel
+      </Button>
+    );
+  });
 
-								{authentification === true && <a href="#">Profil</a>}
-							</Text>
-						</Row>
-						<Row type="flex" justify="center" align="top">
-							{authentification === false && (
-								<a href="#" onClick={showModalRegister}>
-									Inscription
-								</a>
-							)}
-							{authentification === true && <a onClick={deconnexion}>Deconnexion</a>}
+  /**
+   * button for navigate towards form register user (use withRouter for manage history url)
+   */
+  const ButtonGoToUserForm = withRouter(({ history }) => {
+    return (
+      <Button
+        onClick={() => {
+          handleCancel();
+          return history.push("/inscription/particulier");
+        }}
+        style={{ width: "40%" }}
+      >
+        Particulier
+      </Button>
+    );
+  });
 
-							<Modal footer={null} title="Inscription" visible={modalRegister} onCancel={handleCancel}>
-								<Row type="flex" justify="center" align="top">
-									<ButtonGoToUserForm />
-								</Row>
-								<Row type="flex" justify="center" align="top">
-									<ButtonGoToArtisanForm />
-								</Row>
-							</Modal>
-						</Row>
-					</Drawer>
-				</Col>
-			</Row>
-		</div>
-	);
+  return (
+    <div>
+      <Row className="header" type="flex" justify="space-around">
+        <Col span={6}>
+          {/** Button Burger */}
+          <Button className="header-burger-button" onClick={showDrawer}>
+            <Icon type="menu" />
+          </Button>
+
+          {/** Menu of Burger */}
+          <Drawer
+            placement="top"
+            closable={true}
+            onClose={onClose}
+            visible={visible}
+          >
+            <Row type="flex" justify="center" align="top">
+              <img src={logo} alt="zartisan image" className="logo-zartisan" />
+            </Row>
+            <Row
+              type="flex"
+              justify="center"
+              style={{ margin: "1.5em" }}
+              align="top"
+            >
+              <Text>
+                {connect === false && (
+                  <a href="#" onClick={showModalLogin}>
+                    Connexion
+                  </a>
+                )}
+                <Modal
+                  footer={null}
+                  title="Connexion"
+                  visible={modalLogin}
+                  onCancel={handleCancel}
+                >
+                  <FormLogin handleSubmitLogin={handleSubmitLogin} />
+                </Modal>
+                <Modal
+                  visible={connectVisible}
+                  onCancel={closeModalWelcome}
+                  footer={null}
+                >
+                  <p>Bonjour vous êtes connecté</p>
+                </Modal>
+
+                {connect === true && <a href="#">Profil</a>}
+              </Text>
+            </Row>
+            <Row type="flex" justify="center" align="top">
+              {connect === false && (
+                <a href="#" onClick={showModalRegister}>
+                  Inscription
+                </a>
+              )}
+              {connect === true && <a onClick={deconnexion}>Deconnexion</a>}
+
+              <Modal
+                footer={null}
+                title="Inscription"
+                visible={modalRegister}
+                onCancel={handleCancel}
+              >
+                <Row type="flex" justify="center" align="top">
+                  <ButtonGoToUserForm />
+                </Row>
+                <Row type="flex" justify="center" align="top">
+                  <ButtonGoToArtisanForm />
+                </Row>
+              </Modal>
+            </Row>
+          </Drawer>
+        </Col>
+
+        {/** logo header */}
+        <Col span={18}>
+          <Link to="/">
+            <img src={logo} alt="zartisan image" className="logo-zartisan" />
+          </Link>
+        </Col>
+      </Row>
+    </div>
+  );
 };
 
 export default Header;

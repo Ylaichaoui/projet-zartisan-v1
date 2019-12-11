@@ -16,7 +16,7 @@ class ExterneApiController extends AbstractController
     }
 
     /**
-     * @Route("/sirene", name="sirene")
+     * @Route("api/sirene", name="sirene")
      */
     public function ApiIndexSirene($siret)
     {

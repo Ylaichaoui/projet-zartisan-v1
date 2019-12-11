@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Controller\ApiRegionController;
+use App\Manager\SecurityManager;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,10 +13,16 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 
 /**
-* @Route("/v1/user", name="api_user_")
+* @Route("api/v1/user", name="api_user_")
 */
 class ApiUserController extends AbstractController
 {
+    private $securityManager;
+
+    public function __construct(SecurityManager $securityManager)
+    {
+        $this->securityManager = $securityManager;
+    }
     /**
      * @Route("/list", name="all")
      * list all users ROLE_USER and enabled
@@ -50,7 +57,7 @@ class ApiUserController extends AbstractController
         if ($request->getContent()) {
 
             // verify if  email is in the BDD
-            $user = $userRepository->isFoundMail($request->request->get('email'));
+            $user = $userRepository->isFoundMail($request->get('email'));
 
             // if  user exist we return user
             if ($user != null) {
@@ -74,7 +81,7 @@ class ApiUserController extends AbstractController
 
 
             // verify if  email is in the BDD
-            $user = $userRepository->isFoundMail($request->request->get('email'));
+            $user = $userRepository->isFoundMail($request->get('email'));
 
             $apiRegionController = new ApiRegionController();
             $region = $apiRegionController->getRegionFromCode($request->get('postalCode'));
@@ -84,7 +91,7 @@ class ApiUserController extends AbstractController
 
             // if role  == user and user is enable
             if ($userRole[0] == "ROLE_USER" && $userStatus == 'true') {
-                $user->setEmail($request->request->get('email'));
+                $user->setEmail($request->get('email'));
                 $user->setFirstname($request->get('firstname'));
                 $user->setLastname($request->get('lastname'));
                 $user->setBirthday($request->get('birthday'));              
@@ -101,7 +108,6 @@ class ApiUserController extends AbstractController
                 $user->setPicture($request->get('picture'));
                 $user->setNickname($request->get('nickname'));
                 $user->setUpdatedAt(new \DateTime());
-
                 
                 $em->flush();
                 return $this->json($user, 200, [], ['groups' => 'user_user_single']);
@@ -122,7 +128,7 @@ class ApiUserController extends AbstractController
         // si la requete est ok
         if ($request->getContent()) {
             // verify if  email is in the BDD
-            $user = $userRepository->isFoundMail($request->request->get('email'));
+            $user = $userRepository->isFoundMail($request->get('email'));
 
             // si user existe on modifie la base de données
             if ($user != null) 

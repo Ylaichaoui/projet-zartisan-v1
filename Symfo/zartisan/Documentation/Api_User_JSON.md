@@ -91,7 +91,7 @@ Ajout par un utilisateur connecté d'un avis sur un artisan en consultation
 on récupère l'email de l'utilisateur, l'avis posté, l'id de l'auteur, l'id de l'artisan
 ```
 {
-    "email":1,
+    "email":"fsfsdf@oclock.io",
     "body":"lorem ipsumloremipsum",
     "artisanid":5
 }
@@ -103,6 +103,31 @@ on renvoie l'avis
 {
     "id":1,
     "body":"lorem ipsumloremipsum"
+}
+
+```
+
+### POST /api/v1/rate/add
+#### api_rate_add
+ajout par l'utilisateur connecté d'une note à l'artisan.
+On récupère cette note et on vérifie si il y a dèja une note.
+Si oui on ajoute à la valeur existante et  on recalclule la moyenne des notes
+Si non on crée une nouvelle note.
+json reçu
+```
+{
+    "id":null, or 1,
+    "email":"fsfsdf@oclock.io",
+    "rate":3,
+    "artisanid":1
+}
+
+```
+
+json retoruné
+```
+{
+    "note":2
 }
 
 ```

@@ -1,0 +1,35 @@
+#App\Entity\Genre: # namespace de l'entité
+#    genre_{1..42}: #le nombre d'iteration d'entité souhaité ici : genre_1, genre_2...genre_23
+#        name: '<word()>' <-- numberBetween(0,5), sentence(),(...)  cf (https://github.com/fzaninotto/Faker#basic-usage)
+
+App\Entity\User:
+    user_{1..10}:
+        isStatus: '<numberBetween(0,1)>'
+        firstname : '<firstName()>'
+        lastname : '<lastName()>'
+        birthday: '<date_create()>'
+        email: '<freeEmail()>'
+        isConfirmMail: '<numberBetween(0,1)>'
+        isVerified: '<numberBetween(0,1)>'
+        isReported: '<numberBetween(0,1)>'
+        createdAt: '<dateTimeBetween("-200 days", "now")>'
+        password: '\$argon2id\$v=19\$m=65536,t=4,p=1\$z0UZZHI4jroN/OeA/mK0gw\$6ecZyChMQDQYVciGeOHHP/7yYXi/kdp29OcJ/j+OKRQ'
+        # Le mot de passe est vortex
+
+App\Entity\Advice:
+    advice_{1..5}:
+        body: '<text(30)>'
+        isStatus: '<numberBetween(0,1)>'
+        isReported: '<numberBetween(0,1)>'
+        userAuthor: '@user_*'
+        userPro: '@user_*'
+        createdAt: '<date_create()>'
+  
+
+App\Entity\Rate:
+    rate_{1..5}:
+        value: '<numberBetween(1,5)>'
+        userAuthor: '@user_*'
+        userPro: '@user_*'
+
+

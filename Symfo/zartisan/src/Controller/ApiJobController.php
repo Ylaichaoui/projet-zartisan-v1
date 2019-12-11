@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 
 /**
-* @Route("api/v1/job", name="api_job_")
+* @Route("v1/job", name="api_job_")
 */
 class ApiJobController extends AbstractController
 {
@@ -26,7 +26,7 @@ class ApiJobController extends AbstractController
      */
     public function jobListFromCategory(Request $request, JobRepository $jobRepository)
     {
-        $jobList = $jobRepository->findFromCategory($request->request->get('categoryId'));
+        $jobList = $jobRepository->findFromCategory($request->get('categoryId'));
         return $this->json($jobList, 200, [],['groups' => 'job_search']);
     }
 }
