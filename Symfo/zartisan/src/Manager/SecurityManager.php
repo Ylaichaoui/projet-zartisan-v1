@@ -19,7 +19,7 @@ class SecurityManager
         if (!is_int($siret)) {
             $error []= "The siret can only contain numbers";
         }
-        if($error){
+        if(isset($error)){
             return $error;
         }
         return;
@@ -36,7 +36,7 @@ class SecurityManager
                 return ;
             }
         }
-        if($error){
+        if(isset($error)){
             return $error;
         }
         return;
@@ -49,7 +49,7 @@ class SecurityManager
         if($string != trim($string)){
             $error [] = "Spaces not allowed in password";
         }
-        if($error){
+        if(isset($error)){
             return $error;
         }
         return;
