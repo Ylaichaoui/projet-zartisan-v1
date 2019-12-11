@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 */
 class ApiAdviceController extends AbstractController
 {
+
     /**
      * @Route("/add", name="_add")
      * user add advice for an artisan
@@ -23,16 +24,15 @@ class ApiAdviceController extends AbstractController
         if ($request->getContent()) {
 
             // search id and email in the request
-            $userPro = $userRepository->find($request->request->get('artisanid'));
-            $userAuthor = $userRepository->isFoundMail($request->request->get('email'));
+            $userPro = $userRepository->find($request->get('artisanid'));
+            $userAuthor = $userRepository->isFoundMail($request->get('email'));
            
             if ($userAuthor != null) 
             {
                 $advice = new Advice();
-                $body = $request->request->get('body');
+                $body = $request->get('body');
                 $advice->setBody($body);
                 $advice->setIsStatus('true');
-                $advice->setBody($body);
                 $advice->setUserAuthor($userAuthor);
                 $advice->setUserPro($userPro);
                 $em->persist($advice);
