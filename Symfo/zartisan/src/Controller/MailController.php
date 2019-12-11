@@ -14,7 +14,7 @@ class MailController extends AbstractController
     private $baseUrl = "http://localhost:8001/confirmation";
 
     /**
-    * @Route("/v1/checkMail", name="api_mail_check")
+    * @Route("api/v1/checkMail", name="api_mail_check")
     */
     public function mailCheck(UserRepository $userRepository, Request $request)
     {

@@ -107,4 +107,40 @@ class UserRepository extends ServiceEntityRepository
             return $result[0];
         }
     }
+
+    /**
+    * @return User[] Returns an array of User objects
+    */
+    public function findUser()
+    {
+        $result = $this->createQueryBuilder('u')
+        ->Where('u.roles LIKE :role')
+        ->setParameter('role', '%"'.'ROLE_USER'.'"%')
+        ->getQuery()
+        ->getResult();
+
+        if(!isset($result[0])){
+            return NULL;
+        }else{
+            return $result;
+        }
+    }
+
+    /**
+    * @return User[] Returns an array of User objects
+    */
+    public function findArtisan()
+    {
+        $result = $this->createQueryBuilder('u')
+        ->Where('u.roles LIKE :role')
+        ->setParameter('role', '%"'.'ROLE_ARTISAN'.'"%')
+        ->getQuery()
+        ->getResult();
+
+        if(!isset($result[0])){
+            return NULL;
+        }else{
+            return $result;
+        }
+    }
 }

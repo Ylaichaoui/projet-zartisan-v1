@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 
 /**
-* @Route("api/v1/job", name="api_job_")
+* @Route("v1/job", name="api_job_")
 */
 class ApiJobController extends AbstractController
 {
