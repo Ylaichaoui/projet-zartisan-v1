@@ -17,7 +17,9 @@ const { Text } = Typography;
 const Footer = () => (
 	<Row type="flex" justify="space-around" align="middle" className="footer">
 		<Text className="footer-text">- Z'artisan 2019</Text>
-		<Link to="/mentions-legal">Mentions légales</Link>
+		<Link className="legalNotice" to="/mentions-legal">
+			Mentions légales
+		</Link>
 	</Row>
 );
 export default Footer;
