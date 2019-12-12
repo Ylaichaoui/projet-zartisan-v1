@@ -45,9 +45,8 @@ class ApiArtisanController extends AbstractController
         $arrayUsers = [];
         if ($request->getContent()) {
             
-            $job = $request->get('job');
-            $region = $request->get('region');
-            
+            $job = $request->get('idJob');
+            $region = $request->get('nameRegion');
 
             $arrayUsers = $userRepository->search($job,$region);
 

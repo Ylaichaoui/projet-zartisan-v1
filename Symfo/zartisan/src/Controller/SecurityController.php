@@ -35,27 +35,26 @@ class SecurityController extends AbstractController
 
             // Look if exist email
             $error = $this->securityManager->securityEmail($request->get('email'));
-            if($error){
+            if(isset($error)){
                 return $this->json(['error' => $error], 409);
             }
             if($userRepository->isFoundMail($request->get('email'))){
                 return $this->json(['error' => 'Email already exist'], 409);
             }
 
-            $siret = preg_replace("/[^d]+/", '', $request->get('siret'));
-            $error = $this->securityManager->securityEmail($siret);
-            if($error){
+            $error = $this->securityManager->securitySiret($request->get('siret'));
+            if(isset($error)){
                 return $this->json(['error' => $error], 409);
             }
             // Look if exist siret
-            if($userRepository->isFound($siret)){
+            if($userRepository->isFound($request->get('siret'))){
                 return $this->json(['error' => 'Siret already exist'], 409);
             }
             $user = new User();
 
             $user->setEmail($request->get('email'));
             $error = $this->securityManager->securityPassword($request->get('password'),6,255);
-            if($error){
+            if(isset($error)){
                 return $this->json(['error' => $error], 409);
             }
             $user->setPassword(
@@ -64,7 +63,7 @@ class SecurityController extends AbstractController
                     $request->get('password')
                 )
             );
-            $user->setSiret($siret);
+            $user->setSiret($request->get('siret'));
             $user->setRoles(["ROLE_ARTISAN"]);
             $user->setIsConfirmMail(false);
             $user->setIsStatus(true);
@@ -92,7 +91,7 @@ class SecurityController extends AbstractController
         if ($request->getContent()) {
 
             $error = $this->securityManager->securityEmail($request->get('email'));
-            if($error){
+            if(isset($error)){
                 return $this->json(['error' => $error], 409);
             }
             // Look if exist email
@@ -103,7 +102,7 @@ class SecurityController extends AbstractController
 
             $user->setEmail($request->get('email'));
             $error = $this->securityManager->securityPassword($request->get('password'),6,255);
-            if($error){
+            if(isset($error)){
                 return $this->json(['error' => $error], 409);
             }
             $user->setPassword(

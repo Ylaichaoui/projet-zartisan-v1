@@ -5,7 +5,8 @@ namespace App\Manager;
 class SecurityManager
 {
     public function securityEmail($email){
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
             $error = "Mail not valid";
             return $error;
         }
