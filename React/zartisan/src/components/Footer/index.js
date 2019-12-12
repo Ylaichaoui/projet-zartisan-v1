@@ -3,6 +3,7 @@
  */
 import React from 'react';
 import { Row, Typography } from 'antd';
+import { Link } from 'react-router-dom';
 
 /**
  * Local imports
@@ -16,7 +17,7 @@ const { Text } = Typography;
 const Footer = () => (
 	<Row type="flex" justify="space-around" align="middle" className="footer">
 		<Text className="footer-text">- Z'artisan 2019</Text>
-		<a href="#">Mentions légales</a>
+		<Link to="/mentions-legal">Mentions légales</Link>
 	</Row>
 );
 export default Footer;
