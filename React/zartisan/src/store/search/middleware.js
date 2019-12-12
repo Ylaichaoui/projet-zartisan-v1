@@ -1,5 +1,5 @@
 import { POST_HOME_SEARCH } from 'src/store/search/actions';
-
+import axios from 'axios';
 export default (store) => (next) => (action) => {
 	switch (action.type) {
 		/**
@@ -7,7 +7,27 @@ export default (store) => (next) => (action) => {
        */
 		case POST_HOME_SEARCH: {
 			console.log(action.region, action.job);
-			return console.log('hello ici middleware search home');
+			return axios({
+				method: 'post',
+				url: 'http://localhost:8001/v1/artisan/recherche',
+				data: {
+					idJob: action.job,
+					nameRegion: action.region
+				}
+			})
+				.then((response) => {
+					console.log(response);
+					if (response.status === 200) {
+						console.log('filtre les artisans');
+					}
+				})
+				.catch(function(error) {
+					// handle error
+					console.log(error);
+				})
+				.finally(function() {
+					// always executed
+				});
 		}
 	}
 	next(action);

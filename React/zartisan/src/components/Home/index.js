@@ -102,7 +102,7 @@ const Home = () => {
 	};
 
 	const handleSearch = () => {
-		dispatch(postHomeSearch(regionChange, jobChange));
+		dispatch(postHomeSearch(regionChange, jobChange[1]));
 	};
 
 	return (
