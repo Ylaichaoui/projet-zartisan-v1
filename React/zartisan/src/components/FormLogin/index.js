@@ -38,7 +38,12 @@ const FormLogin = ({ handleSubmitLogin }) => {
 						Mot de passe oublié
 					</a>
 				</Form.Item>
-				<Button type="default" htmlType="submit" className="login-form-button">
+				<Button
+					type="default"
+					htmlType="submit"
+					className="login-form-button"
+					style={{ color: 'white', background: '#bb9574' }}
+				>
 					Se connecter
 				</Button>
 			</Form>

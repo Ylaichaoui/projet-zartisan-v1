@@ -58,108 +58,108 @@ const ListArtisan = () => {
 	///////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////
 
-	// 	useEffect(() => {
-	// 		dispatch(getRegions());
-	// 		dispatch(getJobs());
+	useEffect(() => {
+		dispatch(getRegions());
+		dispatch(getJobs());
 
-	// 		//console.log(getRegions(Cookies.get("TOKEN");));
-	// 	}, []);
-	// 	const dispatch = useDispatch();
-	// 	const regions = useSelector((state) => state.regions);
-	// 	const jobs = useSelector((state) => state.jobs);
-	// 	//console.log('select', regions);
-	// 	//console.log('select', jobs);
-	// 	/**
-	// * menu of dropdown region
-	// */
-	// 	const changeRegion = (event) => {
-	// 		setRegion(event.item.props.value);
-	// 	};
+		//console.log(getRegions(Cookies.get("TOKEN");));
+	}, []);
+	const dispatch = useDispatch();
+	const regions = useSelector((state) => state.regions);
+	const jobs = useSelector((state) => state.jobs);
+	//console.log('select', regions);
+	//console.log('select', jobs);
+	/**
+	* menu of dropdown region
+	*/
+	const changeRegion = (event) => {
+		setRegion(event.item.props.value);
+	};
 
-	// 	/**
-	// * list item menu
-	// */
+	/**
+	* list item menu
+	*/
 
-	// 	const itemRegions = regions.map((regionObject) => {
-	// 		const array = [];
-	// 		for (let regionCode in regionObject) {
-	// 			const region = { id: regionCode, name: regionObject[regionCode] };
-	// 			//console.log(region);
-	// 			array.push(region);
-	// 		}
-	// 		//console.log('spray', array);
-	// 		const item = array.map((region) => {
-	// 			//	console.log('item', region.id);
-	// 			return (
-	// 				<Menu.Item onClick={changeRegion} key={region.id} value={region.name}>
-	// 					{region.name}
-	// 				</Menu.Item>
-	// 			);
-	// 		});
-	// 		return item;
-	// 	});
+	const itemRegions = regions.map((regionObject) => {
+		const array = [];
+		for (let regionCode in regionObject) {
+			const region = { id: regionCode, name: regionObject[regionCode] };
+			//console.log(region);
+			array.push(region);
+		}
+		//console.log('spray', array);
+		const item = array.map((region) => {
+			//	console.log('item', region.id);
+			return (
+				<Menu.Item onClick={changeRegion} key={region.id} value={region.name}>
+					{region.name}
+				</Menu.Item>
+			);
+		});
+		return item;
+	});
 
-	// 	//	console.log('array', itemRegions);
+	//	console.log('array', itemRegions);
 
-	// 	const menuRegion = <Menu>{itemRegions}</Menu>;
-	// 	const [ regionChange, setRegion ] = useState('Choisissez une Région');
+	const menuRegion = <Menu>{itemRegions}</Menu>;
+	const [ regionChange, setRegion ] = useState('Choisissez une Région');
 
-	// 	const [ jobChange, setJob ] = useState([]);
+	const [ jobChange, setJob ] = useState([]);
 
-	// 	/**
-	// * list item menu
-	// */
-	// 	let arrayJobb = [];
-	// 	for (let j in jobs) {
-	// 		//console.log('forin', jobs[j]);
-	// 		arrayJobb = jobs[j];
-	// 	}
+	/**
+	* list item menu
+	*/
+	let arrayJobb = [];
+	for (let j in jobs) {
+		//console.log('forin', jobs[j]);
+		arrayJobb = jobs[j];
+	}
 
-	// 	//console.log(arrayJobb);
+	//console.log(arrayJobb);
 
-	// 	const itemJobs = arrayJobb.map((job) => {
-	// 		//console.log('first-map', job);
-	// 		let nameValue = '';
-	// 		let idValue = '';
-	// 		for (let j in job.jobs) {
-	// 			nameValue = job.jobs[j].name;
-	// 			idValue = job.jobs[j].id;
-	// 		}
-	// 		//console.log('forindansmap', nameValue, idValue);
+	const itemJobs = arrayJobb.map((job) => {
+		//console.log('first-map', job);
+		let nameValue = '';
+		let idValue = '';
+		for (let j in job.jobs) {
+			nameValue = job.jobs[j].name;
+			idValue = job.jobs[j].id;
+		}
+		//console.log('forindansmap', nameValue, idValue);
 
-	// 		const newObjectJob = {
-	// 			value: job.id,
-	// 			label: job.name,
-	// 			children: [ { value: idValue, label: nameValue } ]
-	// 		};
-	// 		//console.log('nouveau objet : ', newObjectJob);
-	// 		return newObjectJob;
-	// 	});
+		const newObjectJob = {
+			value: job.id,
+			label: job.name,
+			children: [ { value: idValue, label: nameValue } ]
+		};
+		//console.log('nouveau objet : ', newObjectJob);
+		return newObjectJob;
+	});
 
-	// 	//console.log(itemJobs);
+	//console.log(itemJobs);
 
-	// 	const onChangeJob = (event) => {
-	// 		setJob(event);
-	// 	};
+	const onChangeJob = (event) => {
+		setJob(event);
+	};
 
-	// 	const ButtonSearchArtisanList = () => {
-	// 		const handleSearch = () => {
-	// 			dispatch(postHomeSearch(regionChange, jobChange[1]));
-	// 		};
-	// 		return (
-	// 			<Button
-	// 				className="home-button-search"
-	// 				style={{ color: 'white', backgroundColor: '#bb9574', border: 'none' }}
-	// 				onClick={handleSearch}
-	// 			>
-	// 				Recherche
-	// 			</Button>
-	// 		);
-	// 	};
+	const ButtonSearchArtisanList = () => {
+		const handleSearch = () => {
+			dispatch(postHomeSearch(regionChange, jobChange[1]));
+		};
+		return (
+			<Button
+				className="home-button-search"
+				style={{ color: 'white', backgroundColor: '#bb9574', border: 'none' }}
+				onClick={handleSearch}
+			>
+				Recherche
+			</Button>
+		);
+	};
 
 	return (
-		<div>
-			{/* <Row type="flex" justify="space-around" align="middle">
+		<div className="list-artisan-content">
+			<Row type="flex" justify="space-around" align="middle">
 				<Dropdown overlay={menuRegion} placement="bottomLeft">
 					<Button className="home-button-region" style={{ backgroundColor: '#bb9574', color: 'white' }}>
 						{regionChange} <Icon type="down" />
@@ -173,7 +173,7 @@ const ListArtisan = () => {
 					onChange={onChangeJob}
 				/>
 				<ButtonSearchArtisanList />
-			</Row> */}
+			</Row>
 
 			<List
 				itemLayout="vertical"
