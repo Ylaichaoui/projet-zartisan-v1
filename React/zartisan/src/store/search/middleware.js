@@ -17,9 +17,9 @@ export default (store) => (next) => (action) => {
 				}
 			})
 				.then((response) => {
-					console.log(response.data);
+					//console.log(response);
 					if (response.status === 200) {
-						console.log('filtre les artisans');
+						console.log('filtre les artisans', response.data);
 						store.dispatch(homeSearch(response.data));
 					}
 				})

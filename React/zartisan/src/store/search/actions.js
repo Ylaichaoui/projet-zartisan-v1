@@ -8,6 +8,7 @@ export const postHomeSearch = (region, job) => ({
 
 export const HOME_SEARCH = 'search/actions/HOME_SEARCH';
 
-export const homeSearch = () => ({
-	type: HOME_SEARCH
+export const homeSearch = (dataArtisan) => ({
+	type: HOME_SEARCH,
+	dataArtisan
 });
