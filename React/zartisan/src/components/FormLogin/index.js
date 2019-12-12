@@ -8,7 +8,7 @@ const FormLogin = ({ handleSubmitLogin }) => {
 	const [ password, setPassword ] = useState('');
 
 	const mailChangeValue = (event) => {
-		console.log(event.target.value);
+		// console.log(event.target.value);
 		setEmail(event.target.value);
 	};
 	//console.log(email);

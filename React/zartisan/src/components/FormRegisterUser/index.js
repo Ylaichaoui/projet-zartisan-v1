@@ -24,7 +24,7 @@ const FormRegisterUser = () => {
 			//console.log(email, password, passwordCheck);
 			event.preventDefault();
 			if (password === passwordCheck && password !== '') {
-				console.log('mots est correct');
+				// console.log('mots est correct');
 				dispatch(sendRegisterUser(email, password));
 			}
 		};

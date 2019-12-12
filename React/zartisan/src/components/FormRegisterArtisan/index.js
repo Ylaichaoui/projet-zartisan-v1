@@ -21,10 +21,10 @@ const FormRegisterArtisan = () => {
 	//submit of form
 	const handleFormArtisan = (email, password, passwordCheck, siret) => {
 		return (event) => {
-			console.log(email, password, passwordCheck);
+			// console.log(email, password, passwordCheck);
 			event.preventDefault();
 			if (password === passwordCheck && password !== '') {
-				console.log('mots est correct');
+				// console.log('mots est correct');
 				dispatch(sendRegisterArtisan(email, password, siret));
 			}
 		};

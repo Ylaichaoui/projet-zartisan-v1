@@ -7,7 +7,7 @@ export default (store) => (next) => (action) => {
        * Search artisan list by region and job from home
        */
 		case POST_HOME_SEARCH: {
-			console.log(action.region, action.job);
+			//console.log(action.region, action.job);
 			return axios({
 				method: 'post',
 				url: 'http://localhost:8001/v1/artisan/recherche',
@@ -19,13 +19,13 @@ export default (store) => (next) => (action) => {
 				.then((response) => {
 					//console.log(response);
 					if (response.status === 200) {
-						console.log('filtre les artisans', response.data);
+						//console.log('filtre les artisans', response.data);
 						store.dispatch(homeSearch(response.data));
 					}
 				})
 				.catch(function(error) {
 					// handle error
-					console.log(error);
+					//console.log(error);
 				})
 				.finally(function() {
 					// always executed

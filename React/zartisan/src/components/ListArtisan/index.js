@@ -1,64 +1,179 @@
-import React from 'react';
-import { Row, Col, List, Avatar, Icon, Dropdown, Menu, Button } from 'antd';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { Row, Col, List, Avatar, Icon, Dropdown, Menu, Button, Cascader } from 'antd';
+
 import 'antd/dist/antd.css';
 import './style.sass';
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+import { useSelector, useDispatch } from 'react-redux';
+import { getRegions } from 'src/store/regions/actions';
+import { getJobs } from 'src/store/jobs/actions';
+import { postHomeSearch } from 'src/store/search/actions';
+import { withRouter, Link } from 'react-router-dom';
 
 const ListArtisan = () => {
-	const listData = [];
-	for (let i = 0; i < 23; i++) {
-		listData.push({
-			href: 'http://ant.design',
-			title: `ant design part ${i}`,
-			avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-			description: 'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-			content:
-				'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.'
-		});
+	/**
+	 *  search object from home
+	 */
+	const artisandata = useSelector((state) => state.search);
+
+	console.log('listartisan', artisandata);
+	let arrayArtisan = [];
+	for (let data in artisandata) {
+		arrayArtisan = artisandata[data];
 	}
 
-	const artisandata = useSelector((state) => state.search);
-	console.log(artisandata);
-	const menu = (
-		<Menu>
-			<Menu.Item key="0">
-				<a href="http://www.alipay.com/">1st menu item</a>
-			</Menu.Item>
-			<Menu.Item key="1">
-				<a href="http://www.taobao.com/">2nd menu item</a>
-			</Menu.Item>
-			<Menu.Divider />
-			<Menu.Item key="3">3rd menu item</Menu.Item>
-		</Menu>
-	);
+	console.log(arrayArtisan);
+
+	let objectArtisan = {};
+	for (let d in arrayArtisan) {
+		objectArtisan = arrayArtisan[d];
+	}
+
+	console.log(objectArtisan);
+	const listData = [];
+	for (let i = 1; i <= arrayArtisan.length; i++) {
+		listData.push(objectArtisan);
+	}
+
+	let linkArtisan = `/page-artisan/${objectArtisan.company}`;
+
+	///////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////
+
+	// 	useEffect(() => {
+	// 		dispatch(getRegions());
+	// 		dispatch(getJobs());
+
+	// 		//console.log(getRegions(Cookies.get("TOKEN");));
+	// 	}, []);
+	// 	const dispatch = useDispatch();
+	// 	const regions = useSelector((state) => state.regions);
+	// 	const jobs = useSelector((state) => state.jobs);
+	// 	//console.log('select', regions);
+	// 	//console.log('select', jobs);
+	// 	/**
+	// * menu of dropdown region
+	// */
+	// 	const changeRegion = (event) => {
+	// 		setRegion(event.item.props.value);
+	// 	};
+
+	// 	/**
+	// * list item menu
+	// */
+
+	// 	const itemRegions = regions.map((regionObject) => {
+	// 		const array = [];
+	// 		for (let regionCode in regionObject) {
+	// 			const region = { id: regionCode, name: regionObject[regionCode] };
+	// 			//console.log(region);
+	// 			array.push(region);
+	// 		}
+	// 		//console.log('spray', array);
+	// 		const item = array.map((region) => {
+	// 			//	console.log('item', region.id);
+	// 			return (
+	// 				<Menu.Item onClick={changeRegion} key={region.id} value={region.name}>
+	// 					{region.name}
+	// 				</Menu.Item>
+	// 			);
+	// 		});
+	// 		return item;
+	// 	});
+
+	// 	//	console.log('array', itemRegions);
+
+	// 	const menuRegion = <Menu>{itemRegions}</Menu>;
+	// 	const [ regionChange, setRegion ] = useState('Choisissez une Région');
+
+	// 	const [ jobChange, setJob ] = useState([]);
+
+	// 	/**
+	// * list item menu
+	// */
+	// 	let arrayJobb = [];
+	// 	for (let j in jobs) {
+	// 		//console.log('forin', jobs[j]);
+	// 		arrayJobb = jobs[j];
+	// 	}
+
+	// 	//console.log(arrayJobb);
+
+	// 	const itemJobs = arrayJobb.map((job) => {
+	// 		//console.log('first-map', job);
+	// 		let nameValue = '';
+	// 		let idValue = '';
+	// 		for (let j in job.jobs) {
+	// 			nameValue = job.jobs[j].name;
+	// 			idValue = job.jobs[j].id;
+	// 		}
+	// 		//console.log('forindansmap', nameValue, idValue);
+
+	// 		const newObjectJob = {
+	// 			value: job.id,
+	// 			label: job.name,
+	// 			children: [ { value: idValue, label: nameValue } ]
+	// 		};
+	// 		//console.log('nouveau objet : ', newObjectJob);
+	// 		return newObjectJob;
+	// 	});
+
+	// 	//console.log(itemJobs);
+
+	// 	const onChangeJob = (event) => {
+	// 		setJob(event);
+	// 	};
+
+	// 	const ButtonSearchArtisanList = () => {
+	// 		const handleSearch = () => {
+	// 			dispatch(postHomeSearch(regionChange, jobChange[1]));
+	// 		};
+	// 		return (
+	// 			<Button
+	// 				className="home-button-search"
+	// 				style={{ color: 'white', backgroundColor: '#bb9574', border: 'none' }}
+	// 				onClick={handleSearch}
+	// 			>
+	// 				Recherche
+	// 			</Button>
+	// 		);
+	// 	};
 
 	return (
 		<div>
-			<Row id="menu">
-				<Col span={24}>
-					<Dropdown overlay={menu} trigger={[ 'click' ]}>
-						<Button>
-							<a className="ant-dropdown-link" href="#">
-								REGION<Icon type="down" />
-							</a>
-						</Button>
-					</Dropdown>
-					<Dropdown overlay={menu} trigger={[ 'click' ]}>
-						<Button>
-							<a className="ant-dropdown-link" href="#">
-								CATEGORIE <Icon type="down" />
-							</a>
-						</Button>
-					</Dropdown>
-					<Dropdown overlay={menu} trigger={[ 'click' ]}>
-						<Button>
-							<a className="ant-dropdown-link" href="#">
-								NOTE <Icon type="down" />
-							</a>
-						</Button>
-					</Dropdown>
-				</Col>
-			</Row>
+			{/* <Row type="flex" justify="space-around" align="middle">
+				<Dropdown overlay={menuRegion} placement="bottomLeft">
+					<Button className="home-button-region" style={{ backgroundColor: '#bb9574', color: 'white' }}>
+						{regionChange} <Icon type="down" />
+					</Button>
+				</Dropdown>
+
+				<Cascader
+					className="home-cascader-jobs"
+					options={itemJobs}
+					placeholder="Choisissez un métier"
+					onChange={onChangeJob}
+				/>
+				<ButtonSearchArtisanList />
+			</Row> */}
 
 			<List
 				itemLayout="vertical"
@@ -67,17 +182,16 @@ const ListArtisan = () => {
 					onChange: (page) => {
 						console.log(page);
 					},
-					pageSize: 3
+					pageSize: 5
 				}}
 				dataSource={listData}
 				renderItem={(item) => (
 					<List.Item>
 						<List.Item.Meta
-							avatar={<Avatar src={item.avatar} />}
-							title={<a href={item.href}>{item.title}</a>}
-							description={item.description}
+							avatar={<Avatar src={objectArtisan.picture} />}
+							title={<Link to={linkArtisan}>{objectArtisan.company}</Link>}
+							description={objectArtisan.companyDescription}
 						/>
-						{item.content}
 					</List.Item>
 				)}
 			/>

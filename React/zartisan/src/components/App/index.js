@@ -42,7 +42,7 @@ const App = () => {
 					<Route exact path="/liste-artisan">
 						<ListArtisan />
 					</Route>
-					<Route exact path="/page-artisan">
+					<Route exact path="/page-artisan/:id">
 						<PageArtisan />
 					</Route>
 					<Route exact path="/mentions-legal">
