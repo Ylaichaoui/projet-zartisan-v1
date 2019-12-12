@@ -21,7 +21,7 @@ class ApiAdviceController extends AbstractController
      */
     public function add(Request $request, UserRepository $userRepository, EntityManagerInterface $em)
     {   
-        if ($request->getContent()) {
+        if ($request->get('artisanid')) {
 
             // search id and email in the request
             $userPro = $userRepository->find($request->get('artisanid'));
