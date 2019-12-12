@@ -1,5 +1,6 @@
 import React from 'react';
 import { Row, Col, List, Avatar, Icon, Dropdown, Menu, Button } from 'antd';
+import { useSelector, useDispatch } from 'react-redux';
 import 'antd/dist/antd.css';
 import './style.sass';
 
@@ -16,6 +17,8 @@ const ListArtisan = () => {
 		});
 	}
 
+	const artisandata = useSelector((state) => state.search);
+	console.log(artisandata);
 	const menu = (
 		<Menu>
 			<Menu.Item key="0">

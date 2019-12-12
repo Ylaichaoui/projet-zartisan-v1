@@ -13,11 +13,10 @@ import Home from 'src/components/Home';
 import Footer from 'src/components/Footer';
 import ListArtisan from 'src/components/ListArtisan';
 import PageArtisan from 'src/components/PageArtisan';
-
+import LegalNotices from 'src/components/LegalNotices';
+import PageError from 'src/components/PageError';
 import FormRegisterUser from 'src/components/FormRegisterUser';
 import FormRegisterArtisan from 'src/components/FormRegisterArtisan';
-
-// Data
 
 /**
  * Code
@@ -46,8 +45,11 @@ const App = () => {
 					<Route exact path="/page-artisan">
 						<PageArtisan />
 					</Route>
+					<Route exact path="/mentions-legal">
+						<LegalNotices />
+					</Route>
 					<Route>
-						<div>404</div>
+						<PageError />
 					</Route>
 				</Switch>
 				<Footer />

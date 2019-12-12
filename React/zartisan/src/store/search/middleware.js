@@ -1,4 +1,5 @@
 import { POST_HOME_SEARCH } from 'src/store/search/actions';
+import { homeSearch } from 'src/store/search/actions';
 import axios from 'axios';
 export default (store) => (next) => (action) => {
 	switch (action.type) {
@@ -16,9 +17,10 @@ export default (store) => (next) => (action) => {
 				}
 			})
 				.then((response) => {
-					console.log(response);
+					//console.log(response);
 					if (response.status === 200) {
-						console.log('filtre les artisans');
+						console.log('filtre les artisans', response.data);
+						store.dispatch(homeSearch(response.data));
 					}
 				})
 				.catch(function(error) {
