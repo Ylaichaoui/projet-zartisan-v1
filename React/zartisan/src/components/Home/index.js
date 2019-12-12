@@ -2,9 +2,10 @@
  * Imports of dependencies
  */
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Row, Button, Icon, Menu, Dropdown, Cascader } from 'antd';
+import { withRouter } from 'react-router-dom';
+
 /**
  * Local imports
  */
@@ -67,7 +68,6 @@ const Home = () => {
 
 	const [ jobChange, setJob ] = useState([]);
 
-
 	/**
    * list item menu
    */
@@ -100,15 +100,28 @@ const Home = () => {
 
 	//console.log(itemJobs);
 
-
 	const onChangeJob = (event) => {
 		setJob(event);
 	};
 
-	const handleSearch = () => {
-		dispatch(postHomeSearch(regionChange, jobChange[1]));
-	};
-
+	/**
+	 * Button search artisan list
+	 */
+	const ButtonSearchArtisanList = withRouter(({ history }) => {
+		const handleSearch = () => {
+			dispatch(postHomeSearch(regionChange, jobChange[1]));
+			return history.push('/liste-artisan');
+		};
+		return (
+			<Button
+				className="home-button-search"
+				style={{ color: 'white', backgroundColor: '#bb9574', border: 'none' }}
+				onClick={handleSearch}
+			>
+				Recherche
+			</Button>
+		);
+	});
 
 	return (
 		<div className="home">
@@ -125,19 +138,10 @@ const Home = () => {
 					placeholder="Choisissez un métier"
 					onChange={onChangeJob}
 				/>
-
 			</Row>
 			<Row type="flex" justify="space-around" align="middle" className="home-france">
 				<img src={france} className="france-picture" />
-				<Button
-					className="home-button-search"
-					style={{ color: 'white', backgroundColor: '#bb9574', border: 'none' }}
-
-					onClick={handleSearch}
-
-				>
-					Recherche
-				</Button>
+				<ButtonSearchArtisanList />
 			</Row>
 		</div>
 	);
