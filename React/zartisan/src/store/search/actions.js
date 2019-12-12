@@ -5,3 +5,9 @@ export const postHomeSearch = (region, job) => ({
 	region,
 	job
 });
+
+export const HOME_SEARCH = 'search/actions/HOME_SEARCH';
+
+export const homeSearch = () => ({
+	type: HOME_SEARCH
+});
