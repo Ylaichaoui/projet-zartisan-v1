@@ -12,6 +12,7 @@ import './style.sass';
 import france from './picture/france.svg';
 import { getRegions } from 'src/store/regions/actions';
 import { getJobs } from 'src/store/jobs/actions';
+
 import { postHomeSearch } from 'src/store/search/actions';
 /**
  * Code
@@ -63,7 +64,9 @@ const Home = () => {
 
 	const menuRegion = <Menu>{itemRegions}</Menu>;
 	const [ regionChange, setRegion ] = useState('Choisissez une Région');
+
 	const [ jobChange, setJob ] = useState([]);
+
 
 	/**
    * list item menu
@@ -97,6 +100,7 @@ const Home = () => {
 
 	//console.log(itemJobs);
 
+
 	const onChangeJob = (event) => {
 		setJob(event);
 	};
@@ -104,6 +108,7 @@ const Home = () => {
 	const handleSearch = () => {
 		dispatch(postHomeSearch(regionChange, jobChange[1]));
 	};
+
 
 	return (
 		<div className="home">
@@ -113,19 +118,23 @@ const Home = () => {
 						{regionChange} <Icon type="down" />
 					</Button>
 				</Dropdown>
+
 				<Cascader
 					className="home-cascader-jobs"
 					options={itemJobs}
 					placeholder="Choisissez un métier"
 					onChange={onChangeJob}
 				/>
+
 			</Row>
 			<Row type="flex" justify="space-around" align="middle" className="home-france">
 				<img src={france} className="france-picture" />
 				<Button
 					className="home-button-search"
 					style={{ color: 'white', backgroundColor: '#bb9574', border: 'none' }}
+
 					onClick={handleSearch}
+
 				>
 					Recherche
 				</Button>

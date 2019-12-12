@@ -27,10 +27,14 @@ class MailController extends AbstractController
     {
         if ($request->getContent()) {
             $error = $this->securityManager->securityEmail($request->get('email'));
-            if($error){
+            if(isset($error)){
                 return $this->json(['error' => $error], 409);
             }
             $user = $userRepository->isFoundMail($request->get('email'));
+
+            if ($request->get('return') === "TRUE") {
+                return $this->json($user, 200, [], ['groups' => 'user_user_single']);   
+            }
 
             if ($user != null) {
                 return $this->json(['success' => 'user found for this email'], 200, []);
@@ -55,7 +59,7 @@ class MailController extends AbstractController
     { 
         if ($request->getContent()) {
             $error = $this->securityManager->securityEmail($request->get('email'));
-            if($error){
+            if(isset($error)){
                 return $this->json(['error' => $error], 409);
             }
             $user = $userRepository->isFoundMail($request->get('email'));
