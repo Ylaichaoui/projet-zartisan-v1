@@ -17,9 +17,6 @@ class SecurityManager
         if (strlen($siret) != 14) {
             $error []= "The size of the siret is not correct";
         }
-        if (!is_int($siret)) {
-            $error []= "The siret can only contain numbers";
-        }
         if(isset($error)){
             return $error;
         }

@@ -42,7 +42,7 @@ class ApiArtisanController extends AbstractController
     public function search(UserRepository $userRepository, Request $request)
     {
         $arrayUsers = [];
-        if ($request->getContent()) {
+        if ($request->get('idJob')) {
             
             $job = $request->get('idJob');
             $region = $request->get('nameRegion');
@@ -59,7 +59,7 @@ class ApiArtisanController extends AbstractController
      */
     public function edit(UserRepository $userRepository, Request $request, EntityManagerInterface $em)
     {
-        if ($request->getContent()) {
+        if ($request->get('id')) {
 
             $userId = $request->get('id');
             $user = $userRepository->find($userId);
@@ -88,7 +88,7 @@ class ApiArtisanController extends AbstractController
      */
     public function single(Request $request, UserRepository $userRepository)
     {
-        if ($request->getContent()) {
+        if ($request->get('email')) {
             
             if ($request->get('email')) {
                 $user = $userRepository->isFoundMail($request->get('email'));
