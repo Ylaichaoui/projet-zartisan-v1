@@ -26,19 +26,18 @@ const ListArtisan = () => {
 	}
 
 	console.log(arrayArtisan);
-
+	const listData = [];
 	let objectArtisan = {};
 	for (let d in arrayArtisan) {
 		objectArtisan = arrayArtisan[d];
-	}
-
-	console.log(objectArtisan);
-	const listData = [];
-	for (let i = 1; i <= arrayArtisan.length; i++) {
 		listData.push(objectArtisan);
 	}
+	console.log(objectArtisan);
+	for (let i = 0; i < arrayArtisan.length; i++) {}
 
 	let linkArtisan = `/page-artisan/${objectArtisan.company}`;
+
+	console.log('hello', listData);
 
 	///////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////
@@ -187,10 +186,11 @@ const ListArtisan = () => {
 				dataSource={listData}
 				renderItem={(item) => (
 					<List.Item>
+						{console.log(item)}
 						<List.Item.Meta
-							avatar={<Avatar src={objectArtisan.picture} />}
-							title={<Link to={linkArtisan}>{objectArtisan.company}</Link>}
-							description={objectArtisan.companyDescription}
+							avatar={<Avatar src={item.picture} />}
+							title={<Link to={linkArtisan}>{item.company}</Link>}
+							description={item.companyDescription}
 						/>
 					</List.Item>
 				)}
