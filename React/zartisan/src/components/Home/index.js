@@ -88,7 +88,7 @@ const Home = () => {
 			idValue = job.jobs[j].id;
 			arrayMyJobs.push({ value: idValue, label: nameValue });
 		}
-		console.log(arrayMyJobs);
+		//console.log(arrayMyJobs);
 		//console.log('forindansmap', nameValue, idValue);
 
 		const newObjectJob = {

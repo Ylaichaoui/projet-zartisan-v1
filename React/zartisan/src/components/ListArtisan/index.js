@@ -96,16 +96,19 @@ const ListArtisan = () => {
 		//console.log('first-map', job);
 		let nameValue = '';
 		let idValue = '';
+		let arrayMyJobs = [];
 		for (let j in job.jobs) {
 			nameValue = job.jobs[j].name;
 			idValue = job.jobs[j].id;
+			arrayMyJobs.push({ value: idValue, label: nameValue });
 		}
+		//console.log(arrayMyJobs);
 		//console.log('forindansmap', nameValue, idValue);
 
 		const newObjectJob = {
 			value: job.id,
 			label: job.name,
-			children: [ { value: idValue, label: nameValue } ]
+			children: arrayMyJobs
 		};
 		//console.log('nouveau objet : ', newObjectJob);
 		return newObjectJob;
@@ -163,7 +166,9 @@ const ListArtisan = () => {
 					<List.Item>
 						<List.Item.Meta
 							className="ant-list-item"
-							avatar={<img style={{ width: '60px' }} src="src/styles/pictures/company/company1.png" />}
+							avatar={
+								<img style={{ width: '60px' }} src={`src/styles/pictures/company/${item.picture}`} />
+							}
 							title={<Link to={`/page-artisan/${item.company}`}>{item.company}</Link>}
 							description={item.companyDescription}
 						/>
@@ -172,6 +177,6 @@ const ListArtisan = () => {
 				)}
 			/>
 		</div>
-	);
+	); //"src/styles/pictures/company/company1.png"
 };
 export default ListArtisan;
