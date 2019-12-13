@@ -93,11 +93,29 @@ class UserRepository extends ServiceEntityRepository
     /**
     * @return User Returns an array of User objects
     */
-    public function isFoundToken(string $mailToken)
+    public function isFoundMailToken(string $mailToken)
     {
         $result = $this->createQueryBuilder('u')
         ->where('u.mailToken = :mailToken')
         ->setParameter('mailToken', $mailToken)
+        ->getQuery()
+        ->getResult();
+
+        if(!isset($result[0])){
+            return NULL;
+        }else{
+            return $result[0];
+        }
+    }
+
+    /**
+    * @return User Returns an array of User objects
+    */
+    public function isFoundPassToken(string $passToken)
+    {
+        $result = $this->createQueryBuilder('u')
+        ->where('u.passToken = :passToken')
+        ->setParameter('passToken', $passToken)
         ->getQuery()
         ->getResult();
 
