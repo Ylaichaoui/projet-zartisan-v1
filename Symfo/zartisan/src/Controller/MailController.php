@@ -3,6 +3,8 @@ namespace App\Controller;
 
 use App\Repository\UserRepository;
 use App\Manager\SecurityManager;
+use DateInterval;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,12 +71,17 @@ class MailController extends AbstractController
             }
             $user = $this->userRepository->isFoundMail($request->get('email'));
             
-            // Generate random token 
+            // Generate random token
             $token = $this->setToken(60);
+            // if token already exist, generate a new one
+            while($this->userRepository->isFoundMailToken($token) != NULL){
+                $token = $this->setToken(60);
+            }
             // Send what action do
             $use = "mailconfirm";
             
             $user->setMailToken($token);
+            $user->setEmailCreatedAt(new \DateTime());
             $this->em->persist($user);
             $this->em->flush();
             
@@ -104,13 +111,14 @@ class MailController extends AbstractController
     public function sendResetPass(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         if ($request->get('email')) {
+            
             $error = $this->securityManager->securityEmail($request->get('email'));
             if($error){
                 return $this->json(['error' => $error], 409);
             }
             $user = $this->userRepository->isFoundMail($request->get('email'));
             
-            if($request->get('password')){
+            if(!$request->get('password')){
                 return $this->json(['error' => 'password not valid'], 304, []);
             }
 
@@ -121,10 +129,15 @@ class MailController extends AbstractController
             $password = $passwordEncoder->encodePassword($user, $request->get('password'));
             // Generate random token 
             $token = $this->setToken(60);
+            // if token already exist, generate a new one
+            while($this->userRepository->isFoundPassToken($token) != NULL){
+                $token = $this->setToken(60);
+            }
             // Send what action do
             $use = "passreset";
             
-            $user->setMailToken($token);
+            $user->setPassToken($token);
+            $user->setPassCreatedAt(new \DateTime());
             $this->em->persist($user);
             $this->em->flush();
             
@@ -155,31 +168,60 @@ class MailController extends AbstractController
     public function comfirmRoute(Request $request)
     {
         if ($request->query->get('use')) {
-            $user = $this->userRepository->isFoundToken($request->query->get('token'));
-            if($user != NULL){
-                // If url return get where use = mailconfirm
-                if ($request->query->get('use') == "mailconfirm") {
-                    $user->setIsConfirmMail(TRUE);
-                    $user->setMailToken(NULL);
+            // If url return get where use = mailconfirm
+            if ($request->query->get('use') == "mailconfirm") {
+                $user = $this->userRepository->isFoundMailToken($request->query->get('token'));
+                if ($user != null) {
+                    // Create verification from date when create request
+                    $db_createMailToken = $user->getEmailCreatedAt();
+                    $db_compareMailToken = $db_createMailToken->add(new DateInterval('P3D'));
+                    $now_datetime = new DateTime();
+                    // TODO Wait front integration to activate
+                    if ($db_compareMailToken < $now_datetime) {
+                        //$user->setMailToken(NULL);
+                        //return $this->json(['error' => 'Mail was modify more than 3 days ago'], 404, []);
+                    }
+                    $user->setIsConfirmMail(true);
+                    $user->setMailToken(null);
+                    if(in_array('ROLE_UNDEFINED_USER', $user->getRoles())){
+                        $roles[] = 'ROLE_USER';
+                    }
+                    if(in_array('ROLE_UNDEFINED_ARTISAN', $user->getRoles())){
+                        $roles[] = 'ROLE_ARTISAN';
+                    }
+                    $user->setRoles($roles);
                     $this->em->persist($user);
                     $this->em->flush();
                     return $this->redirect($this->generateUrl('main'));
                 }
-                // If url return get where use = passreset
-                if ($request->query->get('use') == "passreset") {
-                    if($request->query->get('password') != NULL){
+                return $this->json(['error' => 'No user for this token'], 304, []);
+            }
+            // If url return get where use = passreset
+            if ($request->query->get('use') == "passreset") {
+                if($request->query->get('password') != NULL){
+                    $user = $this->userRepository->isFoundPassToken($request->query->get('token'));
+                    if($user != NULL){
+                        // Create verification from date when create request
+                        $db_createPassToken = $user->getPassCreatedAt();
+                        $db_comparePassToken = $db_createPassToken->add(new DateInterval('P3D'));
+                        $now_datetime = new DateTime();
+                        // TODO Wait front integration to activate
+                        if ($db_comparePassToken < $now_datetime) {
+                            //$user->setPassToken(NULL);
+                            //return $this->json(['error' => 'Password was modify more than 3 days ago'], 404, []);
+                        }
                         // Patch sometime some + are replace by void caractere
                         $password = str_replace(" ", "+" ,$request->query->get('password'));
                         $user->setPassword($password);
-                        $user->setMailToken(NULL);
+                        $user->setPassToken(NULL);
                         $this->em->persist($user);
                         $this->em->flush();
                         return $this->redirect($this->generateUrl('app_logout'));
                     }
-                    return $this->json(['error' => 'Password try to be modify by wrong way'], 404, []);
+                    return $this->json(['error' => 'No user for this token'], 304, []);
                 }
+                return $this->json(['error' => 'Password try to be modify by wrong way'], 404, []);
             }
-            return $this->json(['error' => 'No user for this token'], 304, []);
         }
         return $this->json(['error' => 'No querry on this request'], 304, []);
     }
