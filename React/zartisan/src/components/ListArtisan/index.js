@@ -161,12 +161,13 @@ const ListArtisan = () => {
 				dataSource={listData}
 				renderItem={(item) => (
 					<List.Item>
-						{console.log(item)}
 						<List.Item.Meta
-							avatar={<Avatar src={item.picture} />}
-							title={<Link to={linkArtisan}>{item.company}</Link>}
+							className="ant-list-item"
+							avatar={<img style={{ width: '60px' }} src="src/styles/pictures/company/company1.png" />}
+							title={<Link to={`/page-artisan/${item.company}`}>{item.company}</Link>}
 							description={item.companyDescription}
 						/>
+						<Rate style={{ fontSize: '1em' }} disabled defaultValue={item.averageRate} />
 					</List.Item>
 				)}
 			/>
