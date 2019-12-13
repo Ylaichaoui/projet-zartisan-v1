@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, List, Avatar, Icon, Dropdown, Menu, Button, Cascader } from 'antd';
+import { Row, Col, List, Avatar, Icon, Dropdown, Menu, Button, Cascader, Rate } from 'antd';
 
 import 'antd/dist/antd.css';
 import './style.sass';
-///////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////
 import { useSelector, useDispatch } from 'react-redux';
 import { getRegions } from 'src/store/regions/actions';
 import { getJobs } from 'src/store/jobs/actions';
@@ -26,37 +22,16 @@ const ListArtisan = () => {
 	}
 
 	console.log(arrayArtisan);
-
+	const listData = [];
 	let objectArtisan = {};
 	for (let d in arrayArtisan) {
 		objectArtisan = arrayArtisan[d];
-	}
-
-	console.log(objectArtisan);
-	const listData = [];
-	for (let i = 1; i <= arrayArtisan.length; i++) {
 		listData.push(objectArtisan);
 	}
+	console.log(objectArtisan);
+	for (let i = 0; i < arrayArtisan.length; i++) {}
 
-	let linkArtisan = `/page-artisan/${objectArtisan.company}`;
-
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
+	console.log('hello', listData);
 
 	useEffect(() => {
 		dispatch(getRegions());
@@ -165,7 +140,6 @@ const ListArtisan = () => {
 						{regionChange} <Icon type="down" />
 					</Button>
 				</Dropdown>
-
 				<Cascader
 					className="home-cascader-jobs"
 					options={itemJobs}
@@ -176,7 +150,7 @@ const ListArtisan = () => {
 			</Row>
 
 			<List
-				itemLayout="vertical"
+				itemLayout="horizontal"
 				size="small"
 				pagination={{
 					onChange: (page) => {
@@ -188,10 +162,12 @@ const ListArtisan = () => {
 				renderItem={(item) => (
 					<List.Item>
 						<List.Item.Meta
-							avatar={<Avatar src={objectArtisan.picture} />}
-							title={<Link to={linkArtisan}>{objectArtisan.company}</Link>}
-							description={objectArtisan.companyDescription}
+							className="ant-list-item"
+							avatar={<img style={{ width: '60px' }} src="src/styles/pictures/company/company1.png" />}
+							title={<Link to={`/page-artisan/${item.company}`}>{item.company}</Link>}
+							description={item.companyDescription}
 						/>
+						<Rate style={{ fontSize: '1em' }} disabled defaultValue={item.averageRate} />
 					</List.Item>
 				)}
 			/>
