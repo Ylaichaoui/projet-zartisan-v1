@@ -7,7 +7,7 @@ export default (state = initialState, action) => {
 
 	switch (action.type) {
 		case HOME_SEARCH: {
-			console.log('action reducer search', action.dataArtisan);
+			//console.log('action reducer search', action.dataArtisan);
 			return (state = [ action.dataArtisan ]);
 		}
 		default: {

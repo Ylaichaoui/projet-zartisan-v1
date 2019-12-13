@@ -13,7 +13,6 @@ import './style.sass';
 import france from './picture/france.svg';
 import { getRegions } from 'src/store/regions/actions';
 import { getJobs } from 'src/store/jobs/actions';
-
 import { postHomeSearch } from 'src/store/search/actions';
 /**
  * Code

@@ -12,7 +12,7 @@ const middlewares = applyMiddleware(middlewareRegister, middlewareRegions, middl
 const reactModelStore = createStore(reducer, withReduxDevTools(middlewares));
 
 // Juste pour debugguer, ne pas laisser en production.
-console.log('Store', reactModelStore);
+//console.log('Store', reactModelStore);
 window.store = reactModelStore;
 
 export default reactModelStore;
