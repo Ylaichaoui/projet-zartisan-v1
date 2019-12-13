@@ -77,7 +77,7 @@ class ApiUserController extends AbstractController
     public function edit(Request $request, UserRepository $userRepository, EntityManagerInterface $em)
     {
 
-        if ($request->getContent()) {
+        if ($request->get('email')) {
 
 
             // verify if  email is in the BDD

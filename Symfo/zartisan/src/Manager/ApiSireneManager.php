@@ -33,7 +33,7 @@ class ApiSireneManager
         $this->apiNomenclaturesManager = $apiNomenclaturesManager;
     }
 
-    public function requestSireneApi()
+    public function requestSireneApi($optSiret = 0)
     {  
         // Make Hearder for request to api
         $opts = array(
@@ -47,9 +47,18 @@ class ApiSireneManager
         $context = stream_context_create($opts);
         
         // Connection to api with header + siret request
-        $file = file_get_contents("https://api.insee.fr/entreprises/sirene/V".$this->apiVersion."/siret/".$this->siret, false, $context);
-        $results = json_decode($file,true); 
-        return $results;
+        if($optSiret != 0){
+            // add the @ parameter to prevent bad request answer for test siret
+            $result = @file_get_contents("https://api.insee.fr/entreprises/sirene/V".$this->apiVersion."/siret/".$optSiret, false, $context);
+            if($result == FALSE){
+                return FALSE;
+            }
+            return TRUE;
+        }else{
+            $file = file_get_contents("https://api.insee.fr/entreprises/sirene/V".$this->apiVersion."/siret/".$this->siret, false, $context);
+            $results = json_decode($file,true); 
+            return $results;
+        }
     }
 
     public function getCompagnyFromApi()

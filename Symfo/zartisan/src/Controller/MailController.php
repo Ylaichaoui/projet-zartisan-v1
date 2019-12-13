@@ -14,23 +14,29 @@ class MailController extends AbstractController
     // Set private data for send mail mail 
     private $baseUrl = "http://localhost:8001/confirmation";
     private $securityManager;
+    private $em;
+    private $userRepository;
+    private $mailer;
 
-    public function __construct(SecurityManager $securityManager)
+    public function __construct(SecurityManager $securityManager, EntityManagerInterface $em, UserRepository $userRepository, \Swift_Mailer $mailer)
     {
         $this->securityManager = $securityManager;
+        $this->em = $em;
+        $this->userRepository = $userRepository;
+        $this->mailer = $mailer;
     }
 
     /**
     * @Route("api/v1/checkMail", name="api_mail_check")
     */
-    public function mailCheck(UserRepository $userRepository, Request $request)
+    public function mailCheck(Request $request)
     {
-        if ($request->getContent()) {
+        if ($request->get('email')) {
             $error = $this->securityManager->securityEmail($request->get('email'));
             if(isset($error)){
                 return $this->json(['error' => $error], 409);
             }
-            $user = $userRepository->isFoundMail($request->get('email'));
+            $user = $this->userRepository->isFoundMail($request->get('email'));
 
             if ($request->get('return') === "TRUE") {
                 return $this->json($user, 200, [], ['groups' => 'user_user_single']);   
@@ -54,15 +60,14 @@ class MailController extends AbstractController
     /**
     * @Route("/confirmMail", name="mail_confirm")
     */
-    public function sendMailValidation(UserRepository $userRepository, Request $request, EntityManagerInterface $em
-    , \Swift_Mailer $mailer)
-    { 
-        if ($request->getContent()) {
+    public function sendMailValidation(Request $request)
+    {
+        if ($request->get('email')) {
             $error = $this->securityManager->securityEmail($request->get('email'));
             if(isset($error)){
                 return $this->json(['error' => $error], 409);
             }
-            $user = $userRepository->isFoundMail($request->get('email'));
+            $user = $this->userRepository->isFoundMail($request->get('email'));
             
             // Generate random token 
             $token = $this->setToken(60);
@@ -70,8 +75,8 @@ class MailController extends AbstractController
             $use = "mailconfirm";
             
             $user->setMailToken($token);
-            $em->persist($user);
-            $em->flush();
+            $this->em->persist($user);
+            $this->em->flush();
             
             $message = (new \Swift_Message('Zartisan: Confirmation d\'email'))
                 ->setFrom('staff@zartisan.com')
@@ -84,7 +89,7 @@ class MailController extends AbstractController
                     'text/html'
                 );
 
-            if(!$mailer->send($message)){
+            if(!$this->mailer->send($message)){
                 return $this->json(['error' => 'mail not send'], 304, []);
             }else{
                 return $this->json(['success' => 'mail send'], 200, []);
@@ -96,15 +101,14 @@ class MailController extends AbstractController
     /**
     * @Route("/resetPassMail", name="api_reset_pass")
     */
-    public function sendResetPass(UserRepository $userRepository, Request $request, EntityManagerInterface $em
-    , \Swift_Mailer $mailer, UserPasswordEncoderInterface $passwordEncoder)
+    public function sendResetPass(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
-        if ($request->getContent()) {
+        if ($request->get('email')) {
             $error = $this->securityManager->securityEmail($request->get('email'));
             if($error){
                 return $this->json(['error' => $error], 409);
             }
-            $user = $userRepository->isFoundMail($request->get('email'));
+            $user = $this->userRepository->isFoundMail($request->get('email'));
             
             if($request->get('password')){
                 return $this->json(['error' => 'password not valid'], 304, []);
@@ -121,8 +125,8 @@ class MailController extends AbstractController
             $use = "passreset";
             
             $user->setMailToken($token);
-            $em->persist($user);
-            $em->flush();
+            $this->em->persist($user);
+            $this->em->flush();
             
             $message = (new \Swift_Message('Zartisan: Réinitialisation du mot de passe'))
                 ->setFrom('staff@zartisan.com')
@@ -135,7 +139,7 @@ class MailController extends AbstractController
                     'text/html'
                 );
 
-            if(!$mailer->send($message)){
+            if(!$this->mailer->send($message)){
                 return $this->json(['error' => 'mail not send'], 304, []);
             }else{
                 return $this->json(['success' => 'mail send'], 200, []);
@@ -148,18 +152,17 @@ class MailController extends AbstractController
     /**
     * @Route("/confirmation", name="api_confirm_route")
     */
-    public function comfirmRoute(UserRepository $userRepository
-    , Request $request, EntityManagerInterface $em)
+    public function comfirmRoute(Request $request)
     {
-        if ($request->getContent()) {
-            $user = $userRepository->isFoundToken($request->query->get('token'));
+        if ($request->query->get('use')) {
+            $user = $this->userRepository->isFoundToken($request->query->get('token'));
             if($user != NULL){
                 // If url return get where use = mailconfirm
                 if ($request->query->get('use') == "mailconfirm") {
                     $user->setIsConfirmMail(TRUE);
                     $user->setMailToken(NULL);
-                    $em->persist($user);
-                    $em->flush();
+                    $this->em->persist($user);
+                    $this->em->flush();
                     return $this->redirect($this->generateUrl('main'));
                 }
                 // If url return get where use = passreset
@@ -169,8 +172,8 @@ class MailController extends AbstractController
                         $password = str_replace(" ", "+" ,$request->query->get('password'));
                         $user->setPassword($password);
                         $user->setMailToken(NULL);
-                        $em->persist($user);
-                        $em->flush();
+                        $this->em->persist($user);
+                        $this->em->flush();
                         return $this->redirect($this->generateUrl('app_logout'));
                     }
                     return $this->json(['error' => 'Password try to be modify by wrong way'], 404, []);

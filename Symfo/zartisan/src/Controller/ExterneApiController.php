@@ -15,15 +15,17 @@ class ExterneApiController extends AbstractController
         $this->apiSireneManager = $apiSireneManager;
     }
 
-    /**
-     * @Route("api/sirene", name="sirene")
-     */
     public function ApiIndexSirene($siret)
     {
-        $sirene = $this->apiSireneManager;
-
-        $sirene->setSireneDataApi($siret);
-
+        $this->apiSireneManager->setSireneDataApi($siret);
         return;
+    }
+
+    /**
+     * @Route("sirene/test/{id}", name="sirene")
+     */
+    public function ApiTestSirene($id)
+    {
+        return $this->json(['return' => $this->apiSireneManager->requestSireneApi($id)], 200);
     }
 }

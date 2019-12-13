@@ -21,7 +21,7 @@ class ApiRateController extends AbstractController
      */
     public function add(Request $request, UserRepository $userRepository, EntityManagerInterface $em, RateRepository $rateRepository)
     {   
-        if ($request->getContent()) {
+        if ($request->get('artisanid')) {
 
             // search email user and id artisan in the request
             $userPro = $userRepository->find($request->get('artisanid'));

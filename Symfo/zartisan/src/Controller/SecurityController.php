@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Controller\ExterneApiController;
+use App\Controller\MailController;
 use App\Entity\User;
 use App\Manager\SecurityManager;
 use App\Repository\UserRepository;
@@ -18,11 +19,14 @@ class SecurityController extends AbstractController
 {
     private $externeApiController;
     private $securityManager;
+    private $mailController;
 
-    public function __construct(ExterneApiController $externeApiController, SecurityManager $securityManager)
+    public function __construct(ExterneApiController $externeApiController, SecurityManager $securityManager, MailController $mailController)
     {
         $this->externeApiController = $externeApiController;
         $this->securityManager = $securityManager;
+        $this->mailController = $mailController;
+
     }
 
     /**
@@ -31,7 +35,7 @@ class SecurityController extends AbstractController
     public function registerArtisan(Request $request, UserPasswordEncoderInterface $passwordEncoder, 
     UserRepository $userRepository): Response
     {
-        if ($request->getContent()) {
+        if ($request->get('email')) {
 
             // Look if exist email
             $error = $this->securityManager->securityEmail($request->get('email'));
@@ -77,6 +81,17 @@ class SecurityController extends AbstractController
             // Get  & save information to register in DB from externals api
             $this->externeApiController->ApiIndexSirene($user->getSiret());
 
+            $request = Request::create(
+                '/Manual-request',
+                'POST',
+                ['email' => $user->getEmail()]
+            );
+            
+            // normaly is possible to send mail automatictly to artisan but desactivated for demo
+            // cause of not send mail to real personne
+            // TODO
+            // $this->mailController->sendMailValidation($request);
+
             return $this->json($user , 200, [], ['groups' => 'user_artisan_single']);
         }
         return $this->json(['error' => 'unexpected information for artisan register request'], 304);
@@ -88,7 +103,7 @@ class SecurityController extends AbstractController
     public function registerUser(Request $request, UserPasswordEncoderInterface $passwordEncoder, SerializerInterface $serializer, 
     UserRepository $userRepository): Response
     {
-        if ($request->getContent()) {
+        if ($request->get('email')) {
 
             $error = $this->securityManager->securityEmail($request->get('email'));
             if(isset($error)){
@@ -120,6 +135,15 @@ class SecurityController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
+
+            $request = Request::create(
+                '/Manual-request',
+                'POST',
+                ['email' => $user->getEmail()]
+            );     
+            
+            // It send mail auto to new user to confirm his email
+            $this->mailController->sendMailValidation($request);
 
             // Serialize data to dont have circle
             return $this->json($user , 200, [], ['groups' => 'user_user_single']);
