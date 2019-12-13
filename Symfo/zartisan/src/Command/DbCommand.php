@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Manager\ManualFixtureManager;
+use App\Manager\ManualFixtureManagerV2;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -13,7 +13,7 @@ class DbCommand extends Command
     protected static $defaultName = 'app:db';
     private $manualFixtureManager;
 
-    public function __construct(ManualFixtureManager $manualFixtureManager)
+    public function __construct(ManualFixtureManagerV2 $manualFixtureManager)
     {
         $this->manualFixtureManager = $manualFixtureManager;
         parent::__construct();

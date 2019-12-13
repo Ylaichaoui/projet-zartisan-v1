@@ -77,7 +77,7 @@ class User implements UserInterface
     private $birthday;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"user_artisan_single","user_artisan_search"})
      */
     private $company;
@@ -143,7 +143,7 @@ class User implements UserInterface
     private $city;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=10, nullable=true)
      * @Groups({"user_artisan_single", "user_user_single"})
      */
     private $phone;
@@ -546,12 +546,12 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getPhone(): ?int
+    public function getPhone(): ?string
     {
         return $this->phone;
     }
 
-    public function setPhone(?int $phone): self
+    public function setPhone(?string $phone): self
     {
         $this->phone = $phone;
 
