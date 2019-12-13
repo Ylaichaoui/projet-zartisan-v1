@@ -82,16 +82,19 @@ const Home = () => {
 		//console.log('first-map', job);
 		let nameValue = '';
 		let idValue = '';
+		let arrayMyJobs = [];
 		for (let j in job.jobs) {
 			nameValue = job.jobs[j].name;
 			idValue = job.jobs[j].id;
+			arrayMyJobs.push({ value: idValue, label: nameValue });
 		}
+		console.log(arrayMyJobs);
 		//console.log('forindansmap', nameValue, idValue);
 
 		const newObjectJob = {
 			value: job.id,
 			label: job.name,
-			children: [ { value: idValue, label: nameValue } ]
+			children: arrayMyJobs
 		};
 		//console.log('nouveau objet : ', newObjectJob);
 		return newObjectJob;
