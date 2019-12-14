@@ -24,7 +24,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"user_artisan_single", "user_user_single"})
+     * @Groups({"user_artisan_single", "user_user_single", "user_artisan_search"})
      */
     private $email;
 
@@ -77,7 +77,7 @@ class User implements UserInterface
     private $birthday;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"user_artisan_single","user_artisan_search"})
      */
     private $company;
@@ -143,7 +143,7 @@ class User implements UserInterface
     private $city;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=10, nullable=true)
      * @Groups({"user_artisan_single", "user_user_single"})
      */
     private $phone;
@@ -235,6 +235,21 @@ class User implements UserInterface
      */
     private $job;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $emailCreatedAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $passCreatedAt;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $passToken;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -282,8 +297,8 @@ class User implements UserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        // guarantee every user at least has ROLE_UNDEFINED
+        $roles[] = 'ROLE_UNDEFINED';
 
         return array_unique($roles);
     }
@@ -531,12 +546,12 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getPhone(): ?int
+    public function getPhone(): ?string
     {
         return $this->phone;
     }
 
-    public function setPhone(?int $phone): self
+    public function setPhone(?string $phone): self
     {
         $this->phone = $phone;
 
@@ -749,6 +764,42 @@ class User implements UserInterface
     public function setJob(?Job $job): self
     {
         $this->job = $job;
+
+        return $this;
+    }
+
+    public function getEmailCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->emailCreatedAt;
+    }
+
+    public function setEmailCreatedAt(?\DateTimeInterface $emailCreatedAt): self
+    {
+        $this->emailCreatedAt = $emailCreatedAt;
+
+        return $this;
+    }
+
+    public function getPassCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->passCreatedAt;
+    }
+
+    public function setPassCreatedAt(?\DateTimeInterface $passCreatedAt): self
+    {
+        $this->passCreatedAt = $passCreatedAt;
+
+        return $this;
+    }
+
+    public function getPassToken(): ?string
+    {
+        return $this->passToken;
+    }
+
+    public function setPassToken(?string $passToken): self
+    {
+        $this->passToken = $passToken;
 
         return $this;
     }

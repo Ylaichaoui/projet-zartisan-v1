@@ -9,6 +9,7 @@
         {% block body %}
             <div><h2>Bienvenu</h2></div>
             <div><p>Afin de valider votre nouveau mot de passe, <a href="{{baseUrl}}?token={{token}}&use={{use}}&password={{password}}"> cliquez ici </a></p></div>
+            <div><p>Attention ce lien n'est valable que durant les <strong>3 jours </strong> suivants ca création</p></div>
         {% endblock %}
     </body>
 </html>

@@ -22,17 +22,21 @@ const ListArtisan = () => {
 		arrayArtisan = artisandata[data];
 	}
 
+
 	//console.log(arrayArtisan);
+
 	const listData = [];
 	let objectArtisan = {};
 	for (let d in arrayArtisan) {
 		objectArtisan = arrayArtisan[d];
 		listData.push(objectArtisan);
 	}
+
 	//console.log(objectArtisan);
 	for (let i = 0; i < arrayArtisan.length; i++) {}
 
 	//console.log('hello', listData);
+
 
 	useEffect(() => {
 		dispatch(getRegions());
@@ -170,6 +174,7 @@ const ListArtisan = () => {
 							avatar={
 								<img style={{ width: '60px' }} src={`src/styles/pictures/company/${item.picture}`} />
 							}
+
 							title={
 								<Link
 									onClick={() => {
@@ -182,6 +187,7 @@ const ListArtisan = () => {
 									{item.company}
 								</Link>
 							}
+
 							description={item.companyDescription}
 						/>
 						<Rate style={{ fontSize: '1em' }} disabled defaultValue={item.averageRate} />

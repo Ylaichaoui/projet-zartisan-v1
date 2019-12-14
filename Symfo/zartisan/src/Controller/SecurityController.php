@@ -68,7 +68,10 @@ class SecurityController extends AbstractController
                 )
             );
             $user->setSiret($request->get('siret'));
+
+            // TODO Add undefined role artisan if mail not validate
             $user->setRoles(["ROLE_ARTISAN"]);
+            //$user->setRoles(["ROLE_UNDEFINED_ARTISAN"]);
             $user->setIsConfirmMail(false);
             $user->setIsStatus(true);
             $user->setIsVerified(false);
@@ -127,7 +130,7 @@ class SecurityController extends AbstractController
                 )
             );
             $user->setIsConfirmMail(false);
-            $user->setRoles(["ROLE_USER"]);
+            $user->setRoles(["ROLE_UNDEFINED_USER"]);
             $user->setIsStatus(true);
             $user->setIsVerified(false);
             $user->setIsReported(false);

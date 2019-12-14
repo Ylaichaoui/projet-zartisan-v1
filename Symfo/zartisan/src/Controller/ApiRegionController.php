@@ -106,7 +106,8 @@ class ApiRegionController extends AbstractController
         '06' => "Provence-Alpes-Côte d'Azur",
         '83' => "Provence-Alpes-Côte d'Azur",
         '84' => "Provence-Alpes-Côte d'Azur",    
-        '20' => "Corse"];
+        '20' => "Corse",
+        '0' => "DOM-TOM"];
 
     /**
      * @Route("/list", name="list")
@@ -126,7 +127,7 @@ class ApiRegionController extends AbstractController
         if(isset($this->regions[$postalCode])){
             return $this->regions[$postalCode];
         }else{
-            return NULL;
+            return "DOM-TOM";
         }
     }
 }
