@@ -39,7 +39,7 @@ class ApiArtisanController extends AbstractController
     /**
      * @Route("/recherche", name="recherche")
      */
-    public function search(UserRepository $userRepository, Request $request)
+    public function searchByRate(UserRepository $userRepository, Request $request)
     {
         $arrayUsers = [];
         if ($request->get('idJob')) {
@@ -47,7 +47,7 @@ class ApiArtisanController extends AbstractController
             $job = $request->get('idJob');
             $region = $request->get('nameRegion');
 
-            $arrayUsers = $userRepository->search($job,$region);
+            $arrayUsers = $userRepository->searchOrderRate($job,$region);
 
             return $this->json($arrayUsers, 200, [],['groups' => 'user_artisan_search']);
         }
