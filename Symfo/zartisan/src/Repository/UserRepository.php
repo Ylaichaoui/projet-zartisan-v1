@@ -37,7 +37,7 @@ class UserRepository extends ServiceEntityRepository
     /**
     * @return User[] Returns an array of Job objects
     */
-    public function search(int $job, string $region)
+    public function searchOrderRate(int $job, string $region)
     {
         // TODO select join table job to get the job querry
         $result = $this->createQueryBuilder('u')
@@ -48,8 +48,7 @@ class UserRepository extends ServiceEntityRepository
                 ->setParameter('job', $job)
                 ->setParameter('enabled', TRUE)
                 ->setParameter('region', $region)
-                ->OrderBy('u.averageRate', 'DESC')
-                ->OrderBy('u.isVerified', 'DESC');
+                ->OrderBy('u.averageRate', 'DESC');
       
         return $result->getQuery()->getResult();
     }
