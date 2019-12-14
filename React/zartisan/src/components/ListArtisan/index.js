@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, List, Avatar, Icon, Dropdown, Menu, Button, Cascader } from 'antd';
+import { Row, Col, List, Avatar, Icon, Dropdown, Menu, Button, Cascader, Rate } from 'antd';
 
 import 'antd/dist/antd.css';
 import './style.sass';
-///////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////
 import { useSelector, useDispatch } from 'react-redux';
 import { getRegions } from 'src/store/regions/actions';
 import { getJobs } from 'src/store/jobs/actions';
 import { postHomeSearch } from 'src/store/search/actions';
 import { withRouter, Link } from 'react-router-dom';
+import { artisanData } from 'src/store/artisan/actions';
 
 const ListArtisan = () => {
 	/**
@@ -25,38 +22,17 @@ const ListArtisan = () => {
 		arrayArtisan = artisandata[data];
 	}
 
-	console.log(arrayArtisan);
-
+	//console.log(arrayArtisan);
+	const listData = [];
 	let objectArtisan = {};
 	for (let d in arrayArtisan) {
 		objectArtisan = arrayArtisan[d];
-	}
-
-	console.log(objectArtisan);
-	const listData = [];
-	for (let i = 1; i <= arrayArtisan.length; i++) {
 		listData.push(objectArtisan);
 	}
+	//console.log(objectArtisan);
+	for (let i = 0; i < arrayArtisan.length; i++) {}
 
-	let linkArtisan = `/page-artisan/${objectArtisan.company}`;
-
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
+	//console.log('hello', listData);
 
 	useEffect(() => {
 		dispatch(getRegions());
@@ -121,16 +97,19 @@ const ListArtisan = () => {
 		//console.log('first-map', job);
 		let nameValue = '';
 		let idValue = '';
+		let arrayMyJobs = [];
 		for (let j in job.jobs) {
 			nameValue = job.jobs[j].name;
 			idValue = job.jobs[j].id;
+			arrayMyJobs.push({ value: idValue, label: nameValue });
 		}
+		//console.log(arrayMyJobs);
 		//console.log('forindansmap', nameValue, idValue);
 
 		const newObjectJob = {
 			value: job.id,
 			label: job.name,
-			children: [ { value: idValue, label: nameValue } ]
+			children: arrayMyJobs
 		};
 		//console.log('nouveau objet : ', newObjectJob);
 		return newObjectJob;
@@ -165,7 +144,6 @@ const ListArtisan = () => {
 						{regionChange} <Icon type="down" />
 					</Button>
 				</Dropdown>
-
 				<Cascader
 					className="home-cascader-jobs"
 					options={itemJobs}
@@ -176,7 +154,7 @@ const ListArtisan = () => {
 			</Row>
 
 			<List
-				itemLayout="vertical"
+				itemLayout="horizontal"
 				size="small"
 				pagination={{
 					onChange: (page) => {
@@ -188,14 +166,29 @@ const ListArtisan = () => {
 				renderItem={(item) => (
 					<List.Item>
 						<List.Item.Meta
-							avatar={<Avatar src={objectArtisan.picture} />}
-							title={<Link to={linkArtisan}>{objectArtisan.company}</Link>}
-							description={objectArtisan.companyDescription}
+							className="ant-list-item"
+							avatar={
+								<img style={{ width: '60px' }} src={`src/styles/pictures/company/${item.picture}`} />
+							}
+							title={
+								<Link
+									onClick={() => {
+										console.log('ta cliqué sur le lien youpi  !');
+										console.log('item >> ', item.id);
+										dispatch(artisanData(item.id));
+									}}
+									to={`/page-artisan/${item.company}`}
+								>
+									{item.company}
+								</Link>
+							}
+							description={item.companyDescription}
 						/>
+						<Rate style={{ fontSize: '1em' }} disabled defaultValue={item.averageRate} />
 					</List.Item>
 				)}
 			/>
 		</div>
-	);
+	); //"src/styles/pictures/company/company1.png"
 };
 export default ListArtisan;

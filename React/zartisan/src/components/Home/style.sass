@@ -2,18 +2,15 @@
 .home
   height: $height-content
   background-color: $background-color-content
-
   &-france
     width: 85%
     margin: 0 auto
     padding-top: 0.5em
     height: 65%
-
   &-button-region
     width: 90%
     margin-top: 1.5em
     border-radius: 15px
-
   &-cascader-jobs
     width: 90%
     margin: 1em
@@ -21,10 +18,25 @@
     border: none
     &:focus
       color: $button-color-primary
-
 .france-picture
   width: 100%
   height: 100%
-
 .ant-cascader-input
   border-radius: 30px
+.ant-cascader-menu
+  display: list-item // table; block; list-item; revert
+  width: 90vw
+  height: 35vh
+  overflow-y: scroll
+
+.ant-cascader-menu-item-expand .ant-cascader-menu-item-expand-icon, .ant-cascader-menu-item-loading-icon .ant-cascader-menu-item-loading-icon
+  transform: scale(0.83333) rotate(90deg)
+
+.ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled), .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled):hover
+  background-color: #CCB39C
+  overflow: scroll
+
+.ant-cascader-menu:last-child
+  width: 90vw
+  height: 100%
+  margin-top: 20px

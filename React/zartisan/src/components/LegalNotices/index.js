@@ -5,7 +5,7 @@ import React from 'react';
 
 const LegalNotices = () => {
 	return (
-		<div>
+		<div style={{ padding: '1em' }}>
 			<p>
 				Si vous utilisez nos Mentions Légales, vous vous engagez à laisser les liens Crédit sans en modifier ni
 				les liens ni les ancres. Par avance merci pour votre compréhension et le respect du travail effectué par
