@@ -5,7 +5,7 @@ export default (store) => (next) => (action) => {
 		case ARTISAN_DATA: {
 			console.log('middleware artisan');
 			console.log(action.id);
-
+			/*
 			return axios({
 				method: 'get',
 				url: `http://localhost:8001/v1/artisan/single?id=${action.id}`
@@ -23,7 +23,7 @@ export default (store) => (next) => (action) => {
 				})
 				.finally(function() {
 					// always executed
-				});
+				}); */
 		}
 	}
 	next(action);
