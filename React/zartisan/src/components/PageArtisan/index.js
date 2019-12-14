@@ -42,7 +42,7 @@ const PageArtisan = () => {
 		}
 	];
 	return (
-		<div>
+		<div id="pageArtisan">
 			<Row>
 				<Col span={9}>
 					<img src={img} alt="image artisan" className="imgArtisan" />
