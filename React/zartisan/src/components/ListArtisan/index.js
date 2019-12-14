@@ -8,6 +8,7 @@ import { getRegions } from 'src/store/regions/actions';
 import { getJobs } from 'src/store/jobs/actions';
 import { postHomeSearch } from 'src/store/search/actions';
 import { withRouter, Link } from 'react-router-dom';
+import { artisanData } from 'src/store/artisan/actions';
 
 const ListArtisan = () => {
 	/**
@@ -21,17 +22,21 @@ const ListArtisan = () => {
 		arrayArtisan = artisandata[data];
 	}
 
-	console.log(arrayArtisan);
+
+	//console.log(arrayArtisan);
+
 	const listData = [];
 	let objectArtisan = {};
 	for (let d in arrayArtisan) {
 		objectArtisan = arrayArtisan[d];
 		listData.push(objectArtisan);
 	}
-	console.log(objectArtisan);
+
+	//console.log(objectArtisan);
 	for (let i = 0; i < arrayArtisan.length; i++) {}
 
-	console.log('hello', listData);
+	//console.log('hello', listData);
+
 
 	useEffect(() => {
 		dispatch(getRegions());
@@ -169,7 +174,20 @@ const ListArtisan = () => {
 							avatar={
 								<img style={{ width: '60px' }} src={`src/styles/pictures/company/${item.picture}`} />
 							}
-							title={<Link to={`/page-artisan/${item.company}`}>{item.company}</Link>}
+
+							title={
+								<Link
+									onClick={() => {
+										console.log('ta cliqué sur le lien youpi  !');
+										console.log('item >> ', item.id);
+										dispatch(artisanData(item.id));
+									}}
+									to={`/page-artisan/${item.company}`}
+								>
+									{item.company}
+								</Link>
+							}
+
 							description={item.companyDescription}
 						/>
 						<Rate style={{ fontSize: '1em' }} disabled defaultValue={item.averageRate} />

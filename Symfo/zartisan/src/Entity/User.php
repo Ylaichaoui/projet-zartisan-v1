@@ -24,7 +24,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"user_artisan_single", "user_user_single"})
+     * @Groups({"user_artisan_single", "user_user_single", "user_artisan_search"})
      */
     private $email;
 
