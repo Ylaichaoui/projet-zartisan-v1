@@ -50,6 +50,9 @@ const FormRegisterArtisan = () => {
 		<div className="register-artisan">
 			<Row type="flex" justify="space-around" align="middle">
 				<Form className="artisan-form" onSubmit={handleFormArtisan(email, password, passwordCheck, siret)}>
+					<Form.Item label="* Siret">
+						<Input onChange={siretChangeValue} />
+					</Form.Item>
 					<Form.Item label="E-mail">
 						<Input onChange={emailChangeValue} />
 					</Form.Item>
@@ -58,9 +61,6 @@ const FormRegisterArtisan = () => {
 					</Form.Item>
 					<Form.Item label="Confirmer votre mots de passe" hasFeedback>
 						<Input.Password onChange={passwordCheckChangeValue} />
-					</Form.Item>
-					<Form.Item label="Siret">
-						<Input onChange={siretChangeValue} />
 					</Form.Item>
 					<Form.Item>
 						<Button type="primary" id="buttons" htmlType="submit">
