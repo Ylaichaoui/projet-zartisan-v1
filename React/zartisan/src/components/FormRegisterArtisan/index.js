@@ -63,7 +63,7 @@ const FormRegisterArtisan = () => {
 						<Input onChange={siretChangeValue} />
 					</Form.Item>
 					<Form.Item>
-						<Button type="primary" htmlType="submit">
+						<Button type="primary" id="buttons" htmlType="submit">
 							Confirmer
 						</Button>
 					</Form.Item>

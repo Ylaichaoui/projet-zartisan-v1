@@ -26,7 +26,7 @@ class Advice
 
     /**
      * @ORM\Column(type="boolean")
-     * Groups("user_artisan_single")
+     * @Groups("user_artisan_single")
      */
     private $isStatus;
 
@@ -37,14 +37,14 @@ class Advice
 
     /**
      * @ORM\Column(type="datetime")
-     * Groups("user_artisan_single")
+     * @Groups("user_artisan_single")
      */
     private $createdAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="advices")
      * @ORM\JoinColumn(nullable=false)
-     * Groups("user_artisan_single")
+     * @Groups("user_artisan_single")
      */
     private $userAuthor;
 

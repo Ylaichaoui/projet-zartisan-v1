@@ -101,7 +101,7 @@ const Header = () => {
 			if (connect === true) {
 				handleCancel();
 				connectModalVisible();
-				setTimeout(closeModalWelcome, 3000);
+				setTimeout(closeModalWelcome, 2000);
 			}
 		},
 		[ connect ]
@@ -112,7 +112,7 @@ const Header = () => {
    */
 	const ButtonGoToArtisanForm = withRouter(({ history }) => {
 		return (
-			<Button
+			<Button id="buttons"
 				onClick={() => {
 					handleCancel();
 					return history.push('/inscription/professionnel');
@@ -129,7 +129,7 @@ const Header = () => {
    */
 	const ButtonGoToUserForm = withRouter(({ history }) => {
 		return (
-			<Button
+			<Button id="buttons"
 				onClick={() => {
 					handleCancel();
 					return history.push('/inscription/particulier');
@@ -147,7 +147,7 @@ const Header = () => {
 				<Col span={24}>
 					<Col span={6}>
 						{/** Button Burger */}
-						<Button className="header-burger-button" onClick={showDrawer}>
+						<Button className="header-burger-button" id="burger" onClick={showDrawer}>
 							<Icon type="menu" />
 						</Button>
 

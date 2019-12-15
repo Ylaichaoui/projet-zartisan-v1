@@ -18,7 +18,7 @@ class Rate
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("user_artisan_single")
+
      */
     private $id;
 
@@ -48,7 +48,6 @@ class Rate
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="rate")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups("user_artisan_single")
      */
     private $userPro;
 

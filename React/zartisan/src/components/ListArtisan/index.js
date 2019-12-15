@@ -16,12 +16,11 @@ const ListArtisan = () => {
 	 */
 	const artisandata = useSelector((state) => state.search);
 
-	console.log('listartisan', artisandata);
+	//console.log('listartisan', artisandata);
 	let arrayArtisan = [];
 	for (let data in artisandata) {
 		arrayArtisan = artisandata[data];
 	}
-
 
 	//console.log(arrayArtisan);
 
@@ -33,10 +32,8 @@ const ListArtisan = () => {
 	}
 
 	//console.log(objectArtisan);
-	for (let i = 0; i < arrayArtisan.length; i++) {}
 
 	//console.log('hello', listData);
-
 
 	useEffect(() => {
 		dispatch(getRegions());
@@ -131,7 +128,8 @@ const ListArtisan = () => {
 		};
 		return (
 			<Button
-				className="home-button-search"
+        className="home-button-search"
+        id="buttons"
 				style={{ color: 'white', backgroundColor: '#bb9574', border: 'none' }}
 				onClick={handleSearch}
 			>
@@ -174,20 +172,18 @@ const ListArtisan = () => {
 							avatar={
 								<img style={{ width: '60px' }} src={`src/styles/pictures/company/${item.picture}`} />
 							}
-
 							title={
 								<Link
 									onClick={() => {
-										console.log('ta cliqué sur le lien youpi  !');
-										console.log('item >> ', item.id);
-										dispatch(artisanData(item.id));
+										//console.log('ta cliqué sur le lien youpi  !');
+										//console.log('item >> ', item.id);
+										dispatch(artisanData(item.id, item.email));
 									}}
 									to={`/page-artisan/${item.company}`}
 								>
 									{item.company}
 								</Link>
 							}
-
 							description={item.companyDescription}
 						/>
 						<Rate style={{ fontSize: '1em' }} disabled defaultValue={item.averageRate} />

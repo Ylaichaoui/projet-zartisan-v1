@@ -116,8 +116,8 @@ const Home = () => {
 		};
 		return (
 			<Button
-				className="home-button-search"
-				style={{ color: 'white', backgroundColor: '#bb9574', border: 'none' }}
+        className="home-button-search"
+        id="buttons"
 				onClick={handleSearch}
 			>
 				Recherche
