@@ -101,7 +101,7 @@ const Header = () => {
 			if (connect === true) {
 				handleCancel();
 				connectModalVisible();
-				setTimeout(closeModalWelcome, 3000);
+				setTimeout(closeModalWelcome, 2000);
 			}
 		},
 		[ connect ]
