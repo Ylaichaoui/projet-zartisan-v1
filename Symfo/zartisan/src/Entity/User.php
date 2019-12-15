@@ -198,23 +198,23 @@ class User implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Advice", mappedBy="userAuthor")
-     * @Groups("user_artisan_single")
      */
     private $advices;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Advice", mappedBy="userPro")
+     * @ORM\OneToMany(targetEntity="App\Entity\Advice", mappedBy="userPro", fetch="EAGER")
+     * @Groups("user_artisan_single")
      */
     private $advice;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Rate", mappedBy="userAuthor")
-     * @Groups("user_artisan_single")
      */
     private $rates;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Rate", mappedBy="userPro")
+     * @ORM\OneToMany(targetEntity="App\Entity\Rate", mappedBy="userPro", fetch="EAGER")
+     * @Groups("user_artisan_single")
      */
     private $rate;
 

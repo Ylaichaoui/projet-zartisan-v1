@@ -19,5 +19,17 @@ class AdviceRepository extends ServiceEntityRepository
         parent::__construct($registry, Advice::class);
     }
 
-
+    /**
+    * @return Advice[] Returns an array of Advice objects
+    */
+    public function isFoundAdvice($userPro){
+        $result = $this->createQueryBuilder('a')
+                ->andWhere('a.userPro = :userPro')
+                ->andwhere('a.isStatus = :isStatus')
+                ->setParameter('userPro', $userPro)
+                ->setParameter('isStatus', TRUE)
+                ->OrderBy('a.createdAt', 'DESC');
+      
+        return $result->getQuery()->getResult();
+    }
 }
