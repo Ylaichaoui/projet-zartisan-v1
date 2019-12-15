@@ -115,11 +115,7 @@ const Home = () => {
 			return history.push('/liste-artisan');
 		};
 		return (
-			<Button
-        className="home-button-search"
-        id="buttons"
-				onClick={handleSearch}
-			>
+			<Button className="home-button-search" id="buttons" onClick={handleSearch}>
 				Recherche
 			</Button>
 		);

@@ -8,7 +8,7 @@ import 'antd/dist/antd.css';
 import { Link, withRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { sendLogin, deconnect } from 'src/store/register/actions';
-
+import cookies from 'js-cookie';
 /**
  * Local imports
  */
@@ -112,7 +112,8 @@ const Header = () => {
    */
 	const ButtonGoToArtisanForm = withRouter(({ history }) => {
 		return (
-			<Button id="buttons"
+			<Button
+				id="buttons"
 				onClick={() => {
 					handleCancel();
 					return history.push('/inscription/professionnel');
@@ -129,7 +130,8 @@ const Header = () => {
    */
 	const ButtonGoToUserForm = withRouter(({ history }) => {
 		return (
-			<Button id="buttons"
+			<Button
+				id="buttons"
 				onClick={() => {
 					handleCancel();
 					return history.push('/inscription/particulier');

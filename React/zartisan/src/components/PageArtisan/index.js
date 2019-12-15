@@ -10,8 +10,14 @@ import cookies from 'js-cookie';
 import { sendRate } from 'src/store/rate/actions';
 
 const PageArtisan = () => {
-	const artisanObject = useSelector((state) => state.artisan);
-	//console.log(artisanObject);
+	const artisanSelector = useSelector((state) => state.artisan);
+	let artisanObject = {};
+	for (let artisan in artisanSelector) {
+		console.log(artisanSelector[artisan]);
+		artisanObject = artisanSelector[artisan];
+	}
+
+	console.log(artisanObject);
 
 	const connect = useSelector((state) => state.connect);
 	let token = '';
@@ -170,7 +176,6 @@ const PageArtisan = () => {
 						</Row>
 					</div>
 				</div>
-
 			</Row>
 
 			<div>
@@ -209,7 +214,6 @@ const PageArtisan = () => {
 						</h3>
 					</div>
 				</Carousel>
-
 			</div>
 
 			<div className="page-artisan-commentary">
@@ -234,7 +238,6 @@ const PageArtisan = () => {
 					/>
 				}{' '}
 			</div>
-
 		</div>
 	);
 };
