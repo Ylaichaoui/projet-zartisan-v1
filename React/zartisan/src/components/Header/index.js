@@ -143,6 +143,22 @@ const Header = () => {
 		);
 	});
 
+	/**
+	 * admin connection
+	 */
+
+	let token = cookies.get('TOKEN');
+
+	let parseJwt = (token) => {
+		try {
+			return JSON.parse(atob(token.split('.')[1]));
+		} catch (e) {
+			return null;
+		}
+	};
+	const admin = parseJwt(token).roles[0];
+	console.log(parseJwt(token).roles[0]);
+
 	return (
 		<div id="zheader">
 			<Row className="header" type="flex" justify="space-around">
@@ -172,7 +188,12 @@ const Header = () => {
 										<p>Bonjour vous êtes connecté</p>
 									</Modal>
 
-									{connect === true && <a href="#">Profil</a>}
+									{connect === true && admin !== 'ROLE_ADMIN' ? <a href="#">Profil</a> : ''}
+									{connect === true && admin === 'ROLE_ADMIN' ? (
+										<a href="http://localhost:8001/admin">Admin</a>
+									) : (
+										''
+									)}
 								</Text>
 							</Row>
 							<Row type="flex" justify="center" align="top">
