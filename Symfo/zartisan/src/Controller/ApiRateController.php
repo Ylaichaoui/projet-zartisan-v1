@@ -79,4 +79,24 @@ class ApiRateController extends AbstractController
             return $this->json(['error' => 'unexpected information for edit request'], 304);
         }   
     }
+
+    /**
+     * @Route("/single", name="single")
+     * list a user
+     */
+    public function single(Request $request, RateRepository $rateRepository)
+    {
+        if ($request->get('id')) {
+
+            $rate = $rateRepository->find($request->get('id')); 
+
+            if($rate != null){
+                return $this->json($rate, 200,[],['groups' => 'rate_value']);
+            } else {
+                return $this->json(['error' => 'rate not found'],404);
+            }
+        } else {
+            return $this->json(['error' => 'unexpected information for edit request'], 304);
+        }
+    }
 }
