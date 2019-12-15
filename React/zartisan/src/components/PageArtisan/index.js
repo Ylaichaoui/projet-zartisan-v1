@@ -58,7 +58,7 @@ const PageArtisan = () => {
 					<div>
 						code postal <span> Ville</span>
 					</div>
-					<Button>CONTACTER</Button>
+					<Button id="buttons">CONTACTER</Button>
 				</Col>
 			</Row>
 
@@ -82,7 +82,7 @@ const PageArtisan = () => {
 				</Carousel>
 			</Row>
 			<Row>
-				<Button>COMMENTER</Button>
+				<Button id="buttons">COMMENTER</Button>
 				<List
 					className="comment-list"
 					header={`${data.length} replies`}
