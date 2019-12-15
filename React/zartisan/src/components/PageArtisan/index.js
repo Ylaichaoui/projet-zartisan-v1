@@ -3,11 +3,11 @@ import 'antd/dist/antd.css';
 import { Row, Col, Carousel, Button, Rate, List, Comment, Tooltip, Link, Popover } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 
-import img from 'src/components/Header/picture/logo-zartisan.svg';
 import './style.sass';
 import moment from 'moment';
 import { artisanInfo } from '../../store/artisan/actions';
 import cookies from 'js-cookie';
+import { sendRate } from 'src/store/rate/actions';
 
 const PageArtisan = () => {
 	const artisanObject = useSelector((state) => state.artisan);
@@ -28,13 +28,13 @@ const PageArtisan = () => {
 		}
 	};
 
-	//console.log(parseJwt(token));
+	console.log(parseJwt(token));
 
-	let user = '';
-	let email = '';
+	let user = 'ROLE_UNDEFINED';
+	let mail = '';
 	if (parseJwt(token) != null) {
 		user = parseJwt(token).roles[0];
-		email = parseJwt(token).username;
+		mail = parseJwt(token).username;
 	}
 
 	//console.log(user);
@@ -109,8 +109,8 @@ const PageArtisan = () => {
 	const idArtisan = artisanObject.id;
 	const hide = () => {
 		setVisible(false);
-		console.log('vote', value, 'mail', email, 'id', idArtisan);
-		dispatch();
+		console.log('vote', value, 'mail', mail, 'id', idArtisan);
+		dispatch(sendRate(idArtisan, mail, value));
 	};
 
 	/**
@@ -158,7 +158,7 @@ const PageArtisan = () => {
 									<div>
 										{artisanObject.postalCode} <span>{artisanObject.city}</span>
 									</div>
-									{user != '' && (
+									{user != 'ROLE_UNDEFINED' && (
 										<div>
 											<h1>Contacter</h1>
 											<a href={`mailto:${artisanObject.email}`}>{artisanObject.email}</a>
@@ -173,15 +173,17 @@ const PageArtisan = () => {
 			</Row>
 
 			<div>
-				<Popover
-					placement="top"
-					trigger="click"
-					onVisibleChange={handleVisibleChange}
-					visible={visible}
-					content={content}
-				>
-					<a>Evaluation</a>
-				</Popover>
+				{user != 'ROLE_UNDEFINED' && (
+					<Popover
+						placement="top"
+						trigger="click"
+						onVisibleChange={handleVisibleChange}
+						visible={visible}
+						content={content}
+					>
+						<a>Evaluation</a>
+					</Popover>
+				)}
 			</div>
 
 			<div className="page-artisan-caroussel">
