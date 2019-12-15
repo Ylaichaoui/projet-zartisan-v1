@@ -1,20 +1,51 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import 'antd/dist/antd.css';
-import { Row, Col, Carousel, Button, Rate, List, Comment, Tooltip, Link } from 'antd';
-import { useSelector } from 'react-redux';
+import { Row, Col, Carousel, Button, Rate, List, Comment, Tooltip, Link, Popover } from 'antd';
+import { useSelector, useDispatch } from 'react-redux';
 
 import img from 'src/components/Header/picture/logo-zartisan.svg';
 import './style.sass';
 import moment from 'moment';
 import { artisanInfo } from '../../store/artisan/actions';
+import cookies from 'js-cookie';
 
 const PageArtisan = () => {
 	const artisanObject = useSelector((state) => state.artisan);
-	console.log(artisanObject);
+	//console.log(artisanObject);
 
+	const connect = useSelector((state) => state.connect);
+	let token = '';
+	if (connect === true) {
+		console.log('je suis connecté');
+		token = cookies.get('TOKEN');
+	}
+
+	let parseJwt = (token) => {
+		try {
+			return JSON.parse(atob(token.split('.')[1]));
+		} catch (e) {
+			return null;
+		}
+	};
+
+	//console.log(parseJwt(token));
+
+	let user = '';
+	let email = '';
+	if (parseJwt(token) != null) {
+		user = parseJwt(token).roles[0];
+		email = parseJwt(token).username;
+	}
+
+	//console.log(user);
+	//console.log(email);
 	const dataArtisan = [];
 	dataArtisan.push(artisanObject);
 
+	let phone = '';
+	artisanObject.phone != undefined ? (phone = artisanObject.phone.slice(1)) : phone;
+
+	//console.log(phone);
 	const data = [
 		{
 			actions: [ <span key="comment-list-reply-to-0">Reply to</span> ],
@@ -50,78 +81,134 @@ const PageArtisan = () => {
 		}
 	];
 
-	console.log('picture: ', artisanObject.picture, 'note : ', artisanObject.averageRate);
+	//console.log('picture: ', artisanObject.picture, 'note : ', artisanObject.averageRate);
 
 	const Rating = () => {
 		return <Rate style={{ fontSize: '1em' }} disabled defaultValue={artisanObject.averageRate} />;
 	};
+
+	/**
+	 * Rate a artisan
+	 */
+
+	/**Hooks for display popover of rate link */
+	const [ visible, setVisible ] = useState(false);
+	const [ value, setValue ] = useState(null);
+
+	/**
+	 * open popover
+	 */
+	const handleVisibleChange = () => {
+		setVisible(true);
+	};
+
+	/**
+   	* close popover
+	   */
+	const dispatch = useDispatch();
+	const idArtisan = artisanObject.id;
+	const hide = () => {
+		setVisible(false);
+		console.log('vote', value, 'mail', email, 'id', idArtisan);
+		dispatch();
+	};
+
+	/**
+ *  rate value
+ */
+
+	const handleChange = (event) => {
+		console.log(event);
+		setValue(event);
+	};
+
+	const content = (
+		<div>
+			<p>Evaluer votre artisan :</p>
+			<Rate onChange={handleChange} value={value} />
+			<Button onClick={hide}>Valider</Button>
+		</div>
+	);
+
 	return (
 		<div id="page-artisan">
-			<div className="page-artisan-description">
-				<div>
-					<Col span={14}>
-						<div>{artisanObject.company}</div>
-					</Col>
-					<Col span={14}>
-						<img
-							style={{ width: '60px' }}
-							src={`../src/styles/pictures/company/${artisanObject.picture}`}
-						/>
-						<Rating />
-					</Col>
+			<Row>
+				<div className="page-artisan-description">
+					<Row>
+						<div>
+							<div>{artisanObject.company}</div>
+						</div>
+					</Row>
+					<div className="artisan-description">
+						<Row>
+							<Col span={15}>
+								<div>
+									<img
+										className="description-picture"
+										src={`../src/styles/pictures/company/${artisanObject.picture}`}
+									/>
+									<Rating />
+								</div>
+							</Col>
+							<Col span={9}>
+								<div className="description-info">
+									<div>
+										{artisanObject.numberWay} <span>{artisanObject.way}</span>
+									</div>
+									<div>
+										{artisanObject.postalCode} <span>{artisanObject.city}</span>
+									</div>
+									{user != '' && (
+										<div>
+											<h1>Contacter</h1>
+											<a href={`mailto:${artisanObject.email}`}>{artisanObject.email}</a>
+											<a href={`tel:+33${phone}`}>{artisanObject.phone}</a>
+										</div>
+									)}
+								</div>
+							</Col>
+						</Row>
+					</div>
 				</div>
-				<Row>
-					<Col>
-						<div>
-							{artisanObject.numberWay}
-							<span>{artisanObject.way}</span>
-						</div>
-						<div>
-							{artisanObject.postalCode} <span>{artisanObject.city}</span>
-						</div>
-						<h1>Contacter</h1>
-						<p>{artisanObject.phone}</p>
-						<p>{artisanObject.email}</p>
-					</Col>
-				</Row>
+			</Row>
+
+			<div>
+				<Popover
+					placement="top"
+					trigger="click"
+					onVisibleChange={handleVisibleChange}
+					visible={visible}
+					content={content}
+				>
+					<a>Evaluation</a>
+				</Popover>
 			</div>
 
-			<Row>
+			<div className="page-artisan-caroussel">
 				<Carousel autoplay>
 					<div>
 						<h3>
-							<img
-								className="imgCarousel"
-								src={`src/styles/pictures/company/${artisanObject.picture}`}
-								alt=""
-							/>{' '}
-							1
+							<img className="imgCarousel" src="../src/styles/pictures/caroussel/artisan2.jpg" alt="" />
+						</h3>
+					</div>
+					<div>
+						<h3>
+							<img className="imgCarousel" src="../src/styles/pictures/caroussel/artisan4.jpeg" alt="" />
 						</h3>
 					</div>
 					<div>
 						<h3>
 							<img
 								className="imgCarousel"
-								src={`src/styles/pictures/company/${artisanObject.picture}`}
-								alt=""
-							/>
-							2
-						</h3>
-					</div>
-					<div>
-						<h3>
-							<img
-								className="imgCarousel"
-								src={`src/styles/pictures/company/${artisanObject.picture}`}
+								src="../src/styles/pictures/caroussel/artisan3.jpeg"
 								alt=""
 							/>{' '}
-							3
 						</h3>
 					</div>
 				</Carousel>
-			</Row>
+			</div>
 
-			<Row>
+			<div className="page-artisan-commentary">
 				<Button>COMMENTER</Button>
 				{
 					<List
@@ -142,7 +229,7 @@ const PageArtisan = () => {
 						)}
 					/>
 				}{' '}
-			</Row>
+			</div>
 		</div>
 	);
 };
