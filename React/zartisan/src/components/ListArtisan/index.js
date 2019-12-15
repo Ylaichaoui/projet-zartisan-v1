@@ -131,7 +131,8 @@ const ListArtisan = () => {
 		};
 		return (
 			<Button
-				className="home-button-search"
+        className="home-button-search"
+        id="buttons"
 				style={{ color: 'white', backgroundColor: '#bb9574', border: 'none' }}
 				onClick={handleSearch}
 			>

@@ -56,7 +56,7 @@ const FormRegisterUser = () => {
 						<Input.Password onChange={passwordCheckChangeValue} />
 					</Form.Item>
 					<Form.Item>
-						<Button type="primary" htmlType="submit">
+						<Button type="primary" id="buttons" htmlType="submit">
 							Confirmer
 						</Button>
 					</Form.Item>
