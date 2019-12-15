@@ -2,10 +2,7 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 
@@ -24,7 +21,7 @@ class Rate
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single","rate_value"})
      */
     private $value;
 
