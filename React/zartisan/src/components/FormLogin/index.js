@@ -39,7 +39,8 @@ const FormLogin = ({ handleSubmitLogin }) => {
 					</a>
 				</Form.Item>
 				<Button
-					type="default"
+          type="default"
+          id="buttons"
 					htmlType="submit"
 					className="login-form-button"
 					style={{ color: 'white', background: '#bb9574' }}

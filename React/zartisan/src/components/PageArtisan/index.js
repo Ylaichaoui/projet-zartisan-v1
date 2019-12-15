@@ -170,6 +170,7 @@ const PageArtisan = () => {
 						</Row>
 					</div>
 				</div>
+
 			</Row>
 
 			<div>
@@ -208,10 +209,11 @@ const PageArtisan = () => {
 						</h3>
 					</div>
 				</Carousel>
+
 			</div>
 
 			<div className="page-artisan-commentary">
-				<Button>COMMENTER</Button>
+				<Button id="buttons">COMMENTER</Button>
 				{
 					<List
 						className="comment-list"
@@ -232,6 +234,7 @@ const PageArtisan = () => {
 					/>
 				}{' '}
 			</div>
+
 		</div>
 	);
 };

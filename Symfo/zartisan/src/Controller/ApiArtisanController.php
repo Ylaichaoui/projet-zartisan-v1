@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\AdviceRepository;
+use App\Repository\RateRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,7 +41,7 @@ class ApiArtisanController extends AbstractController
     /**
      * @Route("/recherche", name="recherche")
      */
-    public function search(UserRepository $userRepository, Request $request)
+    public function searchByRate(UserRepository $userRepository, Request $request)
     {
         $arrayUsers = [];
         if ($request->get('idJob')) {
@@ -47,7 +49,7 @@ class ApiArtisanController extends AbstractController
             $job = $request->get('idJob');
             $region = $request->get('nameRegion');
 
-            $arrayUsers = $userRepository->search($job,$region);
+            $arrayUsers = $userRepository->searchOrderRate($job,$region);
 
             return $this->json($arrayUsers, 200, [],['groups' => 'user_artisan_search']);
         }
@@ -82,29 +84,28 @@ class ApiArtisanController extends AbstractController
         }
         return $this->json(['error' => 'unexpected information for edit request'], 304, []);
     }
-    
+
     /**
      * @Route("/single", name="single")
      */
-    public function single(Request $request, UserRepository $userRepository)
+    public function single(Request $request, AdviceRepository $adviceRepository, RateRepository $rateRepository,
+     UserRepository $userRepository)
     {
         if ($request->get('email')) {
             
             if ($request->get('email')) {
                 $user = $userRepository->isFoundMail($request->get('email'));
-                
                 if ($user == NULL) {
 
                     return $this->json(['error' => 'no user register'], 304, []);
 
                 }
 
-                return $this->json($user , 200, [], ['groups' => 'user_artisan_single']);
+                return $this->json([$user] , 200, [], ['groups' => 'user_artisan_single']);
             }
             return $this->json(['error' => 'no email found'], 304, []);
         }
         return $this->json(['error' => 'no request'], 304, []);
     }
-
 
 }

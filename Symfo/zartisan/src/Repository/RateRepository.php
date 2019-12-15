@@ -41,4 +41,25 @@ class RateRepository extends ServiceEntityRepository
             return $result;
         }
     }
+
+    public function isFoundRate($userPro){
+        $result = $this->createQueryBuilder('r')
+                ->andWhere('r.userPro = :userPro')
+                ->setParameter('userPro', $userPro)
+                ->OrderBy('r.createdAt', 'DESC');
+      
+        return $result->getQuery()->getResult();
+    }
+
+
+    public function isFoundRateByUser($userPro, $userAuthor){
+        $result = $this->createQueryBuilder('r')
+                ->andWhere('r.userPro = :userPro')
+                ->setParameter('userPro', $userPro)
+                ->andWhere('r.userAuthor = :userAuthor')
+                ->setParameter('userAuthor', $userAuthor);
+      
+        return $result->getQuery()->getResult();
+    }
+
 }
