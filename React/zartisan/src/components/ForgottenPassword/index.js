@@ -6,23 +6,33 @@ import { withRouter } from 'react-router-dom';
 
 const ForgettenPassword = () => {
 	const dispatch = useDispatch();
+	const [ email, setEmail ] = useState('');
+	const [ password, setPassword ] = useState('');
+	const [ passwordCheck, setPasswordCheck ] = useState('');
 
-	const handleFormUser = (email, password) => {
+	const handleFormUser = (email, password, passwordCheck) => {
 		return (event) => {
 			//console.log(email, password);
 			event.preventDefault();
-			dispatch(sendPasswordForget(email, password));
+			if (password === passwordCheck && password !== '') {
+				// console.log('mots est correct');
+				dispatch(sendPasswordForget(email, password));
+			}
 		};
 	};
 
-	const [ email, setEmail ] = useState('');
-	const [ password, setPassword ] = useState('');
 	const emailChangeValue = (event) => {
 		setEmail(event.target.value);
+		console.log(event.target.value);
 	};
 
 	const passwordChangeValue = (event) => {
 		setPassword(event.target.value);
+		console.log(event.target.value);
+	};
+	const passwordCheckChangeValue = () => {
+		setPasswordCheck(event.target.value);
+		console.log(event.target.value);
 	};
 
 	const ButtonGoToUserForm = withRouter(({ history }) => {
@@ -31,7 +41,7 @@ const ForgettenPassword = () => {
 				id="buttons"
 				htmlType="submit"
 				onClick={(e) => {
-					e.preventDefault();
+					//e.preventDefault();
 					return history.push('/');
 				}}
 			>
@@ -42,9 +52,8 @@ const ForgettenPassword = () => {
 
 	return (
 		<div className="register-user">
-			{/* <Form method="POST" onSubmit={handleSubmitLogin(email, password)} /> */}
-			<Row type="flex" justify="space-around" align="middle" onSubmit={handleFormUser(email, password)}>
-				<Form className="user-form">
+			<Row type="flex" justify="space-around" align="middle">
+				<Form className="user-form" onSubmit={handleFormUser(email, password, passwordCheck)}>
 					<h6>Mot de passe oublié</h6>
 					<Form.Item label="E-mail">
 						<Input onChange={emailChangeValue} required />
@@ -52,7 +61,12 @@ const ForgettenPassword = () => {
 					<Form.Item label="Nouveau mot de passe" hasFeedback>
 						<Input.Password onChange={passwordChangeValue} required />
 					</Form.Item>
-					<ButtonGoToUserForm />
+					<Form.Item label="Confirmer votre mot de passe" hasFeedback>
+						<Input.Password onChange={passwordCheckChangeValue} />
+					</Form.Item>
+					<Form.Item>
+						<ButtonGoToUserForm />
+					</Form.Item>
 				</Form>
 			</Row>
 		</div>

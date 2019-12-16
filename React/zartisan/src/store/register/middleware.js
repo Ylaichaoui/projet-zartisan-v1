@@ -162,6 +162,7 @@ export default (store) => (next) => (action) => {
 				password: action.password
 			};
 			console.log(data);
+
 			return axios({
 				method: 'post',
 				url: 'http://localhost:8001/resetPassMail',
