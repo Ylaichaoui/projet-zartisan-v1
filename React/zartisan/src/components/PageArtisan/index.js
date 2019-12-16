@@ -159,6 +159,13 @@ const PageArtisan = () => {
 					</Row>
 					<div className="artisan-description">
 						<Row>
+							{user != 'ROLE_UNDEFINED' && (
+								<div>
+									<h1>Contacter</h1>
+									<a href={`mailto:${artisanObject.email}`}>{artisanObject.email}</a>
+									<a href={`tel:+33${phone}`}>{artisanObject.phone}</a>
+								</div>
+							)}
 							<Col span={15}>
 								<div>
 									<img
@@ -176,33 +183,12 @@ const PageArtisan = () => {
 									<div>
 										{artisanObject.postalCode} <span>{artisanObject.city}</span>
 									</div>
-									{user != 'ROLE_UNDEFINED' && (
-										<div>
-											<h1>Contacter</h1>
-											<a href={`mailto:${artisanObject.email}`}>{artisanObject.email}</a>
-											<a href={`tel:+33${phone}`}>{artisanObject.phone}</a>
-										</div>
-									)}
 								</div>
 							</Col>
 						</Row>
 					</div>
 				</div>
 			</Row>
-
-			<div>
-				{user != 'ROLE_UNDEFINED' && (
-					<Popover
-						placement="top"
-						trigger="click"
-						onVisibleChange={handleVisibleChange}
-						visible={visible}
-						content={content}
-					>
-						<a>Evaluation</a>
-					</Popover>
-				)}
-			</div>
 
 			<div className="page-artisan-caroussel">
 				<Carousel autoplay>
