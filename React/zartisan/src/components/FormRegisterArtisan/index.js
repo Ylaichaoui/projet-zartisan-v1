@@ -50,7 +50,7 @@ const FormRegisterArtisan = () => {
 		<div className="register-artisan">
 			<Row type="flex" justify="space-around" align="middle">
 				<Form className="artisan-form" onSubmit={handleFormArtisan(email, password, passwordCheck, siret)}>
-					<Form.Item label="* Siret">
+					<Form.Item label="Siret">
 						<Input onChange={siretChangeValue} />
 					</Form.Item>
 					<Form.Item label="E-mail">
