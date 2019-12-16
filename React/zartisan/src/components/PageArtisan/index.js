@@ -158,13 +158,16 @@ const PageArtisan = () => {
 	});
 
 	const ButtonAdvice = withRouter(({ history }) => {
+		const handleAdvice = () => {
+			if (user !== -1 || artisanUser !== -1) {
+				console.log('commentaire');
+			} else {
+				history.push('/inscription/particulier');
+			}
+		};
+
 		return (
-			<Button
-				onClick={() => {
-					return history.push('/inscription/particulier');
-				}}
-				id="buttons"
-			>
+			<Button onClick={handleAdvice} id="buttons">
 				Commenter
 			</Button>
 		);
