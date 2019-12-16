@@ -147,7 +147,7 @@ const ListArtisan = () => {
 			dispatch(artisanData(item.id, item.email));
 			setTimeout(() => {
 				history.push(`/page-artisan/${item.company}`);
-			}, 2000);
+			}, 1000);
 		};
 		return <a onClick={handleSearch}>{item.company}</a>;
 	});

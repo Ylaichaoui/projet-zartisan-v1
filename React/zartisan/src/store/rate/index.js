@@ -1,6 +1,6 @@
 import { RATE } from 'src/store/rate/actions';
 
-const initialState = 0;
+const initialState = null;
 
 export default (state = initialState, action) => {
 	// console.log('reducer >>', action);

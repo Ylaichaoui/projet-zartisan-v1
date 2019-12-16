@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import 'antd/dist/antd.css';
-import { Row, Col, Carousel, Button, Rate, List, Comment, Tooltip, Link, Popover } from 'antd';
+import { Row, Col, Carousel, Button, Rate, List, Comment, Tooltip, Link, Popover, Icon } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 
 import './style.sass';
@@ -8,6 +8,7 @@ import moment from 'moment';
 import { artisanInfo } from '../../store/artisan/actions';
 import cookies from 'js-cookie';
 import { sendRate } from 'src/store/rate/actions';
+import { artisanData } from 'src/store/artisan/actions';
 
 const PageArtisan = () => {
 	const artisanSelector = useSelector((state) => state.artisan);
@@ -16,16 +17,24 @@ const PageArtisan = () => {
 
 	let artisanObject = {};
 	for (let artisan in artisanSelector) {
-		console.log(artisanSelector[artisan]);
+		//console.log(artisanSelector[artisan]);
 		artisanObject = artisanSelector[artisan];
 	}
+
+	if (averageRate != null) {
+		artisanObject.averageRate = averageRate;
+	}
+
+	useEffect(() => {
+		artisanSelector;
+	});
 
 	console.log(artisanObject);
 
 	const connect = useSelector((state) => state.connect);
 	let token = '';
 	if (connect === true) {
-		console.log('je suis connecté');
+		//console.log('je suis connecté');
 		token = cookies.get('TOKEN');
 	}
 
@@ -92,7 +101,6 @@ const PageArtisan = () => {
 
 	//console.log('picture: ', artisanObject.picture, 'note : ', artisanObject.averageRate);
 
-
 	const Rating = () => {
 		return <Rate style={{ fontSize: '1em' }} disabled defaultValue={artisanObject.averageRate} />;
 	};
@@ -117,10 +125,9 @@ const PageArtisan = () => {
 	   */
 	const dispatch = useDispatch();
 	const idArtisan = artisanObject.id;
+
 	const hide = () => {
 		setVisible(false);
-		console.log('vote', value, 'mail', mail, 'id', idArtisan);
-		dispatch(sendRate(idArtisan, mail, value));
 	};
 
 	/**
@@ -130,15 +137,14 @@ const PageArtisan = () => {
 	const handleChange = (event) => {
 		console.log(event);
 		setValue(event);
+		console.log('vote', event, 'mail', mail, 'id', idArtisan);
+		dispatch(sendRate(idArtisan, mail, event));
 	};
 
-
-
 	const content = (
-		<div>
+		<div onClick={hide}>
 			<p>Evaluer votre artisan :</p>
 			<Rate onChange={handleChange} value={value} />
-			<Button onClick={hide}>Valider</Button>
 		</div>
 	);
 
@@ -153,7 +159,18 @@ const PageArtisan = () => {
 					</Row>
 					<div className="artisan-description">
 						<Row>
+
+							{user != 'ROLE_UNDEFINED' && (
+								<div>
+									<h1>Contacter</h1>
+									<a href={`mailto:${artisanObject.email}`}>{artisanObject.email}</a>
+									<a href={`tel:+33${phone}`}>{artisanObject.phone}</a>
+								</div>
+							)}
+							
+
 							<Col span={12}>
+
 								<div>
 									<img
 										className="description-picture"
@@ -167,33 +184,12 @@ const PageArtisan = () => {
 									<div>
 										{artisanObject.numberWay} {artisanObject.typeWay} {artisanObject.way} {artisanObject.postalCode} {artisanObject.city}
 									</div>
-									{user != 'ROLE_UNDEFINED' && (
-										<div>
-											<h1>Contacter</h1>
-											<a href={`mailto:${artisanObject.email}`}>{artisanObject.email}</a>
-											<a href={`tel:+33${phone}`}>{artisanObject.phone}</a>
-										</div>
-									)}
 								</div>
 							</Col>
 						</Row>
 					</div>
 				</div>
 			</Row>
-
-			<div>
-				{user != 'ROLE_UNDEFINED' && (
-					<Popover
-						placement="top"
-						trigger="click"
-						onVisibleChange={handleVisibleChange}
-						visible={visible}
-						content={content}
-					>
-						<a>Evaluation</a>
-					</Popover>
-				)}
-			</div>
 
 			<div className="page-artisan-caroussel">
 				<Carousel autoplay>
@@ -221,10 +217,25 @@ const PageArtisan = () => {
 
 			<div className="page-artisan-commentary">
 				<Button id="buttons">COMMENTER</Button>
+				<div>
+					{user != 'ROLE_UNDEFINED' && (
+						<Popover
+							placement="top"
+							trigger="click"
+							onVisibleChange={handleVisibleChange}
+							visible={visible}
+							content={content}
+						>
+							<Button id="buttons">Evaluation</Button>
+						</Popover>
+					)}
+				</div>
+				<div>
+					1 <Icon type="message" />
+				</div>
 				{
 					<List
 						className="comment-list"
-						header={`${data.length} replies`}
 						itemLayout="horizontal"
 						dataSource={data}
 						renderItem={(item) => (
