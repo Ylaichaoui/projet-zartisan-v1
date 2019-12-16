@@ -55,9 +55,12 @@ const Header = () => {
    * open form login popup and close menu burger
    */
 	const showModalLogin = () => {
-		setModalLogin(true);
 		onClose();
+		setTimeout(() => {
+			setModalLogin(true);
+		}, 1000);
 	};
+
 	const connectModalVisible = () => {
 		setConnectVisible(true);
 	};
@@ -66,8 +69,10 @@ const Header = () => {
    * open form register popup and close menu burger
    */
 	const showModalRegister = () => {
-		setModalRegister(true);
 		onClose();
+		setTimeout(() => {
+			setModalRegister(true);
+		}, 1000);
 	};
 	/**
    * close form popup
@@ -170,7 +175,7 @@ const Header = () => {
 						</Button>
 
 						{/** Menu of Burger */}
-						<Drawer placement="top" closable={true} onClose={onClose} visible={visible}>
+						<Drawer placement="top" onClose={onClose} visible={visible} closable={true}>
 							<Row type="flex" justify="center" align="top">
 								<img src={logo} alt="zartisan image" className="logo-zartisan" />
 							</Row>

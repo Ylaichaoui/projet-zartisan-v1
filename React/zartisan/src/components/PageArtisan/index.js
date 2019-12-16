@@ -25,10 +25,6 @@ const PageArtisan = () => {
 		artisanObject.averageRate = averageRate;
 	}
 
-	useEffect(() => {
-		artisanSelector;
-	});
-
 	console.log(artisanObject);
 
 	const connect = useSelector((state) => state.connect);
@@ -48,14 +44,17 @@ const PageArtisan = () => {
 
 	console.log(parseJwt(token));
 
-	let user = 'ROLE_UNDEFINED';
+	let user = -1;
+	let artisanUser = -1;
 	let mail = '';
 	if (parseJwt(token) != null) {
-		user = parseJwt(token).roles[0];
+		user = parseJwt(token).roles.indexOf('ROLE_USER');
+		artisanUser = parseJwt(token).roles.indexOf('ROLE_ARTISAN');
 		mail = parseJwt(token).username;
 	}
 
-	//console.log(user);
+	console.log(user);
+	console.log(artisanUser);
 	//console.log(email);
 	const dataArtisan = [];
 	dataArtisan.push(artisanObject);
@@ -110,14 +109,14 @@ const PageArtisan = () => {
 	 */
 
 	/**Hooks for display popover of rate link */
-	const [ visible, setVisible ] = useState(false);
+	const [ visibleRate, setVisibleRate ] = useState(false);
 	const [ value, setValue ] = useState(null);
 
 	/**
 	 * open popover
 	 */
 	const handleVisibleChange = () => {
-		setVisible(true);
+		setVisibleRate(true);
 	};
 
 	/**
@@ -127,7 +126,7 @@ const PageArtisan = () => {
 	const idArtisan = artisanObject.id;
 
 	const hide = () => {
-		setVisible(false);
+		setVisibleRate(false);
 	};
 
 	/**
@@ -159,18 +158,17 @@ const PageArtisan = () => {
 					</Row>
 					<div className="artisan-description">
 						<Row>
-
-							{user != 'ROLE_UNDEFINED' && (
+							{user !== -1 || artisanUser !== -1 ? (
 								<div>
 									<h1>Contacter</h1>
 									<a href={`mailto:${artisanObject.email}`}>{artisanObject.email}</a>
 									<a href={`tel:+33${phone}`}>{artisanObject.phone}</a>
 								</div>
+							) : (
+								''
 							)}
-							
 
 							<Col span={12}>
-
 								<div>
 									<img
 										className="description-picture"
@@ -182,7 +180,8 @@ const PageArtisan = () => {
 							<Col span={12}>
 								<div className="description-info">
 									<div>
-										{artisanObject.numberWay} {artisanObject.typeWay} {artisanObject.way} {artisanObject.postalCode} {artisanObject.city}
+										{artisanObject.numberWay} {artisanObject.typeWay} {artisanObject.way}{' '}
+										{artisanObject.postalCode} {artisanObject.city}
 									</div>
 								</div>
 							</Col>
@@ -217,19 +216,21 @@ const PageArtisan = () => {
 
 			<div className="page-artisan-commentary">
 				<Button id="buttons">COMMENTER</Button>
-				<div>
-					{user != 'ROLE_UNDEFINED' && (
+				{user !== -1 || artisanUser !== -1 ? (
+					<div>
 						<Popover
 							placement="top"
 							trigger="click"
 							onVisibleChange={handleVisibleChange}
-							visible={visible}
+							visible={visibleRate}
 							content={content}
 						>
 							<Button id="buttons">Evaluation</Button>
 						</Popover>
-					)}
-				</div>
+					</div>
+				) : (
+					''
+				)}
 				<div>
 					1 <Icon type="message" />
 				</div>
