@@ -2,18 +2,17 @@ import React, { useState, useEffect } from 'react';
 import 'antd/dist/antd.css';
 import { Row, Col, Carousel, Button, Rate, List, Comment, Tooltip, Link, Popover, Icon } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import './style.sass';
 import moment from 'moment';
-import { artisanInfo } from '../../store/artisan/actions';
 import cookies from 'js-cookie';
 import { sendRate } from 'src/store/rate/actions';
-import { artisanData } from 'src/store/artisan/actions';
 
 const PageArtisan = () => {
 	const artisanSelector = useSelector((state) => state.artisan);
 	const averageRate = useSelector((state) => state.rate);
-	console.log('note moyenne', averageRate);
+	//console.log('note moyenne', averageRate);
 
 	let artisanObject = {};
 	for (let artisan in artisanSelector) {
@@ -25,7 +24,7 @@ const PageArtisan = () => {
 		artisanObject.averageRate = averageRate;
 	}
 
-	console.log(artisanObject);
+	//console.log(artisanObject);
 
 	const connect = useSelector((state) => state.connect);
 	let token = '';
@@ -42,7 +41,7 @@ const PageArtisan = () => {
 		}
 	};
 
-	console.log(parseJwt(token));
+	//console.log(parseJwt(token));
 
 	let user = -1;
 	let artisanUser = -1;
@@ -53,16 +52,23 @@ const PageArtisan = () => {
 		mail = parseJwt(token).username;
 	}
 
-	console.log(user);
-	console.log(artisanUser);
+	//console.log(user);
+	//console.log(artisanUser);
 	//console.log(email);
 	const dataArtisan = [];
 	dataArtisan.push(artisanObject);
 
 	let phone = '';
 	artisanObject.phone != undefined ? (phone = artisanObject.phone.slice(1)) : phone;
-
 	//console.log(phone);
+
+	console.log(artisanObject.advice);
+	let arrayAdvice = [];
+	if (artisanObject.advice !== undefined) {
+		arrayAdvice = artisanObject.advice;
+	}
+
+	console.log(arrayAdvice);
 	const data = [
 		{
 			actions: [ <span key="comment-list-reply-to-0">Reply to</span> ],
@@ -77,22 +83,6 @@ const PageArtisan = () => {
 			datetime: (
 				<Tooltip title={moment().subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss')}>
 					<span>{moment().subtract(1, 'days').fromNow()}</span>
-				</Tooltip>
-			)
-		},
-		{
-			actions: [ <span key="comment-list-reply-to-0">Reply to</span> ],
-			author: 'Han Solo',
-			avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-			content: (
-				<p>
-					We supply a series of design principles, practical patterns and high quality design resources
-					(Sketch and Axure), to help people create their product prototypes beautifully and efficiently.
-				</p>
-			),
-			datetime: (
-				<Tooltip title={moment().subtract(2, 'days').format('YYYY-MM-DD HH:mm:ss')}>
-					<span>{moment().subtract(2, 'days').fromNow()}</span>
 				</Tooltip>
 			)
 		}
@@ -147,6 +137,42 @@ const PageArtisan = () => {
 		</div>
 	);
 
+	/**
+	 * redirect to register user onClick Contacter
+	 */
+
+	/**
+   * button for navigate towards form register user (use withRouter for manage history url)
+   */
+	const ButtonContact = withRouter(({ history }) => {
+		return (
+			<Button
+				onClick={() => {
+					return history.push('/inscription/particulier');
+				}}
+				id="buttons"
+			>
+				Contacter
+			</Button>
+		);
+	});
+
+	const ButtonAdvice = withRouter(({ history }) => {
+		const handleAdvice = () => {
+			if (user !== -1 || artisanUser !== -1) {
+				console.log('commentaire');
+			} else {
+				history.push('/inscription/particulier');
+			}
+		};
+
+		return (
+			<Button onClick={handleAdvice} id="buttons">
+				Commenter
+			</Button>
+		);
+	});
+
 	return (
 		<div id="page-artisan">
 			<Row>
@@ -158,16 +184,6 @@ const PageArtisan = () => {
 					</Row>
 					<div className="artisan-description">
 						<Row>
-							{user !== -1 || artisanUser !== -1 ? (
-								<div>
-									<h1>Contacter</h1>
-									<a href={`mailto:${artisanObject.email}`}>{artisanObject.email}</a>
-									<a href={`tel:+33${phone}`}>{artisanObject.phone}</a>
-								</div>
-							) : (
-								''
-							)}
-
 							<Col span={12}>
 								<div>
 									<img
@@ -185,8 +201,8 @@ const PageArtisan = () => {
 									</div>
 								</div>
 							</Col>
-							{user == 'ROLE_UNDEFINED' && <Button id="buttons">Contacter</Button>}
-							{user != 'ROLE_UNDEFINED' && (
+
+							{user !== -1 || artisanUser !== -1 ? (
 								<Col span={24}>
 									<div>
 										<p>
@@ -197,6 +213,8 @@ const PageArtisan = () => {
 										</p>
 									</div>
 								</Col>
+							) : (
+								<ButtonContact />
 							)}
 						</Row>
 					</div>
@@ -228,7 +246,7 @@ const PageArtisan = () => {
 			</div>
 
 			<div className="page-artisan-commentary">
-				<Button id="buttons">COMMENTER</Button>
+				<ButtonAdvice />
 				{user !== -1 || artisanUser !== -1 ? (
 					<div>
 						<Popover
@@ -245,21 +263,22 @@ const PageArtisan = () => {
 					''
 				)}
 				<div>
-					1 <Icon type="message" />
+					{arrayAdvice.length} <Icon type="message" />
 				</div>
 				{
 					<List
 						className="comment-list"
 						itemLayout="horizontal"
-						dataSource={data}
+						dataSource={arrayAdvice}
 						renderItem={(item) => (
 							<li>
+								{console.log('commentary', item)}
 								<Comment
 									actions={item.actions}
-									author={item.author}
-									avatar={item.avatar}
-									content={item.content}
-									datetime={item.datetime}
+									author={item.userAuthor.firstname}
+									avatar={`..src/styles/pictures/user/${item.userAuthor.picture}`}
+									content={item.body}
+									datetime={item.createdAt}
 								/>
 							</li>
 						)}
