@@ -185,6 +185,19 @@ const PageArtisan = () => {
 									</div>
 								</div>
 							</Col>
+							{user == 'ROLE_UNDEFINED' && <Button id="buttons">Contacter</Button>}
+							{user != 'ROLE_UNDEFINED' && (
+								<Col span={24}>
+									<div>
+										<p>
+											Email : <a href={`mailto:${artisanObject.email}`}>{artisanObject.email}</a>
+										</p>
+										<p>
+											Téléphone : <a href={`tel:+33${phone}`}>{artisanObject.phone}</a>
+										</p>
+									</div>
+								</Col>
+							)}
 						</Row>
 					</div>
 				</div>
