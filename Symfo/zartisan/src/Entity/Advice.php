@@ -39,7 +39,7 @@ class Advice
      * @ORM\Column(type="datetime")
      * @Groups("user_artisan_single")
      */
-    private $createdAt;
+    public $createdAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="advices")
@@ -100,9 +100,9 @@ class Advice
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt()
     {
-        return $this->createdAt;
+        return $this->createdAt->format('d/m/Y H:i:s');
     }
 
     public function setCreatedAt(\DateTimeInterface $createdAt): self

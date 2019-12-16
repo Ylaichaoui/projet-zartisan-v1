@@ -630,8 +630,11 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt()
     {
+        if($this->createdAt != NULL){
+            return $this->createdAt->format('d/m/Y H:i:s');
+        }
         return $this->createdAt;
     }
 
@@ -642,8 +645,11 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt()
     {
+        if($this->updatedAt != NULL){
+            return $this->updatedAt->format('d/m/Y H:i:s');
+        }
         return $this->updatedAt;
     }
 
