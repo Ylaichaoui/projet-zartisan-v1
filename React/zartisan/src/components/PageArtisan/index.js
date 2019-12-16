@@ -8,6 +8,7 @@ import './style.sass';
 import moment from 'moment';
 import cookies from 'js-cookie';
 import { sendRate } from 'src/store/rate/actions';
+import { alertAdvice } from 'src/store/advice/actions';
 
 const PageArtisan = () => {
 	const artisanSelector = useSelector((state) => state.artisan);
@@ -24,7 +25,7 @@ const PageArtisan = () => {
 		artisanObject.averageRate = averageRate;
 	}
 
-	//console.log(artisanObject);
+	console.log(artisanObject);
 
 	const connect = useSelector((state) => state.connect);
 	let token = '';
@@ -167,13 +168,23 @@ const PageArtisan = () => {
 		};
 
 		return (
-      <div>
-        <Button onClick={handleAdvice} id="buttons">
-          Donnez votre avis
-        </Button>
-      </div>
+			<div>
+				<Button onClick={handleAdvice} id="buttons">
+					Donnez votre avis
+				</Button>
+			</div>
 		);
 	});
+
+	/**
+	 * report a advice
+	 */
+
+	const handleAlert = (event) => {
+		console.log(event.target.value);
+		console.log('hello');
+		dispatch(alertAdvice());
+	};
 
 	return (
 		<div id="page-artisan">
@@ -209,7 +220,7 @@ const PageArtisan = () => {
 									<div>
 										<p>
 											Email : <a href={`mailto:${artisanObject.email}`}>{artisanObject.email}</a>
-                    </p>
+										</p>
 										<p>
 											Téléphone : <a href={`tel:+33${phone}`}>{artisanObject.phone}</a>
 										</p>
@@ -247,46 +258,51 @@ const PageArtisan = () => {
 				</Carousel>
 			</div>
 
-      <div className="page-artisan-commentary">
-      <Row>
+			<div className="page-artisan-commentary">
+				<Row>
 					<Col span={24}>
-            <ButtonAdvice />
-            {user !== -1 || artisanUser !== -1 ? (
-              
-                  <div>
-                    <Popover
-                      placement="top"
-                      trigger="click"
-                      onVisibleChange={handleVisibleChange}
-                      visible={visibleRate}
-                      content={content}
-                    >
-                      <Button id="buttons">Evaluez</Button>
-                    </Popover>
-                  </div>
-            ) : (
-              ''
-            )}
-          </Col>
+						<ButtonAdvice />
+						{user !== -1 || artisanUser !== -1 ? (
+							<div>
+								<Popover
+									placement="top"
+									trigger="click"
+									onVisibleChange={handleVisibleChange}
+									visible={visibleRate}
+									content={content}
+								>
+									<Button id="buttons">Evaluez</Button>
+								</Popover>
+							</div>
+						) : (
+							''
+						)}
+					</Col>
 				</Row>
 				<div id="com">
 					{arrayAdvice.length} <Icon type="message" />
 				</div>
 				{
 					<List
-            className="comment-list"
-            id="comment"
+						className="comment-list"
+						id="comment"
 						itemLayout="horizontal"
 						dataSource={arrayAdvice}
-						renderItem={(item) => (
+						renderItem={(item, id) => (
 							<li>
 								{console.log('commentary', item)}
 								<Comment
-									actions={item.actions}
 									author={item.userAuthor.firstname}
 									avatar={`../src/styles/pictures/user/${item.userAuthor.picture}`}
 									content={item.body}
-									datetime={item.createdAt}
+									datetime={
+										<div>
+											{item.createdAt}{' '}
+											<Button onClick={handleAlert}>
+												<Icon type="alert" />
+											</Button>
+										</div>
+									}
 								/>
 							</li>
 						)}
