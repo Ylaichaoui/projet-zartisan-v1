@@ -112,14 +112,10 @@ const Home = () => {
 	const ButtonSearchArtisanList = withRouter(({ history }) => {
 		const handleSearch = () => {
 			dispatch(postHomeSearch(regionChange, jobChange[1]));
-			return history.push('/liste-artisan');
+			setTimeout(() => {history.push('/liste-artisan')}, 1500);
 		};
 		return (
-			<Button
-        className="home-button-search"
-        id="buttons"
-				onClick={handleSearch}
-			>
+			<Button className="home-button-search" id="buttons" onClick={handleSearch}>
 				Recherche
 			</Button>
 		);

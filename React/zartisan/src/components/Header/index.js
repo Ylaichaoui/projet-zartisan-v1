@@ -8,7 +8,7 @@ import 'antd/dist/antd.css';
 import { Link, withRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { sendLogin, deconnect } from 'src/store/register/actions';
-
+import cookies from 'js-cookie';
 /**
  * Local imports
  */
@@ -112,7 +112,8 @@ const Header = () => {
    */
 	const ButtonGoToArtisanForm = withRouter(({ history }) => {
 		return (
-			<Button id="buttons"
+			<Button
+				id="buttons"
 				onClick={() => {
 					handleCancel();
 					return history.push('/inscription/professionnel');
@@ -129,7 +130,8 @@ const Header = () => {
    */
 	const ButtonGoToUserForm = withRouter(({ history }) => {
 		return (
-			<Button id="buttons"
+			<Button
+				id="buttons"
 				onClick={() => {
 					handleCancel();
 					return history.push('/inscription/particulier');
@@ -140,6 +142,22 @@ const Header = () => {
 			</Button>
 		);
 	});
+
+	/**
+	 * admin connection
+	 */
+
+	let token = cookies.get('TOKEN');
+
+	let parseJwt = (token) => {
+		try {
+			return JSON.parse(atob(token.split('.')[1]));
+		} catch (e) {
+			return null;
+		}
+	};
+	const admin = parseJwt(token).roles[0];
+	console.log(parseJwt(token).roles[0]);
 
 	return (
 		<div id="zheader">
@@ -170,7 +188,12 @@ const Header = () => {
 										<p>Bonjour vous êtes connecté</p>
 									</Modal>
 
-									{connect === true && <a href="#">Profil</a>}
+									{connect === true && admin !== 'ROLE_ADMIN' ? <a href="#">Profil</a> : ''}
+									{connect === true && admin === 'ROLE_ADMIN' ? (
+										<a href="http://localhost:8001/admin">Admin</a>
+									) : (
+										''
+									)}
 								</Text>
 							</Row>
 							<Row type="flex" justify="center" align="top">

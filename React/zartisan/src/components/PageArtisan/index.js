@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'antd/dist/antd.css';
 import { Row, Col, Carousel, Button, Rate, List, Comment, Tooltip, Link, Popover } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,8 +10,17 @@ import cookies from 'js-cookie';
 import { sendRate } from 'src/store/rate/actions';
 
 const PageArtisan = () => {
-	const artisanObject = useSelector((state) => state.artisan);
-	//console.log(artisanObject);
+	const artisanSelector = useSelector((state) => state.artisan);
+	const averageRate = useSelector((state) => state.rate);
+	console.log('note moyenne', averageRate);
+
+	let artisanObject = {};
+	for (let artisan in artisanSelector) {
+		console.log(artisanSelector[artisan]);
+		artisanObject = artisanSelector[artisan];
+	}
+
+	console.log(artisanObject);
 
 	const connect = useSelector((state) => state.connect);
 	let token = '';
@@ -83,6 +92,7 @@ const PageArtisan = () => {
 
 	//console.log('picture: ', artisanObject.picture, 'note : ', artisanObject.averageRate);
 
+
 	const Rating = () => {
 		return <Rate style={{ fontSize: '1em' }} disabled defaultValue={artisanObject.averageRate} />;
 	};
@@ -121,6 +131,8 @@ const PageArtisan = () => {
 		console.log(event);
 		setValue(event);
 	};
+
+
 
 	const content = (
 		<div>
@@ -170,7 +182,6 @@ const PageArtisan = () => {
 						</Row>
 					</div>
 				</div>
-
 			</Row>
 
 			<div>
@@ -209,7 +220,6 @@ const PageArtisan = () => {
 						</h3>
 					</div>
 				</Carousel>
-
 			</div>
 
 			<div className="page-artisan-commentary">
@@ -234,7 +244,6 @@ const PageArtisan = () => {
 					/>
 				}{' '}
 			</div>
-
 		</div>
 	);
 };
