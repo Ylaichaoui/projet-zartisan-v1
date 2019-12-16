@@ -174,7 +174,7 @@ const Header = () => {
 							<Row type="flex" justify="center" align="top">
 								<img src={logo} alt="zartisan image" className="logo-zartisan" />
 							</Row>
-							<Row type="flex" justify="center" style={{ margin: '1.5em' }} align="top">
+							<Row type="flex" justify="center" align="top">
 								<Text>
 									{connect === false && (
 										<a href="#" onClick={showModalLogin}>

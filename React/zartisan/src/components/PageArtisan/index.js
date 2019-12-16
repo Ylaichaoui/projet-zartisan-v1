@@ -159,16 +159,6 @@ const PageArtisan = () => {
 					</Row>
 					<div className="artisan-description">
 						<Row>
-
-							{user != 'ROLE_UNDEFINED' && (
-								<div>
-									<h1>Contacter</h1>
-									<a href={`mailto:${artisanObject.email}`}>{artisanObject.email}</a>
-									<a href={`tel:+33${phone}`}>{artisanObject.phone}</a>
-								</div>
-							)}
-							
-
 							<Col span={12}>
 
 								<div>
@@ -185,7 +175,18 @@ const PageArtisan = () => {
 										{artisanObject.numberWay} {artisanObject.typeWay} {artisanObject.way} {artisanObject.postalCode} {artisanObject.city}
 									</div>
 								</div>
-							</Col>
+              </Col>
+              {user == 'ROLE_UNDEFINED' && (
+              <Button id="buttons">Contacter</Button>
+              )}
+              {user != 'ROLE_UNDEFINED' && (
+              <Col span={24}>
+								<div>
+									<p>Email : <a href={`mailto:${artisanObject.email}`}>{artisanObject.email}</a></p>
+                  <p>Téléphone : <a href={`tel:+33${phone}`}>{artisanObject.phone}</a></p>
+                </div>
+              </Col>
+              )}
 						</Row>
 					</div>
 				</div>
@@ -215,21 +216,23 @@ const PageArtisan = () => {
 				</Carousel>
 			</div>
 
-			<div className="page-artisan-commentary">
-				<Button id="buttons">COMMENTER</Button>
-				<div>
-					{user != 'ROLE_UNDEFINED' && (
-						<Popover
-							placement="top"
-							trigger="click"
-							onVisibleChange={handleVisibleChange}
-							visible={visible}
-							content={content}
-						>
-							<Button id="buttons">Evaluation</Button>
-						</Popover>
+      <div className="page-artisan-commentary">
+        <div class="btn">
+          <Button id="buttons">Donnez mon avis</Button>
+        </div>
+        {user != 'ROLE_UNDEFINED' && (
+          <div class="btn">
+            <Popover
+              placement="top"
+              trigger="click"
+              onVisibleChange={handleVisibleChange}
+              visible={visible}
+              content={content}
+            >
+              <Button id="buttons">Evaluez</Button>
+            </Popover>
+          </div>
 					)}
-				</div>
 				<div>
 					1 <Icon type="message" />
 				</div>
