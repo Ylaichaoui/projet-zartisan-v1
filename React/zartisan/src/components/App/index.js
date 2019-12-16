@@ -17,6 +17,7 @@ import LegalNotices from 'src/components/LegalNotices';
 import PageError from 'src/components/PageError';
 import FormRegisterUser from 'src/components/FormRegisterUser';
 import FormRegisterArtisan from 'src/components/FormRegisterArtisan';
+import ForgettenPassword from 'src/components/ForgottenPassword';
 
 /**
  * Code
@@ -47,6 +48,9 @@ const App = () => {
 					</Route>
 					<Route exact path="/mentions-legal">
 						<LegalNotices />
+					</Route>
+					<Route exact path="/mot-de-passe-oublié">
+						<ForgettenPassword />
 					</Route>
 					<Route>
 						<PageError />

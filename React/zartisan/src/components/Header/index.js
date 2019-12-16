@@ -187,7 +187,7 @@ const Header = () => {
 										</a>
 									)}
 									<Modal footer={null} title="Connexion" visible={modalLogin} onCancel={handleCancel}>
-										<FormLogin handleSubmitLogin={handleSubmitLogin} />
+										<FormLogin handleSubmitLogin={handleSubmitLogin} handleCancel={handleCancel} />
 									</Modal>
 									<Modal visible={connectVisible} onCancel={closeModalWelcome} footer={null}>
 										<p>Bonjour vous êtes connecté</p>

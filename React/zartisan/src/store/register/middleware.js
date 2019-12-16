@@ -6,7 +6,7 @@ import cookies from 'js-cookie';
 /**
  * Local imports
  */
-
+import { SEND_PASSWORD_FORGET } from 'src/store/register/actions';
 import { SEND_REGISTER_USER } from 'src/store/register/actions';
 import { SEND_REGISTER_ARTISAN } from 'src/store/register/actions';
 import { SEND_LOGIN } from 'src/store/register/actions';
@@ -150,6 +150,33 @@ export default (store) => (next) => (action) => {
 				.finally(function() {
 					// always executed
 				});
+		}
+
+		/**
+     * FORGETTEN PASSWORD
+     */
+
+		case SEND_PASSWORD_FORGET: {
+			const data = {
+				email: action.email,
+				password: action.password
+			};
+			console.log(data);
+			return axios({
+				method: 'post',
+				url: 'http://localhost:8001/resetPassMail',
+				data
+			})
+				.then((response) => {
+					//console.log(response);
+					if (response.status === 200) {
+						console.log('test reussi');
+					}
+				})
+				.catch(function(error) {
+					console.log(error);
+				})
+				.finally(function() {});
 		}
 	}
 	next(action);
