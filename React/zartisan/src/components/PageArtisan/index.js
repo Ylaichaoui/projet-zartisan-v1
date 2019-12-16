@@ -167,9 +167,11 @@ const PageArtisan = () => {
 		};
 
 		return (
-			<Button onClick={handleAdvice} id="buttons">
-				Commenter
-			</Button>
+      <div>
+        <Button onClick={handleAdvice} id="buttons">
+          Donnez votre avis
+        </Button>
+      </div>
 		);
 	});
 
@@ -207,7 +209,7 @@ const PageArtisan = () => {
 									<div>
 										<p>
 											Email : <a href={`mailto:${artisanObject.email}`}>{artisanObject.email}</a>
-										</p>
+                    </p>
 										<p>
 											Téléphone : <a href={`tel:+33${phone}`}>{artisanObject.phone}</a>
 										</p>
@@ -225,7 +227,7 @@ const PageArtisan = () => {
 				<Carousel autoplay>
 					<div>
 						<h3>
-							<img className="imgCarousel" src="../src/styles/pictures/caroussel/artisan2.jpg" alt="" />
+							<img className="imgCarousel" src="../src/styles/pictures/caroussel/artisan2.jpeg" alt="" />
 						</h3>
 					</div>
 					<div>
@@ -245,29 +247,35 @@ const PageArtisan = () => {
 				</Carousel>
 			</div>
 
-			<div className="page-artisan-commentary">
-				<ButtonAdvice />
-				{user !== -1 || artisanUser !== -1 ? (
-					<div>
-						<Popover
-							placement="top"
-							trigger="click"
-							onVisibleChange={handleVisibleChange}
-							visible={visibleRate}
-							content={content}
-						>
-							<Button id="buttons">Evaluation</Button>
-						</Popover>
-					</div>
-				) : (
-					''
-				)}
-				<div>
+      <div className="page-artisan-commentary">
+      <Row>
+					<Col span={24}>
+            <ButtonAdvice />
+            {user !== -1 || artisanUser !== -1 ? (
+              
+                  <div>
+                    <Popover
+                      placement="top"
+                      trigger="click"
+                      onVisibleChange={handleVisibleChange}
+                      visible={visibleRate}
+                      content={content}
+                    >
+                      <Button id="buttons">Evaluez</Button>
+                    </Popover>
+                  </div>
+            ) : (
+              ''
+            )}
+          </Col>
+				</Row>
+				<div id="com">
 					{arrayAdvice.length} <Icon type="message" />
 				</div>
 				{
 					<List
-						className="comment-list"
+            className="comment-list"
+            id="comment"
 						itemLayout="horizontal"
 						dataSource={arrayAdvice}
 						renderItem={(item) => (
@@ -276,7 +284,7 @@ const PageArtisan = () => {
 								<Comment
 									actions={item.actions}
 									author={item.userAuthor.firstname}
-									avatar={`..src/styles/pictures/user/${item.userAuthor.picture}`}
+									avatar={`../src/styles/pictures/user/${item.userAuthor.picture}`}
 									content={item.body}
 									datetime={item.createdAt}
 								/>
