@@ -128,8 +128,8 @@ const ListArtisan = () => {
 		};
 		return (
 			<Button
-        className="home-button-search"
-        id="buttons"
+				className="home-button-search"
+				id="buttons"
 				style={{ color: 'white', backgroundColor: '#bb9574', border: 'none' }}
 				onClick={handleSearch}
 			>
@@ -137,6 +137,20 @@ const ListArtisan = () => {
 			</Button>
 		);
 	};
+
+	/**
+	 * Link artisan
+	 */
+
+	const LinkArtisan = withRouter(({ history, item }) => {
+		const handleSearch = () => {
+			dispatch(artisanData(item.id, item.email));
+			setTimeout(() => {
+				history.push(`/page-artisan/${item.company}`);
+			}, 2000);
+		};
+		return <a onClick={handleSearch}>{item.company}</a>;
+	});
 
 	return (
 		<div className="list-artisan-content">
@@ -172,18 +186,7 @@ const ListArtisan = () => {
 							avatar={
 								<img style={{ width: '60px' }} src={`src/styles/pictures/company/${item.picture}`} />
 							}
-							title={
-								<Link
-									onClick={() => {
-										//console.log('ta cliqué sur le lien youpi  !');
-										//console.log('item >> ', item.id);
-										dispatch(artisanData(item.id, item.email));
-									}}
-									to={`/page-artisan/${item.company}`}
-								>
-									{item.company}
-								</Link>
-							}
+							title={<LinkArtisan item={item} />}
 							description={item.companyDescription}
 						/>
 						<Rate style={{ fontSize: '1em' }} disabled defaultValue={item.averageRate} />
