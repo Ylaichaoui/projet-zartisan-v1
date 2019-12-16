@@ -158,16 +158,6 @@ const PageArtisan = () => {
 					</Row>
 					<div className="artisan-description">
 						<Row>
-							{user !== -1 || artisanUser !== -1 ? (
-								<div>
-									<h1>Contacter</h1>
-									<a href={`mailto:${artisanObject.email}`}>{artisanObject.email}</a>
-									<a href={`tel:+33${phone}`}>{artisanObject.phone}</a>
-								</div>
-							) : (
-								''
-							)}
-
 							<Col span={12}>
 								<div>
 									<img
@@ -185,8 +175,8 @@ const PageArtisan = () => {
 									</div>
 								</div>
 							</Col>
-							{user == 'ROLE_UNDEFINED' && <Button id="buttons">Contacter</Button>}
-							{user != 'ROLE_UNDEFINED' && (
+
+							{user !== -1 || artisanUser !== -1 ? (
 								<Col span={24}>
 									<div>
 										<p>
@@ -197,6 +187,8 @@ const PageArtisan = () => {
 										</p>
 									</div>
 								</Col>
+							) : (
+								<Button id="buttons">Contacter</Button>
 							)}
 						</Row>
 					</div>
