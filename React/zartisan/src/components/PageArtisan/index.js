@@ -153,7 +153,7 @@ const PageArtisan = () => {
 					</Row>
 					<div className="artisan-description">
 						<Row>
-							<Col span={15}>
+							<Col span={12}>
 								<div>
 									<img
 										className="description-picture"
@@ -162,13 +162,10 @@ const PageArtisan = () => {
 									<Rating />
 								</div>
 							</Col>
-							<Col span={9}>
+							<Col span={12}>
 								<div className="description-info">
 									<div>
-										{artisanObject.numberWay} <span>{artisanObject.way}</span>
-									</div>
-									<div>
-										{artisanObject.postalCode} <span>{artisanObject.city}</span>
+										{artisanObject.numberWay} {artisanObject.typeWay} {artisanObject.way} {artisanObject.postalCode} {artisanObject.city}
 									</div>
 									{user != 'ROLE_UNDEFINED' && (
 										<div>
