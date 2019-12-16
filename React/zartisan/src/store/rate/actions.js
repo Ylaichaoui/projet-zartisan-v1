@@ -6,3 +6,10 @@ export const sendRate = (id, mail, value) => ({
 	mail,
 	value
 });
+
+export const RATE = 'rate/actions/RATE';
+
+export const rate = (averageRate) => ({
+	type: RATE,
+	averageRate
+});

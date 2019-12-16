@@ -27,13 +27,15 @@ class Rate
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"user_artisan_single"})
      */
-    private $createdAt;
+    public $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"user_artisan_single"})
      */
-    private $updatedAt;
+    public $updatedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="rates")
@@ -70,8 +72,11 @@ class Rate
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt()
     {
+        if($this->createdAt != NULL){
+            return $this->createdAt->format('d/m/Y H:i:s');
+        }
         return $this->createdAt;
     }
 
@@ -82,8 +87,11 @@ class Rate
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt()
     {
+        if($this->updatedAt != NULL){
+            return $this->updatedAt->format('d/m/Y H:i:s');
+        }
         return $this->updatedAt;
     }
 

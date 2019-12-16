@@ -8,7 +8,7 @@ import 'antd/dist/antd.css';
 import { Link, withRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { sendLogin, deconnect } from 'src/store/register/actions';
-
+import cookies from 'js-cookie';
 /**
  * Local imports
  */
@@ -55,9 +55,12 @@ const Header = () => {
    * open form login popup and close menu burger
    */
 	const showModalLogin = () => {
-		setModalLogin(true);
 		onClose();
+		setTimeout(() => {
+			setModalLogin(true);
+		}, 1000);
 	};
+
 	const connectModalVisible = () => {
 		setConnectVisible(true);
 	};
@@ -66,8 +69,10 @@ const Header = () => {
    * open form register popup and close menu burger
    */
 	const showModalRegister = () => {
-		setModalRegister(true);
 		onClose();
+		setTimeout(() => {
+			setModalRegister(true);
+		}, 1000);
 	};
 	/**
    * close form popup
@@ -143,6 +148,22 @@ const Header = () => {
 		);
 	});
 
+	/**
+	 * admin connection
+	 */
+
+	let token = cookies.get('TOKEN');
+
+	let parseJwt = (token) => {
+		try {
+			return JSON.parse(atob(token.split('.')[1]));
+		} catch (e) {
+			return null;
+		}
+	};
+	const admin = parseJwt(token).roles[0];
+	console.log(parseJwt(token).roles[0]);
+
 	return (
 		<div id="zheader">
 			<Row className="header" type="flex" justify="space-around">
@@ -154,11 +175,11 @@ const Header = () => {
 						</Button>
 
 						{/** Menu of Burger */}
-						<Drawer placement="top" closable={true} onClose={onClose} visible={visible}>
+						<Drawer placement="top" onClose={onClose} visible={visible} closable={true}>
 							<Row type="flex" justify="center" align="top">
 								<img src={logo} alt="zartisan image" className="logo-zartisan" />
 							</Row>
-							<Row type="flex" justify="center" style={{ margin: '1.5em' }} align="top">
+							<Row type="flex" justify="center" align="top">
 								<Text>
 									{connect === false && (
 										<a href="#" onClick={showModalLogin}>
@@ -172,7 +193,12 @@ const Header = () => {
 										<p>Bonjour vous êtes connecté</p>
 									</Modal>
 
-									{connect === true && <a href="#">Profil</a>}
+									{connect === true && admin !== 'ROLE_ADMIN' ? <a href="#">Profil</a> : ''}
+									{connect === true && admin === 'ROLE_ADMIN' ? (
+										<a href="http://localhost:8001/admin">Admin</a>
+									) : (
+										''
+									)}
 								</Text>
 							</Row>
 							<Row type="flex" justify="center" align="top">
