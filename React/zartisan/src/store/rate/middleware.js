@@ -1,4 +1,5 @@
 import { SEND_RATE } from 'src/store/rate/actions';
+import { rate } from 'src/store/rate/actions';
 import axios from 'axios';
 import cookies from 'js-cookie';
 
@@ -24,6 +25,7 @@ export default (store) => (next) => (action) => {
 					//console.log(response);
 					if (response.status === 200) {
 						console.log(response.data);
+						store.dispatch(rate(response.data));
 					}
 				})
 				.catch(function(error) {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'antd/dist/antd.css';
 import { Row, Col, Carousel, Button, Rate, List, Comment, Tooltip, Link, Popover } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,6 +11,9 @@ import { sendRate } from 'src/store/rate/actions';
 
 const PageArtisan = () => {
 	const artisanSelector = useSelector((state) => state.artisan);
+	const averageRate = useSelector((state) => state.rate);
+	console.log('note moyenne', averageRate);
+
 	let artisanObject = {};
 	for (let artisan in artisanSelector) {
 		console.log(artisanSelector[artisan]);
@@ -89,6 +92,7 @@ const PageArtisan = () => {
 
 	//console.log('picture: ', artisanObject.picture, 'note : ', artisanObject.averageRate);
 
+
 	const Rating = () => {
 		return <Rate style={{ fontSize: '1em' }} disabled defaultValue={artisanObject.averageRate} />;
 	};
@@ -127,6 +131,8 @@ const PageArtisan = () => {
 		console.log(event);
 		setValue(event);
 	};
+
+
 
 	const content = (
 		<div>
