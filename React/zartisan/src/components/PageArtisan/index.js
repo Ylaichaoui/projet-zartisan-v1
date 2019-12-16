@@ -142,7 +142,7 @@ const PageArtisan = () => {
 	 */
 
 	/**
-   * button for navigate towards form register artisan (use withRouter for manage history url)
+   * button for navigate towards form register user (use withRouter for manage history url)
    */
 	const ButtonContact = withRouter(({ history }) => {
 		return (
@@ -153,6 +153,19 @@ const PageArtisan = () => {
 				id="buttons"
 			>
 				Contacter
+			</Button>
+		);
+	});
+
+	const ButtonAdvice = withRouter(({ history }) => {
+		return (
+			<Button
+				onClick={() => {
+					return history.push('/inscription/particulier');
+				}}
+				id="buttons"
+			>
+				Commenter
 			</Button>
 		);
 	});
@@ -230,7 +243,7 @@ const PageArtisan = () => {
 			</div>
 
 			<div className="page-artisan-commentary">
-				<Button id="buttons">COMMENTER</Button>
+				<ButtonAdvice />
 				{user !== -1 || artisanUser !== -1 ? (
 					<div>
 						<Popover
