@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Form, Icon, Input, Button } from 'antd';
 import 'antd/dist/antd.css';
 import './style.sass';
+import { Link } from 'react-router-dom';
 
-const FormLogin = ({ handleSubmitLogin }) => {
+const FormLogin = ({ handleSubmitLogin, handleCancel }) => {
 	const [ email, setEmail ] = useState('');
 	const [ password, setPassword ] = useState('');
 
@@ -34,13 +35,13 @@ const FormLogin = ({ handleSubmitLogin }) => {
 						placeholder="Mot de passe"
 						required
 					/>
-					<a className="login-form-forgot" href="">
+					<Link className="login-form-forgot" to="/mot-de-passe-oublié" onClick={handleCancel}>
 						Mot de passe oublié
-					</a>
+					</Link>
 				</Form.Item>
 				<Button
-          type="default"
-          id="buttons"
+					type="default"
+					id="buttons"
 					htmlType="submit"
 					className="login-form-button"
 					style={{ color: 'white', background: '#bb9574' }}
