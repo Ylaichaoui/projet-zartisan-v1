@@ -112,7 +112,8 @@ const Header = () => {
    */
 	const ButtonGoToArtisanForm = withRouter(({ history }) => {
 		return (
-			<Button id="buttons"
+			<Button
+				id="buttons"
 				onClick={() => {
 					handleCancel();
 					return history.push('/inscription/professionnel');
@@ -129,7 +130,8 @@ const Header = () => {
    */
 	const ButtonGoToUserForm = withRouter(({ history }) => {
 		return (
-			<Button id="buttons"
+			<Button
+				id="buttons"
 				onClick={() => {
 					handleCancel();
 					return history.push('/inscription/particulier');
