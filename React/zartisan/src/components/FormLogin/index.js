@@ -4,7 +4,7 @@ import 'antd/dist/antd.css';
 import './style.sass';
 import { Link } from 'react-router-dom';
 
-const FormLogin = ({ handleSubmitLogin }) => {
+const FormLogin = ({ handleSubmitLogin, handleCancel }) => {
 	const [ email, setEmail ] = useState('');
 	const [ password, setPassword ] = useState('');
 
@@ -35,7 +35,7 @@ const FormLogin = ({ handleSubmitLogin }) => {
 						placeholder="Mot de passe"
 						required
 					/>
-					<Link className="login-form-forgot" to="/mot-de-passe-oublié">
+					<Link className="login-form-forgot" to="/mot-de-passe-oublié" onClick={handleCancel}>
 						Mot de passe oublié
 					</Link>
 				</Form.Item>
