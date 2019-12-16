@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import 'antd/dist/antd.css';
 import { Row, Col, Carousel, Button, Rate, List, Comment, Tooltip, Link, Popover, Icon } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import './style.sass';
 import moment from 'moment';
-import { artisanInfo } from '../../store/artisan/actions';
 import cookies from 'js-cookie';
 import { sendRate } from 'src/store/rate/actions';
-import { artisanData } from 'src/store/artisan/actions';
 
 const PageArtisan = () => {
 	const artisanSelector = useSelector((state) => state.artisan);
@@ -147,6 +146,26 @@ const PageArtisan = () => {
 		</div>
 	);
 
+	/**
+	 * redirect to register user onClick Contacter
+	 */
+
+	/**
+   * button for navigate towards form register artisan (use withRouter for manage history url)
+   */
+	const ButtonContact = withRouter(({ history }) => {
+		return (
+			<Button
+				onClick={() => {
+					return history.push('/inscription/particulier');
+				}}
+				id="buttons"
+			>
+				Contacter
+			</Button>
+		);
+	});
+
 	return (
 		<div id="page-artisan">
 			<Row>
@@ -188,7 +207,7 @@ const PageArtisan = () => {
 									</div>
 								</Col>
 							) : (
-								<Button id="buttons">Contacter</Button>
+								<ButtonContact />
 							)}
 						</Row>
 					</div>
