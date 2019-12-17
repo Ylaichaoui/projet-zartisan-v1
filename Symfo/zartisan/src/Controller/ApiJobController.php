@@ -19,7 +19,6 @@ class ApiJobController extends AbstractController
      */
     public function categoryList(CategoryRepository $categoryRepository)
     {
-        dd($categoryRepository->findAll());
         return $this->json($categoryRepository->findAll(), 200, [],['groups' => 'category_search']);
     }
 
