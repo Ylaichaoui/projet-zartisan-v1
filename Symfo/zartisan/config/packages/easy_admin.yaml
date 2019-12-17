@@ -1,4 +1,6 @@
 easy_admin:
+    formats:
+        date: 'd/m/Y H:i:s'
     site_name: 'Zartisan Admin'
     design:
         brand_color: '#F00'
@@ -10,6 +12,17 @@ easy_admin:
             - {entity: 'Notes', icon: 'edit'}
             - {entity: 'Api', icon: 'file'}
     entities:
+        Utilisateurs:
+            class: App\Entity\User
+            list:
+                fields:
+                    - id
+                    - {property: 'nickname', label: 'Pseudo'}
+                    - email
+                    - {property: 'isConfirmMail', label: 'Confirmation de l email'}
+                    - {property: 'isStatus', label: 'Status'}
+                    - {property: 'isReported', label: 'Signalement'}
+                    - {property: 'roles', type: 'array', type_options: { expanded: true, multiple: false, choices: { 'Administrateur': 'ROLE_ADMIN', 'Particulier': 'ROLE_USER', 'Artisan': 'ROLE_ARTISAN' } }}
         Metiers:
             class: App\Entity\Job
             list:
@@ -62,15 +75,3 @@ easy_admin:
                 actions:
                     - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
                     - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
-        Utilisateurs:
-            class: App\Entity\User
-            list:
-                fields:
-                    - id
-                    - {property: 'nickname', label: 'Pseudo'}
-                    - email
-                    - {property: 'isConfirmMail', label: 'Confirmation de l email'}
-                    - {property: 'isStatus', label: 'Status'}
-                    - {property: 'isReported', label: 'Signalement'}
-                    - {property: 'roles', type: 'choice', type_options: { expanded: true, multiple: true, choices: { 'Administrateur': 'ROLE_ADMIN', 'Particulier': 'ROLE_USER', 'Artisan': 'ROLE_ARTISAN' } }}
-
