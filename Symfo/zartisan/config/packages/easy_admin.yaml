@@ -40,7 +40,6 @@ easy_admin:
                     - {property: 'body', label: 'Contenu'}
                     - {property: 'isStatus', label: 'Status'}
                     - {property: 'isReported', label: 'Signalement'}
-                    - {property: 'createdAt', label: 'Date de création'}
                 actions:
                     - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
                     - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
@@ -50,8 +49,6 @@ easy_admin:
                 fields:
                     - id
                     - {property: 'value', label: 'Note'}
-                    - {property: 'createdAt', label: 'Date de création'}
-                    - {property: 'updatedAt', label: 'Dernière mise à jour'}
                 actions:
                     - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
                     - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
@@ -76,5 +73,4 @@ easy_admin:
                     - {property: 'isStatus', label: 'Status'}
                     - {property: 'isReported', label: 'Signalement'}
                     - {property: 'roles', type: 'choice', type_options: { expanded: true, multiple: true, choices: { 'Administrateur': 'ROLE_ADMIN', 'Particulier': 'ROLE_USER', 'Artisan': 'ROLE_ARTISAN' } }}
-                    - {property: 'createdAt', label: 'Date de création'}
-                    - {property: 'updatedAt', label: 'Dernière mise à jour'}
+
