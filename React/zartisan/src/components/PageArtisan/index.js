@@ -232,7 +232,9 @@ const PageArtisan = () => {
 				</Popover>
 			</div>
 		);
-	});
+  });
+  
+  
 
 	/**
    * report a advice
@@ -253,7 +255,7 @@ const PageArtisan = () => {
 				<div className="page-artisan-description">
 					<Row>
 						<div>
-							<div>{artisanObject.company}</div>
+							<div><h4>{artisanObject.company}</h4></div>
 						</div>
 					</Row>
 					<div className="artisan-description">
@@ -289,7 +291,14 @@ const PageArtisan = () => {
 								</Col>
 							) : (
 								<ButtonContact />
-							)}
+              )}
+              <Col span={24}>
+									<div>
+										<p>
+											{artisanObject.companyDescription}
+                    </p>
+									</div>
+								</Col>
 						</Row>
 					</div>
 				</div>

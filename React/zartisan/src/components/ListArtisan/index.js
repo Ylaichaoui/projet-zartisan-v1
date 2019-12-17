@@ -150,7 +150,7 @@ const ListArtisan = () => {
 			}, 1000);
 		};
 		return <a onClick={handleSearch}>{item.company}</a>;
-	});
+  });
 
 	return (
 		<div className="list-artisan-content">
@@ -187,7 +187,7 @@ const ListArtisan = () => {
 								<img style={{ width: '60px' }} src={`src/styles/pictures/company/${item.picture}`} />
 							}
 							title={<LinkArtisan item={item} />}
-							description={item.companyDescription}
+							description={item.companyDescription.substring(0,50)+" ..."}
 						/>
 						<Rate style={{ fontSize: '1em' }} disabled defaultValue={item.averageRate} />
 					</List.Item>

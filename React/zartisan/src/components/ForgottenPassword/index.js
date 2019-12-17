@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Form, Input, Row, Button } from 'antd';
+import { Form, Input, Row, Button, Modal } from 'antd';
 import { useDispatch } from 'react-redux';
 import { sendPasswordForget } from 'src/store/register/actions';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const ForgettenPassword = () => {
 	const dispatch = useDispatch();
@@ -35,20 +35,11 @@ const ForgettenPassword = () => {
 		console.log(event.target.value);
 	};
 
-	const ButtonGoToUserForm = withRouter(({ history }) => {
-		return (
-			<Button
-				id="buttons"
-				htmlType="submit"
-				onClick={(e) => {
-					//e.preventDefault();
-					return history.push('/');
-				}}
-			>
-				Confirmer
-			</Button>
-		);
-	});
+	let history = useHistory();
+
+	const timeoutHist = () => {
+		setTimeout(() => history.push('/'), 4000);
+	};
 
 	return (
 		<div className="register-user">
@@ -65,7 +56,9 @@ const ForgettenPassword = () => {
 						<Input.Password onChange={passwordCheckChangeValue} />
 					</Form.Item>
 					<Form.Item>
-						<ButtonGoToUserForm />
+						<Button type="primary" id="buttons" htmlType="submit" onClick={timeoutHist}>
+							Confirmer
+						</Button>
 					</Form.Item>
 				</Form>
 			</Row>

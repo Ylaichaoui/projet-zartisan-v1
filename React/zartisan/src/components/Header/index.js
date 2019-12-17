@@ -130,6 +130,7 @@ const Header = () => {
   /**
    * button for navigate towards form register user (use withRouter for manage history url)
    */
+
   const ButtonGoToUserForm = withRouter(({ history }) => {
     return (
       <Button
@@ -266,6 +267,7 @@ const Header = () => {
       </Row>
     </div>
   );
+
 };
 
 export default Header;
