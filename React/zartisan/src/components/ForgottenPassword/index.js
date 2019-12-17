@@ -37,8 +37,8 @@ const ForgettenPassword = () => {
 
 	let history = useHistory();
 
-	const hist = () => {
-		setTimeout(() => history.push('/'), 3000);
+	const timeoutHist = () => {
+		setTimeout(() => history.push('/'), 4000);
 	};
 
 	return (
@@ -56,7 +56,7 @@ const ForgettenPassword = () => {
 						<Input.Password onChange={passwordCheckChangeValue} />
 					</Form.Item>
 					<Form.Item>
-						<Button type="primary" id="buttons" htmlType="submit" onClick={hist}>
+						<Button type="primary" id="buttons" htmlType="submit" onClick={timeoutHist}>
 							Confirmer
 						</Button>
 					</Form.Item>
