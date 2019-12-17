@@ -36,6 +36,7 @@ class ApiAdviceController extends AbstractController
                 $advice->setIsStatus('true');
                 $advice->setUserAuthor($userAuthor);
                 $advice->setUserPro($userPro);
+                $advice->setisReported('false');
                 $em->persist($advice);
                 $em->flush();
                
