@@ -2,6 +2,7 @@ easy_admin:
     formats:
         date: 'd/m/Y H:i:s'
     site_name: 'Zartisan Admin'
+    disabled_actions: ['new','delete']
     design:
         brand_color: '#F00'
         menu: 
@@ -15,6 +16,7 @@ easy_admin:
         Utilisateurs:
             class: App\Entity\User
             list:
+                actions: ['-edit']
                 fields:
                     - id
                     - {property: 'nickname', label: 'Pseudo'}
@@ -26,45 +28,37 @@ easy_admin:
         Metiers:
             class: App\Entity\Job
             list:
+                actions: ['-edit']
                 fields:
                     - id
                     - {property: 'name', label: 'Nom'}
                     - {property: 'createdAt', label: 'Date de création'}
                     - {property: 'updatedAt', label: 'Dernière mise à jour'}
-                actions:
-                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
-                    - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
         Categories:
             class: App\Entity\Category
             list:
+                actions: ['-edit']
                 fields:
                     - id
                     - {property: 'name', label: 'Nom'}
                     - {property: 'createdAt', label: 'Date de création'}
                     - {property: 'updatedAt', label: 'Dernière mise à jour'}
-                actions:
-                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
-                    - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
         Avis :
             class: App\Entity\Advice
             list:
+                actions: ['-edit']
                 fields:
                     - id
                     - {property: 'body', label: 'Contenu'}
                     - {property: 'isStatus', label: 'Status'}
                     - {property: 'isReported', label: 'Signalement'}
-                actions:
-                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
-                    - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
         Notes:
             class: App\Entity\Rate
             list:
+                actions: ['-edit']
                 fields:
                     - id
                     - {property: 'value', label: 'Note'}
-                actions:
-                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
-                    - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
         Api:
             class: App\Entity\Api
             list:
