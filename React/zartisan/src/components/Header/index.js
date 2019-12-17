@@ -160,7 +160,9 @@ const Header = () => {
 		} catch (e) {
 			return null;
 		}
-	};
+  };
+  
+
 	const admin = parseJwt(token).roles[0];
 	console.log(parseJwt(token).roles[0]);
 
