@@ -14,7 +14,7 @@ class Advice
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("user_advice")
+     * @Groups({"user_advice","user_artisan_single"})
      */
     private $id;
 
