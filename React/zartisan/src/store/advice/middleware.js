@@ -57,8 +57,8 @@ export default store => next => action => {
         .then(response => {
           console.log(response);
           if (response.status === 200) {
-            console.log(response.data);
-            store.dispatch(alertSuccess(response.data));
+            console.log("response 200", response.data);
+            //store.dispatch(alertSuccess(response.data));
           }
         })
         .catch(function(error) {
