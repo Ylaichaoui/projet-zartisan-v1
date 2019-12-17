@@ -29,6 +29,7 @@ import { sendAdvice } from "src/store/advice/actions";
 
 const { TextArea } = Input;
 const PageArtisan = () => {
+
   const artisanSelector = useSelector(state => state.artisan);
   //console.log("big object", artisanSelector);
   const averageRate = useSelector(state => state.rate);
@@ -134,8 +135,7 @@ const PageArtisan = () => {
       />
     );
   };
-
-  /**
+    /**
    * Rate a artisan
    */
 
@@ -335,6 +335,7 @@ const PageArtisan = () => {
                 <ButtonContact />
               )}
               <Col span={24}>
+
                 <div>
                   <p>{artisanObject.companyDescription}</p>
                 </div>
@@ -378,7 +379,7 @@ const PageArtisan = () => {
 
       <div className="page-artisan-commentary" />
       <Row>
-        <Col span={24}>
+        <Col span={24} id="back-patch">
           <ButtonAdvice />
           <Modal
             footer={null}
@@ -406,7 +407,7 @@ const PageArtisan = () => {
         </Col>
       </Row>
       {user !== -1 || artisanUser !== -1 ? (
-        <div>
+        <div id="background-com">
           <div id="com">
             {arrayAdvice.length} <Icon type="message" />
           </div>
@@ -425,7 +426,7 @@ const PageArtisan = () => {
                   datetime={
                     <div>
                       {item.createdAt}{" "}
-                      <Button value={item.id} onClick={handleAlert}>
+                      <Button id="design" value={item.id} onClick={handleAlert}>
                         {item.userAuthor.isReported === true ? (
                           <Icon style={{ color: "red" }} type="alert" />
                         ) : (
