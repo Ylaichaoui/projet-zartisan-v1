@@ -100,6 +100,17 @@ class ManualFixtureManagerV2
         'troll'
     ];
 
+    private $msgArray = [
+        'whaou super boulot cet artisan est un vrais pro !',
+        'good artisan make france great again !',
+        'Ceci est NOTRE projet au top !',
+        'What ??? tu m a fais de la merde va falloir me rembourser !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',
+        'nikel bon boulot RAS !',
+        'mouai bof finition déguellasse',
+        'tu fais le 4 fois sans frais',
+        'on pourrait avoir le tarif horaire ?'
+    ];
+
     private $apiSireneManager;
     private $passwordEncoder;
     private $em;
@@ -155,7 +166,6 @@ class ManualFixtureManagerV2
             $user->setPhone('0344566360');
         }
         $user->setIsConfirmMail(0);
-        $user->setAverageRate(random_int(0,5));
         $user->setIsStatus(1);
         $user->setIsVerified(0);
         $user->setIsReported(0);
@@ -189,7 +199,7 @@ class ManualFixtureManagerV2
         shuffle($author);
         shuffle($pro);
         $advice = new Advice();
-        $advice->setBody("Ceci est un advice mis part ".$author[0]." pour ".$pro[0]);
+        $advice->setBody($this->msgArray[random_int(0,7)]);
         $advice->setIsStatus(1);
         $advice->setIsReported(0);
         $advice->setUserAuthor($author[0]);
@@ -205,9 +215,9 @@ class ManualFixtureManagerV2
             $this->em->persist($user);
             $this->em->flush();
             if($i > 2){
-                $rate = $this->setFixtureRate();
-                $this->em->persist($rate);
-                $this->em->flush();
+                //$rate = $this->setFixtureRate();
+                //$this->em->persist($rate);
+                //$this->em->flush();
                 $advice = $this->setFixtureAdvice();
                 $this->em->persist($advice);
                 $this->em->flush();
