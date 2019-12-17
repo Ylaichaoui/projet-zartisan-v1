@@ -25,7 +25,7 @@ const PageArtisan = () => {
 	for (let artisan in artisanSelector) {
 		//console.log(artisanSelector[artisan]);
 		artisanObject = artisanSelector[artisan];
-	}
+  }
 
 	if (averageRate != null) {
 		artisanObject.averageRate = averageRate;
