@@ -33,10 +33,10 @@ class ApiAdviceController extends AbstractController
                 $advice = new Advice();
                 $body = $request->get('body');
                 $advice->setBody($body);
-                $advice->setIsStatus('true');
+                $advice->setIsStatus(true);
                 $advice->setUserAuthor($userAuthor);
                 $advice->setUserPro($userPro);
-                $advice->setisReported('false');
+                $advice->setisReported(false);
                 $em->persist($advice);
                 $em->flush();
                
