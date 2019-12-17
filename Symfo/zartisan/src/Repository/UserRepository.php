@@ -160,4 +160,28 @@ class UserRepository extends ServiceEntityRepository
             return $result;
         }
     }
+
+    /**
+    * @return Category[] Returns an array of Category objects
+    */
+    public function findByRegion(string $region)
+    {
+        $result = $this->createQueryBuilder('u')
+        ->select('IDENTITY(u.job)')
+        ->distinct('u.job')
+        ->join('u.job', 'j')
+        ->join('j.category', 'c')
+        ->andwhere('u.region = :region')
+        ->andwhere('u.job != :null')
+        ->setParameter('region', $region)
+        ->setParameter('null', 'N;')
+        ->getQuery()
+        ->getResult();
+
+        if(!isset($result[0])){
+            return NULL;
+        }else{
+            return $result;
+        }
+    }
 }
