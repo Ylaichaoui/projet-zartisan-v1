@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 
 /**
-* @Route("v1/job", name="api_job_")
+* @Route("v1/job", name="api_job_")/v1/job/category/list
 */
 class ApiJobController extends AbstractController
 {
@@ -19,11 +19,12 @@ class ApiJobController extends AbstractController
      */
     public function categoryList(CategoryRepository $categoryRepository)
     {
+        dd($categoryRepository->findAll());
         return $this->json($categoryRepository->findAll(), 200, [],['groups' => 'category_search']);
     }
 
     /**
-     * @Route("/category/listV2", name="category")
+     * @Route("/category/listV2", name="categoryV2")
      */
     public function categoryListV2(UserRepository $userRepository, JobRepository $jobRepository, Request $request)
     {
