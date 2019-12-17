@@ -1,23 +1,19 @@
-import { SEND_RATE } from 'src/store/rate/actions';
-import { rate } from 'src/store/rate/actions';
-import axios from 'axios';
 import cookies from 'js-cookie';
+import axios from 'axios';
+
+import { alertSuccess } from 'src/store/advice/actions';
+import { ALERT_ADVICE } from 'src/store/advice/actions';
 
 export default (store) => (next) => (action) => {
 	switch (action.type) {
-		/**
-     * rate
-     */
-		case SEND_RATE: {
-			console.log('middleware rate');
-			const token = cookies.get('TOKEN');
+		case ALERT_ADVICE: {
+			//console.log('middleware advice');
+			let token = cookies.get('TOKEN');
 			return axios({
 				method: 'post',
-				url: 'http://localhost:8001/api/v1/rate/add',
+				url: 'http://localhost:8001/api/v1/advice/report',
 				data: {
-					id: action.id,
-					email: action.mail,
-					value: action.value
+					id: action.id
 				},
 				headers: { Authorization: `Bearer ${token}` }
 			})
@@ -25,7 +21,7 @@ export default (store) => (next) => (action) => {
 					//console.log(response);
 					if (response.status === 200) {
 						//console.log(response.data);
-						store.dispatch(rate(response.data));
+						store.dispatch(alertSuccess(response.data));
 					}
 				})
 				.catch(function(error) {

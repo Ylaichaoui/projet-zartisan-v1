@@ -1,18 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import 'antd/dist/antd.css';
-import { Row, Col, Carousel, Button, Rate, List, Comment, Tooltip, Link, Popover, Icon } from 'antd';
+import { Row, Col, Carousel, Button, Rate, List, Comment, Tooltip, Link, Popover, Icon, Form, Input } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import classNames from 'classnames';
 
 import './style.sass';
 import moment from 'moment';
 import cookies from 'js-cookie';
 import { sendRate } from 'src/store/rate/actions';
+import { alertAdvice } from 'src/store/advice/actions';
 
+const { TextArea } = Input;
 const PageArtisan = () => {
 	const artisanSelector = useSelector((state) => state.artisan);
+	console.log('big object', artisanSelector);
 	const averageRate = useSelector((state) => state.rate);
 	//console.log('note moyenne', averageRate);
+
+	const advice = useSelector((state) => state.advice);
+	console.log('object advice', advice.report);
 
 	let artisanObject = {};
 	for (let artisan in artisanSelector) {
@@ -95,23 +102,23 @@ const PageArtisan = () => {
 	};
 
 	/**
-	 * Rate a artisan
-	 */
+   * Rate a artisan
+   */
 
 	/**Hooks for display popover of rate link */
 	const [ visibleRate, setVisibleRate ] = useState(false);
 	const [ value, setValue ] = useState(null);
 
 	/**
-	 * open popover
-	 */
+   * open popover
+   */
 	const handleVisibleChange = () => {
 		setVisibleRate(true);
 	};
 
 	/**
-   	* close popover
-	   */
+   * close popover
+   */
 	const dispatch = useDispatch();
 	const idArtisan = artisanObject.id;
 
@@ -120,8 +127,8 @@ const PageArtisan = () => {
 	};
 
 	/**
- *  rate value
- */
+   *  rate value
+   */
 
 	const handleChange = (event) => {
 		console.log(event);
@@ -138,8 +145,8 @@ const PageArtisan = () => {
 	);
 
 	/**
-	 * redirect to register user onClick Contacter
-	 */
+   * redirect to register user onClick Contacter
+   */
 
 	/**
    * button for navigate towards form register user (use withRouter for manage history url)
@@ -157,6 +164,50 @@ const PageArtisan = () => {
 		);
 	});
 
+	/**
+   * button advice
+   */
+
+	const [ visibleSendAdvice, setVisibleSendAdivce ] = useState(false);
+	const [ changeAdvice, setChangeAdivce ] = useState('');
+
+	const visiblePopAdvice = () => {
+		setVisibleSendAdivce(true);
+	};
+
+	const hidePopAdvice = () => {
+		setVisibleSendAdivce(false);
+	};
+
+	const handleAreaComment = (event) => {
+		event.preventDefault();
+
+		hidePopAdvice();
+		return console.log('send advice');
+	};
+
+	const changeArea = (value) => {
+		() => {
+			setChangeAdivce(value.target.textContent);
+		};
+		console.log(changeAdvice);
+	};
+
+	const areaComment = (
+		<div>
+			<Form onSubmit={handleAreaComment}>
+				<Form.Item>
+					<TextArea rows={4} onChange={changeArea} />
+				</Form.Item>
+				<Form.Item>
+					<Button htmlType="submit" id="buttons">
+						Envoyer
+					</Button>
+				</Form.Item>
+			</Form>
+		</div>
+	);
+
 	const ButtonAdvice = withRouter(({ history }) => {
 		const handleAdvice = () => {
 			if (user !== -1 || artisanUser !== -1) {
@@ -167,15 +218,36 @@ const PageArtisan = () => {
 		};
 
 		return (
-      <div>
-        <Button onClick={handleAdvice} id="buttons">
-          Donnez votre avis
-        </Button>
-      </div>
+			<div>
+				<Popover
+					placement="bottom"
+					content={areaComment}
+					onVisibleChange={visiblePopAdvice}
+					visible={visibleSendAdvice}
+					trigger="click"
+				>
+					<Button onClick={handleAdvice} id="buttons">
+						Donnez votre avis
+					</Button>
+				</Popover>
+			</div>
 		);
   });
   
   
+
+	/**
+   * report a advice
+   */
+
+	const [ idAdvice, setIdAdvice ] = useState(null);
+
+	const handleAlert = (event) => {
+		//console.log(event.target.value);
+		//console.log('hello');
+		dispatch(alertAdvice(event.target.value));
+		setIdAdvice(event.target.value);
+	};
 
 	return (
 		<div id="page-artisan">
@@ -211,7 +283,7 @@ const PageArtisan = () => {
 									<div>
 										<p>
 											Email : <a href={`mailto:${artisanObject.email}`}>{artisanObject.email}</a>
-                    </p>
+										</p>
 										<p>
 											Téléphone : <a href={`tel:+33${phone}`}>{artisanObject.phone}</a>
 										</p>
@@ -256,52 +328,70 @@ const PageArtisan = () => {
 				</Carousel>
 			</div>
 
-      <div className="page-artisan-commentary">
-      <Row>
-					<Col span={24}>
-            <ButtonAdvice />
-            {user !== -1 || artisanUser !== -1 ? (
-              
-                  <div>
-                    <Popover
-                      placement="top"
-                      trigger="click"
-                      onVisibleChange={handleVisibleChange}
-                      visible={visibleRate}
-                      content={content}
-                    >
-                      <Button id="buttons">Evaluez</Button>
-                    </Popover>
-                  </div>
-            ) : (
-              ''
-            )}
-          </Col>
-				</Row>
-				<div id="com">
-					{arrayAdvice.length} <Icon type="message" />
-				</div>
-				{
+			<div className="page-artisan-commentary" />
+			<Row>
+				<Col span={24}>
+					<ButtonAdvice />
+					{user !== -1 || artisanUser !== -1 ? (
+						<div>
+							<Popover
+								placement="bottom"
+								trigger="click"
+								onVisibleChange={handleVisibleChange}
+								visible={visibleRate}
+								content={content}
+							>
+								<Button id="buttons">Evaluez</Button>
+							</Popover>
+						</div>
+					) : (
+						''
+					)}
+				</Col>
+			</Row>
+			{user !== -1 || artisanUser !== -1 ? (
+				<div>
+					<div id="com">
+						{arrayAdvice.length} <Icon type="message" />
+					</div>
 					<List
-            className="comment-list"
-            id="comment"
+						className="comment-list"
+						id="comment"
 						itemLayout="horizontal"
 						dataSource={arrayAdvice}
 						renderItem={(item) => (
 							<li>
-								{console.log('commentary', item)}
+								{console.log('response....', advice.report)}
+								{advice.report == 'success' ? (
+									item.id == idAdvice && (item.userAuthor.isReported = true)
+								) : (
+									item.id && (item.userAuthor.isReported = true)
+								)}
+								{console.log('reported', item.userAuthor.isReported)}
 								<Comment
-									actions={item.actions}
 									author={item.userAuthor.firstname}
 									avatar={`../src/styles/pictures/user/${item.userAuthor.picture}`}
 									content={item.body}
-									datetime={item.createdAt}
+									datetime={
+										<div>
+											{item.createdAt}{' '}
+											<Button value={item.id} onClick={handleAlert}>
+												{item.userAuthor.isReported === true ? (
+													<Icon style={{ color: 'red' }} type="alert" />
+												) : (
+													<Icon type="alert" />
+												)}
+											</Button>
+										</div>
+									}
 								/>
 							</li>
 						)}
 					/>
-				}{' '}
-			</div>
+				</div>
+			) : (
+				''
+			)}
 		</div>
 	);
 };
