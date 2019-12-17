@@ -63,7 +63,7 @@ class ApiAdviceController extends AbstractController
                 $em->persist($advice);
                 $em->flush();
                
-                return $this->json('success', 200);
+                return $this->json($advice, 200, [], ['groups' => 'user_advice']);
             } else {
                 return $this->json(['error' => 'no advice selected'], 304);
             }

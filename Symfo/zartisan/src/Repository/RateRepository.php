@@ -46,7 +46,7 @@ class RateRepository extends ServiceEntityRepository
         $result = $this->createQueryBuilder('r')
                 ->andWhere('r.userPro = :userPro')
                 ->setParameter('userPro', $userPro)
-                ->OrderBy('r.createdAt', 'DESC');
+                ->OrderBy('r.createdAt', 'ASC');
       
         return $result->getQuery()->getResult();
     }

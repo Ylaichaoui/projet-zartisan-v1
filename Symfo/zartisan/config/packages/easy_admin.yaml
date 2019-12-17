@@ -1,5 +1,8 @@
 easy_admin:
+    formats:
+        date: 'd/m/Y H:i:s'
     site_name: 'Zartisan Admin'
+    disabled_actions: ['new','delete']
     design:
         brand_color: '#F00'
         menu: 
@@ -10,51 +13,52 @@ easy_admin:
             - {entity: 'Notes', icon: 'edit'}
             - {entity: 'Api', icon: 'file'}
     entities:
+        Utilisateurs:
+            class: App\Entity\User
+            list:
+                actions: ['-edit']
+                fields:
+                    - id
+                    - {property: 'nickname', label: 'Pseudo'}
+                    - email
+                    - {property: 'isConfirmMail', label: 'Confirmation de l email'}
+                    - {property: 'isStatus', label: 'Status'}
+                    - {property: 'isReported', label: 'Signalement'}
+                    - {property: 'roles', type: 'array', type_options: { expanded: true, multiple: false, choices: { 'Administrateur': 'ROLE_ADMIN', 'Particulier': 'ROLE_USER', 'Artisan': 'ROLE_ARTISAN' } }}
         Metiers:
             class: App\Entity\Job
             list:
+                actions: ['-edit']
                 fields:
                     - id
                     - {property: 'name', label: 'Nom'}
                     - {property: 'createdAt', label: 'Date de création'}
                     - {property: 'updatedAt', label: 'Dernière mise à jour'}
-                actions:
-                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
-                    - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
         Categories:
             class: App\Entity\Category
             list:
+                actions: ['-edit']
                 fields:
                     - id
                     - {property: 'name', label: 'Nom'}
                     - {property: 'createdAt', label: 'Date de création'}
                     - {property: 'updatedAt', label: 'Dernière mise à jour'}
-                actions:
-                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
-                    - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
         Avis :
             class: App\Entity\Advice
             list:
+                actions: ['-edit']
                 fields:
                     - id
                     - {property: 'body', label: 'Contenu'}
                     - {property: 'isStatus', label: 'Status'}
                     - {property: 'isReported', label: 'Signalement'}
-                    - {property: 'createdAt', label: 'Date de création'}
-                actions:
-                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
-                    - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
         Notes:
             class: App\Entity\Rate
             list:
+                actions: ['-edit']
                 fields:
                     - id
                     - {property: 'value', label: 'Note'}
-                    - {property: 'createdAt', label: 'Date de création'}
-                    - {property: 'updatedAt', label: 'Dernière mise à jour'}
-                actions:
-                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
-                    - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
         Api:
             class: App\Entity\Api
             list:
@@ -65,16 +69,3 @@ easy_admin:
                 actions:
                     - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
                     - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
-        Utilisateurs:
-            class: App\Entity\User
-            list:
-                fields:
-                    - id
-                    - {property: 'nickname', label: 'Pseudo'}
-                    - email
-                    - {property: 'isConfirmMail', label: 'Confirmation de l email'}
-                    - {property: 'isStatus', label: 'Status'}
-                    - {property: 'isReported', label: 'Signalement'}
-                    - {property: 'roles', type: 'choice', type_options: { expanded: true, multiple: true, choices: { 'Administrateur': 'ROLE_ADMIN', 'Particulier': 'ROLE_USER', 'Artisan': 'ROLE_ARTISAN' } }}
-                    - {property: 'createdAt', label: 'Date de création'}
-                    - {property: 'updatedAt', label: 'Dernière mise à jour'}
