@@ -73,6 +73,7 @@ class SecurityController extends AbstractController
             $user->setRoles(["ROLE_ARTISAN"]);
             //$user->setRoles(["ROLE_UNDEFINED_ARTISAN"]);
             $user->setIsConfirmMail(false);
+            $user->setPicture("artisan.png"); 
             $user->setIsStatus(true);
             $user->setIsVerified(false);
             $user->setIsReported(false);
@@ -130,6 +131,7 @@ class SecurityController extends AbstractController
                 )
             );
             $user->setIsConfirmMail(false);
+            $user->setPicture("user6.png"); 
             $user->setRoles(["ROLE_UNDEFINED_USER"]);
             $user->setIsStatus(true);
             $user->setIsVerified(false);
