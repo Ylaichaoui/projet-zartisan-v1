@@ -1,7 +1,7 @@
 import { ALERT_SUCCESS } from 'src/store/advice/actions';
 
 const initialState = {
-	report: ''
+	report: null
 };
 
 export default (state = initialState, action) => {
