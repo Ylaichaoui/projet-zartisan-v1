@@ -19,17 +19,24 @@ const ListArtisan = () => {
 	//console.log('listartisan', artisandata);
 	let arrayArtisan = [];
 	for (let data in artisandata) {
+
 		arrayArtisan = artisandata[data];
-	}
-
+  }
+  
+  
 	//console.log(arrayArtisan);
-
+  
 	const listData = [];
 	let objectArtisan = {};
 	for (let d in arrayArtisan) {
-		objectArtisan = arrayArtisan[d];
+    if(arrayArtisan[d].companyDescription == null){
+      arrayArtisan[d].companyDescription = "";
+    }
+    objectArtisan = arrayArtisan[d];
 		listData.push(objectArtisan);
 	}
+  
+
 
 	//console.log(objectArtisan);
 
