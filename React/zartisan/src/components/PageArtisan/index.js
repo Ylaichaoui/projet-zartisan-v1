@@ -330,7 +330,7 @@ const PageArtisan = () => {
 
 			<div className="page-artisan-commentary" />
 			<Row>
-				<Col span={24}>
+				<Col span={24} id="back-patch">
 					<ButtonAdvice />
 					{user !== -1 || artisanUser !== -1 ? (
 						<div>
@@ -350,7 +350,7 @@ const PageArtisan = () => {
 				</Col>
 			</Row>
 			{user !== -1 || artisanUser !== -1 ? (
-				<div>
+				<div id="background-com">
 					<div id="com">
 						{arrayAdvice.length} <Icon type="message" />
 					</div>
@@ -375,7 +375,7 @@ const PageArtisan = () => {
 									datetime={
 										<div>
 											{item.createdAt}{' '}
-											<Button value={item.id} onClick={handleAlert}>
+											<Button id="design" value={item.id} onClick={handleAlert}>
 												{item.userAuthor.isReported === true ? (
 													<Icon style={{ color: 'red' }} type="alert" />
 												) : (
