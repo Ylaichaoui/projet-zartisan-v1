@@ -12,8 +12,12 @@ import { alertAdvice } from 'src/store/advice/actions';
 
 const PageArtisan = () => {
 	const artisanSelector = useSelector((state) => state.artisan);
+	console.log('big object', artisanSelector);
 	const averageRate = useSelector((state) => state.rate);
 	//console.log('note moyenne', averageRate);
+
+	const advice = useSelector((state) => state.advice);
+	console.log('object advice', advice.report);
 
 	let artisanObject = {};
 	for (let artisan in artisanSelector) {
@@ -25,7 +29,7 @@ const PageArtisan = () => {
 		artisanObject.averageRate = averageRate;
 	}
 
-	console.log(artisanObject);
+	//console.log(artisanObject);
 
 	const connect = useSelector((state) => state.connect);
 	let token = '';
@@ -180,10 +184,13 @@ const PageArtisan = () => {
 	 * report a advice
 	 */
 
+	const [ idAdvice, setIdAdvice ] = useState(null);
+
 	const handleAlert = (event) => {
-		console.log(event.target.value);
-		console.log('hello');
-		dispatch(alertAdvice());
+		//console.log(event.target.value);
+		//console.log('hello');
+		dispatch(alertAdvice(event.target.value));
+		setIdAdvice(event.target.value);
 	};
 
 	return (
@@ -279,35 +286,44 @@ const PageArtisan = () => {
 						)}
 					</Col>
 				</Row>
-				<div id="com">
-					{arrayAdvice.length} <Icon type="message" />
-				</div>
-				{
-					<List
-						className="comment-list"
-						id="comment"
-						itemLayout="horizontal"
-						dataSource={arrayAdvice}
-						renderItem={(item, id) => (
-							<li>
-								{console.log('commentary', item)}
-								<Comment
-									author={item.userAuthor.firstname}
-									avatar={`../src/styles/pictures/user/${item.userAuthor.picture}`}
-									content={item.body}
-									datetime={
-										<div>
-											{item.createdAt}{' '}
-											<Button onClick={handleAlert}>
-												<Icon type="alert" />
-											</Button>
-										</div>
-									}
-								/>
-							</li>
-						)}
-					/>
-				}{' '}
+				{user !== -1 || artisanUser !== -1 ? (
+					<div>
+						<div id="com">
+							{arrayAdvice.length} <Icon type="message" />
+						</div>
+						<List
+							className="comment-list"
+							id="comment"
+							itemLayout="horizontal"
+							dataSource={arrayAdvice}
+							renderItem={(item) => (
+								<li>
+									{advice.report == 'success' && (item.id == idAdvice && idAdvice != null) ? (
+										(item.userAuthor.isReported = true)
+									) : (
+										(item.userAuthor.isReported = false)
+									)}
+									{console.log('reported', item.userAuthor.isReported)}
+									<Comment
+										author={item.userAuthor.firstname}
+										avatar={`../src/styles/pictures/user/${item.userAuthor.picture}`}
+										content={item.body}
+										datetime={
+											<div>
+												{item.createdAt}{' '}
+												<Button value={item.id} onClick={handleAlert}>
+													<Icon type="alert" />
+												</Button>
+											</div>
+										}
+									/>
+								</li>
+							)}
+						/>
+					</div>
+				) : (
+					''
+				)}
 			</div>
 		</div>
 	);
