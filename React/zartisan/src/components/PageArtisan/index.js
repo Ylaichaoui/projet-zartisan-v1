@@ -20,13 +20,18 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
+import classNames from 'classnames';
+
+
 import './style.sass';
 import moment from 'moment';
 import cookies from 'js-cookie';
 import { sendRate } from 'src/store/rate/actions';
 import { alertAdvice } from 'src/store/advice/actions';
 import { sendAdvice } from 'src/store/advice/actions';
+
 import { artisanData } from 'src/store/artisan/actions';
+
 
 const { TextArea } = Input;
 const PageArtisan = () => {
@@ -38,7 +43,8 @@ const PageArtisan = () => {
 
 	const advice = useSelector((state) => state.advice);
 
-	console.log('object advice', advice);
+	//console.log("object advice", advice);
+
 
 	let artisanObject = {};
 	for (let artisan in artisanSelector) {
@@ -50,7 +56,9 @@ const PageArtisan = () => {
 		artisanObject.averageRate = averageRate;
 	}
 
+
 	console.log('artisan object', artisanObject);
+
 
 	const connect = useSelector((state) => state.connect);
 	let token = '';
@@ -99,7 +107,9 @@ const PageArtisan = () => {
 	//console.log('picture: ', artisanObject.picture, 'note : ', artisanObject.averageRate);
 
 	const Rating = () => {
-		return <Rate style={{ fontSize: '1em' }} disabled defaultValue={artisanObject.averageRate} />;
+
+		return <Rate className="ratingCompany" style={{ fontSize: '1em' }} disabled defaultValue={artisanObject.averageRate} />;
+
 	};
 	/**
    * Rate a artisan
@@ -121,9 +131,11 @@ const PageArtisan = () => {
    */
 	const dispatch = useDispatch();
 	const idArtisan = artisanObject.id;
+
 	const emailArtisan = artisanObject.email;
 
 	console.log('request artisan', idArtisan, emailArtisan);
+
 
 	const hide = () => {
 		setVisibleRate(false);
@@ -161,6 +173,9 @@ const PageArtisan = () => {
 					return history.push('/inscription/particulier');
 				}}
 				id="buttons"
+
+				className="buttonInscription"
+
 			>
 				Contacter
 			</Button>
@@ -202,9 +217,11 @@ const PageArtisan = () => {
 		//console.log("mail", mail, "artisanid", idArtisan, "body", changeAdvice);
 		hidePopAdvice();
 		dispatch(sendAdvice(mail, idArtisan, changeAdvice));
+
 		setTimeout(() => {
 			dispatch(artisanData(idArtisan, emailArtisan));
 		}, 2000);
+
 	};
 
 	//console.log("changeAdvice : ", changeAdvice);
@@ -253,9 +270,11 @@ const PageArtisan = () => {
 		//console.log(event.target.value);
 		//console.log('hello');
 		dispatch(alertAdvice(event.target.value));
+
 		setTimeout(() => {
 			dispatch(artisanData(idArtisan, emailArtisan));
 		}, 2000);
+
 	};
 
 	return (
@@ -264,7 +283,9 @@ const PageArtisan = () => {
 				<div className="page-artisan-description">
 					<Row>
 						<div>
-							<div>
+
+							<div id="companyName">
+
 								<h4>{artisanObject.company}</h4>
 							</div>
 						</div>
@@ -278,6 +299,7 @@ const PageArtisan = () => {
 										src={`../src/styles/pictures/company/${artisanObject.picture}`}
 									/>
 									<Rating />
+
 								</div>
 							</Col>
 							<Col span={12}>
@@ -291,7 +313,9 @@ const PageArtisan = () => {
 
 							{user !== -1 || artisanUser !== -1 ? (
 								<Col span={24}>
-									<div>
+
+									<div className="divDescriptionEmailPhone">
+
 										<p>
 											Email : <a href={`mailto:${artisanObject.email}`}>{artisanObject.email}</a>
 										</p>
@@ -338,6 +362,7 @@ const PageArtisan = () => {
 			</div>
 
 			<div className="page-artisan-commentary" />
+
 			<Row>
 				<Col span={24} id="back-patch">
 					<ButtonAdvice />
@@ -362,6 +387,7 @@ const PageArtisan = () => {
 					)}
 				</Col>
 			</Row>
+
 			{user !== -1 || artisanUser !== -1 ? (
 				<div id="background-com">
 					<div id="com">
@@ -374,7 +400,9 @@ const PageArtisan = () => {
 						dataSource={arrayAdvice}
 						renderItem={(item) => (
 							<li>
+
 								{console.log('commentary', item)}
+
 								<Comment
 									author={item.userAuthor.firstname}
 									avatar={`../src/styles/pictures/user/${item.userAuthor.picture}`}
@@ -383,7 +411,9 @@ const PageArtisan = () => {
 										<div>
 											{item.createdAt}{' '}
 											<Button id="design" value={item.id} onClick={handleAlert}>
+
 												{item.isReported ? (
+
 													<Icon style={{ color: 'red' }} type="alert" />
 												) : (
 													<Icon type="alert" />

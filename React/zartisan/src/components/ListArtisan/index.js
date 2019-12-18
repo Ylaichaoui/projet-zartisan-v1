@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, List, Avatar, Icon, Dropdown, Menu, Button, Cascader, Rate } from 'antd';
+
 import classNames from 'classnames';
 
 import 'antd/dist/antd.css';
@@ -35,6 +36,7 @@ const ListArtisan = () => {
 		objectArtisan = arrayArtisan[d];
 		listData.push(objectArtisan);
 	}
+
 	//console.log('select', regions);
 	//console.log('select', jobs);
 	/**
@@ -85,6 +87,7 @@ const ListArtisan = () => {
 		});
 		return item;
 	});
+
 
 	const menuRegion = <Menu>{itemRegions}</Menu>;
 	const [ regionChange, setRegion ] = useState('Choisissez une Région');
@@ -137,6 +140,7 @@ const ListArtisan = () => {
 	const ButtonSearchArtisanList = () => {
 		const handleSearch = () => {
 			dispatch(postHomeSearch(regionChange, idJob));
+
 		};
 		return (
 			<Button
@@ -189,6 +193,10 @@ const ListArtisan = () => {
 						console.log(page);
 					},
 					pageSize: 5
+				}}
+
+        grid={{
+					gutter: 16
 				}}
 				dataSource={listData}
 				renderItem={(item) => (
