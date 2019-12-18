@@ -3,7 +3,6 @@ import { Form, Icon, Input, Button } from 'antd';
 import 'antd/dist/antd.css';
 import './style.sass';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 const FormLogin = ({ handleSubmitLogin, handleCancel, artisanSelector }) => {

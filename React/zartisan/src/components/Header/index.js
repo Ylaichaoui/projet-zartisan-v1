@@ -18,6 +18,8 @@ import logo from './picture/logo-zartisan.svg';
 import FormLogin from 'src/components/FormLogin';
 import FormRegisterArtisan from 'src/components/FormRegisterArtisan';
 import { sendRegisterArtisan } from 'src/store/register/actions';
+import FormRegisterUser from 'src/components/FormRegisterUser';
+import { sendRegisterUser } from 'src/store/register/actions';
 
 /**
  * Code
@@ -158,20 +160,20 @@ const Header = () => {
    * button for navigate towards form register user (use withRouter for manage history url)
    */
 
-	const ButtonGoToUserForm = withRouter(({ history }) => {
+	const ButtonGoToUserForm = () => {
 		return (
 			<Button
 				id="buttons"
 				onClick={() => {
 					handleCancel();
-					return history.push('/inscription/particulier');
+					showModalRegisterUser();
 				}}
 				style={{ width: '40%' }}
 			>
 				Particulier
 			</Button>
 		);
-	});
+	};
 
 	/**
    * admin connection
@@ -221,6 +223,39 @@ const Header = () => {
 				// console.log('mots est correct');
 				dispatch(sendRegisterArtisan(email, password, siret));
 			}
+		};
+	};
+
+	/**
+ * register user modal
+ */
+
+	/**
+ * register artisan modal
+ */
+	const [ registerVisibleUser, setRegisterVisibleUser ] = useState(false);
+
+	const showModalRegisterUser = () => {
+		setRegisterVisibleUser(true);
+	};
+
+	const hideModalRegisterUser = () => {
+		setTimeout(() => {
+			setRegisterVisibleUser(false), 2000;
+		});
+		console.log('handle cancel');
+	};
+
+	//submit of form
+	const handleFormUser = (email, password, passwordCheck) => {
+		return (event) => {
+			//console.log(email, password, passwordCheck);
+			event.preventDefault();
+			if (password === passwordCheck && password !== '') {
+				// console.log('mots est correct');
+				dispatch(sendRegisterUser(email, password));
+			}
+			hideModalRegisterUser();
 		};
 	};
 
@@ -297,6 +332,14 @@ const Header = () => {
 						</Link>
 					</Col>
 				</Col>
+				<Modal
+					footer={null}
+					title="Inscription Particulier"
+					visible={registerVisibleUser}
+					onCancel={hideModalRegisterUser}
+				>
+					<FormRegisterUser handleFormUser={handleFormUser} />
+				</Modal>
 			</Row>
 			<Modal
 				footer={null}
