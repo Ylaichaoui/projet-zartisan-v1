@@ -28,12 +28,13 @@ const Home = () => {
 		dispatch(getJobs(event.item.props.value));
 		console.log('region', event.item.props.value);
 		visibleJobDropdown();
-		setJobChange('Choisissez votre métier');
+		//setJobChange('Choisissez votre métier');
 	};
 
 	useEffect(() => {
-		if (jobs.length != 0) {
-			setJobChange('Choisissez votre métier');
+		console.log('new ', jobs);
+		if (jobs != null) {
+			//setJobChange('Choisissez votre métier');
 		} else {
 			setJobChange('Aucun métier');
 		}
@@ -51,7 +52,7 @@ const Home = () => {
 
 	console.log(jobs);
 	if (jobs.length != 0) {
-		if (jobs[0].success != undefined) {
+		if (jobs == null) {
 			console.log('success');
 		} else {
 			console.log('no success');
@@ -89,47 +90,6 @@ const Home = () => {
 
 	const menuRegion = <Menu>{itemRegions}</Menu>;
 
-	// 	const [ jobChange, setJob ] = useState([]);
-
-	// 	/**
-	//    * list item menu
-	//    */
-	//   let arrayJobb = [];
-	// 	for (let j in jobs) {
-	//     //console.log('forin', jobs[j]);
-	// 		arrayJobb = jobs[j];
-	//   }
-
-	// 	//console.log(arrayJobb);
-
-	// 	const itemJobs = arrayJobb.map((job) => {
-	//     //console.log('first-map', job);
-	// 		let nameValue = '';
-	// 		let idValue = '';
-	// 		let arrayMyJobs = [];
-	// 		for (let j in job.jobs) {
-	//       nameValue = job.jobs[j].name;
-	// 			idValue = job.jobs[j].id;
-	// 			arrayMyJobs.push({ value: idValue, label: nameValue });
-	// 		}
-	// 		//console.log(arrayMyJobs);
-	// 		//console.log('forindansmap', nameValue, idValue);
-
-	// 		const newObjectJob = {
-	//       value: job.id,
-	// 			label: job.name,
-	// 			children: arrayMyJobs
-	// 		};
-	// 		//console.log('nouveau objet : ', newObjectJob);
-	// 		return newObjectJob;
-	// 	});
-
-	// 	//console.log(itemJobs);
-
-	// 	const onChangeJob = (event) => {
-	//     setJob(event);
-	// 	};
-
 	/**
 	 * menu jobs
 	 */
@@ -137,6 +97,8 @@ const Home = () => {
 	const [ jobChange, setJobChange ] = useState('Choisissez votre métier');
 
 	const [ visibleButtonJobs, setvisibleButtonJobs ] = useState(false);
+
+	const [ idJob, setIdJob ] = useState('');
 
 	const klsDisplayButton = classNames('home-button-region -cascader-jobs button-job', {
 		'button-job--display': visibleButtonJobs == true
@@ -150,16 +112,13 @@ const Home = () => {
 	//console.log('array', arrayJobs);
 	let jobartisan = '';
 
-	if (jobs.length != 0 && jobs[0].success != 'no job' && arrayJobs != undefined) {
+	if (arrayJobs != undefined) {
 		jobartisan = arrayJobs.map((job) => {
-			console.log('metier', job);
-
 			const handleJobChange = (event) => {
-				console.log('helloooooo');
+				console.log('id job', event.item.props.eventKey);
 				chooseJob(event.item.props.value);
+				setIdJob(event.item.props.eventKey);
 			};
-
-			console.log('job value search', jobChange);
 
 			const chooseJob = (job) => {
 				setJobChange(job);
@@ -181,7 +140,8 @@ const Home = () => {
 	 */
 	const ButtonSearchArtisanList = withRouter(({ history }) => {
 		const handleSearch = () => {
-			dispatch(postHomeSearch(regionChange, jobChange[1]));
+			dispatch(postHomeSearch(regionChange, idJob));
+			console.log('recherche : ', regionChange, jobChange);
 			setTimeout(() => {
 				history.push('/liste-artisan');
 			}, 1000);
@@ -210,13 +170,6 @@ const Home = () => {
 						{jobChange} <Icon type="down" />
 					</Button>
 				</Dropdown>
-
-				{/* <Cascader
-            className="home-cascader-jobs"
-            options={itemJobs}
-            placeholder="Choisissez un métier"
-            onChange={onChangeJob}
-            />*/}
 			</Row>
 
 			<Row type="flex" justify="space-around" align="middle" className="home-france">
