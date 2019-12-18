@@ -24,19 +24,15 @@ const Home = () => {
 
 	const changeRegion = (event) => {
 		setRegion(event.item.props.value);
-
-		setTimeout(() => {
-			jobs = [];
-		}, 2000);
+		jobs.length = 0;
 		dispatch(getJobs(event.item.props.value));
 		console.log('region', event.item.props.value);
 		visibleJobDropdown();
+		setJobChange('Choisissez votre métier');
 	};
 
 	useEffect(() => {
-		if (jobs.length != 0) {
-			setJobChange('Choisissez votre métier');
-		} else {
+		if (jobs.length == 0) {
 			setJobChange('Aucun métier');
 		}
 	});
@@ -50,8 +46,14 @@ const Home = () => {
 	const dispatch = useDispatch();
 	const regions = useSelector((state) => state.regions);
 	let jobs = useSelector((state) => state.jobs);
-	//console.log('select', regions);
-	console.log('select', jobs);
+	console.log(jobs);
+	if (jobs.length != 0) {
+		if (jobs[0].success != undefined) {
+			console.log('success');
+		} else {
+			console.log('no success');
+		}
+	}
 
 	/**
    * menu of dropdown region
@@ -129,7 +131,7 @@ const Home = () => {
 	 * menu jobs
 	 */
 
-	const [ jobChange, setJobChange ] = useState('Choisissez un métier');
+	const [ jobChange, setJobChange ] = useState('Choisissez votre métier');
 	const [ visibleButtonJobs, setvisibleButtonJobs ] = useState(false);
 
 	const klsDisplayButton = classNames('home-button-region -cascader-jobs button-job', {
@@ -143,15 +145,15 @@ const Home = () => {
 	let arrayJobs = jobs[0];
 	//console.log('array', arrayJobs);
 	let jobartisan = '';
-	if (arrayJobs != undefined) {
+	if (jobs.length != 0 && jobs[0].success != 'no job' && arrayJobs != undefined) {
 		jobartisan = arrayJobs.map((job) => {
-			//console.log('metier', job);
+			console.log('metier', job);
 
 			const handleJobChange = (event) => {
 				console.log('helloooooo');
 				chooseJob(event.item.props.value);
 			};
-
+			console.log('job value search', jobChange);
 			const chooseJob = (job) => {
 				setJobChange(job);
 			};
