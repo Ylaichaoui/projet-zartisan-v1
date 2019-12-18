@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Row, Button, Icon, Menu, Dropdown, Cascader } from 'antd';
 import { withRouter } from 'react-router-dom';
-
+import classNames from 'classnames';
 /**
  * Local imports
  */
@@ -20,32 +20,51 @@ import { postHomeSearch } from 'src/store/search/actions';
  */
 
 const Home = () => {
+	const [ regionChange, setRegion ] = useState('Choisissez une Région');
+
+	const changeRegion = (event) => {
+		setRegion(event.item.props.value);
+
+		setTimeout(() => {
+			jobs = [];
+		}, 2000);
+		dispatch(getJobs(event.item.props.value));
+		console.log('region', event.item.props.value);
+		visibleJobDropdown();
+	};
+
+	useEffect(() => {
+		if (jobs.length != 0) {
+			setJobChange('Choisissez votre métier');
+		} else {
+			setJobChange('Aucun métier');
+		}
+	});
+
 	useEffect(() => {
 		dispatch(getRegions());
-		dispatch(getJobs());
+		//dispatch(getJobs());
 
 		//console.log(getRegions(Cookies.get("TOKEN");));
 	}, []);
 	const dispatch = useDispatch();
 	const regions = useSelector((state) => state.regions);
-	const jobs = useSelector((state) => state.jobs);
+	let jobs = useSelector((state) => state.jobs);
 	//console.log('select', regions);
-	//console.log('select', jobs);
+	console.log('select', jobs);
+
 	/**
    * menu of dropdown region
    */
-	const changeRegion = (event) => {
-		setRegion(event.item.props.value);
-	};
-  
+
 	/**
    * list item menu
    */
 
-  const itemRegions = regions.map((regionObject) => {
-    const array = [];
+	const itemRegions = regions.map((regionObject) => {
+		const array = [];
 		for (let regionCode in regionObject) {
-      const region = { id: regionCode, name: regionObject[regionCode] };
+			const region = { id: regionCode, name: regionObject[regionCode] };
 			//console.log(region);
 			array.push(region);
 		}
@@ -54,105 +73,147 @@ const Home = () => {
 			//	console.log('item', region.id);
 			return (
 				<Menu.Item onClick={changeRegion} key={region.id} value={region.name}>
-        {region.name}
+					{region.name}
 				</Menu.Item>
-        );
-      });
-      return item;
-  });
-  
-	//	console.log('array', itemRegions);
-  
-	const menuRegion = <Menu>{itemRegions}</Menu>;
-	const [ regionChange, setRegion ] = useState('Choisissez une Région');
-  
-	const [ jobChange, setJob ] = useState([]);
-  
-	/**
-   * list item menu
-   */
-  let arrayJobb = [];
-	for (let j in jobs) {
-    //console.log('forin', jobs[j]);
-		arrayJobb = jobs[j];
-  }
-  
-	//console.log(arrayJobb);
-  
-	const itemJobs = arrayJobb.map((job) => {
-    //console.log('first-map', job);
-		let nameValue = '';
-		let idValue = '';
-		let arrayMyJobs = [];
-		for (let j in job.jobs) {
-      nameValue = job.jobs[j].name;
-			idValue = job.jobs[j].id;
-			arrayMyJobs.push({ value: idValue, label: nameValue });
-		}
-		//console.log(arrayMyJobs);
-		//console.log('forindansmap', nameValue, idValue);
-    
-		const newObjectJob = {
-      value: job.id,
-			label: job.name,
-			children: arrayMyJobs
-		};
-		//console.log('nouveau objet : ', newObjectJob);
-		return newObjectJob;
+			);
+		});
+		return item;
 	});
-  
-	//console.log(itemJobs);
-  
-	const onChangeJob = (event) => {
-    setJob(event);
+
+	console.log('arrayRegion', itemRegions);
+
+	const menuRegion = <Menu>{itemRegions}</Menu>;
+
+	// 	const [ jobChange, setJob ] = useState([]);
+
+	// 	/**
+	//    * list item menu
+	//    */
+	//   let arrayJobb = [];
+	// 	for (let j in jobs) {
+	//     //console.log('forin', jobs[j]);
+	// 		arrayJobb = jobs[j];
+	//   }
+
+	// 	//console.log(arrayJobb);
+
+	// 	const itemJobs = arrayJobb.map((job) => {
+	//     //console.log('first-map', job);
+	// 		let nameValue = '';
+	// 		let idValue = '';
+	// 		let arrayMyJobs = [];
+	// 		for (let j in job.jobs) {
+	//       nameValue = job.jobs[j].name;
+	// 			idValue = job.jobs[j].id;
+	// 			arrayMyJobs.push({ value: idValue, label: nameValue });
+	// 		}
+	// 		//console.log(arrayMyJobs);
+	// 		//console.log('forindansmap', nameValue, idValue);
+
+	// 		const newObjectJob = {
+	//       value: job.id,
+	// 			label: job.name,
+	// 			children: arrayMyJobs
+	// 		};
+	// 		//console.log('nouveau objet : ', newObjectJob);
+	// 		return newObjectJob;
+	// 	});
+
+	// 	//console.log(itemJobs);
+
+	// 	const onChangeJob = (event) => {
+	//     setJob(event);
+	// 	};
+
+	/**
+	 * menu jobs
+	 */
+
+	const [ jobChange, setJobChange ] = useState('Choisissez un métier');
+	const [ visibleButtonJobs, setvisibleButtonJobs ] = useState(false);
+
+	const klsDisplayButton = classNames('home-button-region -cascader-jobs button-job', {
+		'button-job--display': visibleButtonJobs == true
+	});
+
+	const visibleJobDropdown = () => {
+		setvisibleButtonJobs(true);
 	};
-  
+
+	let arrayJobs = jobs[0];
+	//console.log('array', arrayJobs);
+	let jobartisan = '';
+	if (arrayJobs != undefined) {
+		jobartisan = arrayJobs.map((job) => {
+			//console.log('metier', job);
+
+			const handleJobChange = (event) => {
+				console.log('helloooooo');
+				chooseJob(event.item.props.value);
+			};
+
+			const chooseJob = (job) => {
+				setJobChange(job);
+			};
+
+			return (
+				<Menu.Item onClick={handleJobChange} key={job.id} value={job.name}>
+					{job.name}
+				</Menu.Item>
+			);
+		});
+		//console.log('final ', jobartisan);
+	}
+
+	const menuJobs = <Menu>{jobartisan}</Menu>;
+
 	/**
    * Button search artisan list
 	 */
-  const ButtonSearchArtisanList = withRouter(({ history }) => {
-    const handleSearch = () => {
-      dispatch(postHomeSearch(regionChange, jobChange[1]));
+	const ButtonSearchArtisanList = withRouter(({ history }) => {
+		const handleSearch = () => {
+			dispatch(postHomeSearch(regionChange, jobChange[1]));
 			setTimeout(() => {
-        history.push('/liste-artisan');
+				history.push('/liste-artisan');
 			}, 1000);
-    };
-    
+		};
+
 		return (
-      <Button className="home-button-search" id="buttons" onClick={handleSearch}>
-      Recherche
+			<Button className="home-button-search" id="buttons" onClick={handleSearch}>
+				Recherche
 			</Button>
-      );
-    });
-    
-    return (
-      <div className="home">
+		);
+	});
+
+	return (
+		<div className="home">
 			<Row type="flex" justify="space-around" align="middle">
-      <Dropdown overlay={menuRegion} placement="bottomLeft">
-      <Button className="home-button-region" style={{ backgroundColor: '#bb9574', color: 'white' }}>
+				<Dropdown overlay={menuRegion} placement="bottomLeft">
+					<Button className="home-button-region" style={{ backgroundColor: '#bb9574', color: 'white' }}>
 						{regionChange} <Icon type="down" />
-            </Button>
-            </Dropdown>
-            
-            <Cascader
+					</Button>
+				</Dropdown>
+
+				{/* ############################################################# */}
+
+				<Dropdown overlay={menuJobs} placement="bottomLeft">
+					<Button className={klsDisplayButton} style={{ backgroundColor: '#bb9574', color: 'white' }}>
+						{jobChange} <Icon type="down" />
+					</Button>
+				</Dropdown>
+
+				{/* <Cascader
             className="home-cascader-jobs"
             options={itemJobs}
             placeholder="Choisissez un métier"
             onChange={onChangeJob}
-            />
-            </Row>
-            <Row type="flex" justify="space-around" align="middle" className="home-france">
-            <object data={france}
-            id="yoursvg"
-            width="100%"
-            height="100%"
-            type="image/svg+xml"
-            >
-        
-        <img src={france}
-            alt="Une carte de france en svg cliquable" />
-        
-        </object>
+            />*/}
+			</Row>
+
+			<Row type="flex" justify="space-around" align="middle" className="home-france">
+				<object data={france} id="yoursvg" width="100%" height="100%" type="image/svg+xml">
+					<img src={france} alt="Une carte de france en svg cliquable" />
+				</object>
 				<ButtonSearchArtisanList />
 			</Row>
 		</div>
