@@ -204,6 +204,7 @@ class User implements UserInterface
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Advice", mappedBy="userPro", fetch="EAGER")
      * @Groups("user_artisan_single")
+     * @ORM\OrderBy({"createdAt" = "DESC"})
      */
     private $advice;
 
@@ -215,6 +216,7 @@ class User implements UserInterface
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Rate", mappedBy="userPro", fetch="EAGER")
      * @Groups("user_artisan_single")
+     * @ORM\OrderBy({"createdAt" = "DESC"})
      */
     private $rate;
 

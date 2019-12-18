@@ -28,7 +28,7 @@ class AdviceRepository extends ServiceEntityRepository
                 ->andwhere('a.isStatus = :isStatus')
                 ->setParameter('userPro', $userPro)
                 ->setParameter('isStatus', TRUE)
-                ->OrderBy('a.createdAt', 'ASC');
+                ->OrderBy('a.createdAt', 'DESC');
       
         return $result->getQuery()->getResult();
     }
