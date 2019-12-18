@@ -28,7 +28,6 @@ class ApiJobController extends AbstractController
     public function categoryListV2(UserRepository $userRepository, JobRepository $jobRepository, Request $request)
     {
         $jobs = $userRepository->findByRegion($request->get('region'));
-        dd($jobs);
         if($jobs != NULL){
             foreach($jobs as $job){
                 $jobData[] = $job[1];
