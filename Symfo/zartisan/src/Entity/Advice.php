@@ -32,6 +32,7 @@ class Advice
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("user_artisan_single")
      */
     private $isReported;
 
