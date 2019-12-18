@@ -48,7 +48,11 @@ const Home = () => {
 		if (jobs.length != 0) {
 			setJobChange('Choisissez votre métier');
 		} else {
+<<<<<<< HEAD
 >>>>>>> WIP: new button jobs
+=======
+>>>>>>> 2fd7e85348ff82f72a4fbdcf9cd4d266ea6eec63
+>>>>>>> 334d818537bf3ef3448beca96e8dc49abeedc308
 			setJobChange('Aucun métier');
 		}
 	});
@@ -74,7 +78,11 @@ const Home = () => {
 =======
 	//console.log('select', regions);
 	console.log('select', jobs);
+<<<<<<< HEAD
 >>>>>>> WIP: new button jobs
+=======
+>>>>>>> 2fd7e85348ff82f72a4fbdcf9cd4d266ea6eec63
+>>>>>>> 334d818537bf3ef3448beca96e8dc49abeedc308
 
 	/**
    * menu of dropdown region
@@ -156,7 +164,11 @@ const Home = () => {
 	const [ jobChange, setJobChange ] = useState('Choisissez votre métier');
 =======
 	const [ jobChange, setJobChange ] = useState('Choisissez un métier');
+<<<<<<< HEAD
 >>>>>>> WIP: new button jobs
+=======
+>>>>>>> 2fd7e85348ff82f72a4fbdcf9cd4d266ea6eec63
+>>>>>>> 334d818537bf3ef3448beca96e8dc49abeedc308
 	const [ visibleButtonJobs, setvisibleButtonJobs ] = useState(false);
 
 	const klsDisplayButton = classNames('home-button-region -cascader-jobs button-job', {
@@ -178,7 +190,11 @@ const Home = () => {
 	if (arrayJobs != undefined) {
 		jobartisan = arrayJobs.map((job) => {
 			//console.log('metier', job);
+<<<<<<< HEAD
 >>>>>>> WIP: new button jobs
+=======
+>>>>>>> 2fd7e85348ff82f72a4fbdcf9cd4d266ea6eec63
+>>>>>>> 334d818537bf3ef3448beca96e8dc49abeedc308
 
 			const handleJobChange = (event) => {
 				console.log('helloooooo');
@@ -188,7 +204,11 @@ const Home = () => {
 			console.log('job value search', jobChange);
 =======
 
+<<<<<<< HEAD
 >>>>>>> WIP: new button jobs
+=======
+>>>>>>> 2fd7e85348ff82f72a4fbdcf9cd4d266ea6eec63
+>>>>>>> 334d818537bf3ef3448beca96e8dc49abeedc308
 			const chooseJob = (job) => {
 				setJobChange(job);
 			};
