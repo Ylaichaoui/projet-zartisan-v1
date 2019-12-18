@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, List, Avatar, Icon, Dropdown, Menu, Button, Cascader, Rate } from 'antd';
+
 import classNames from 'classnames';
 
 import 'antd/dist/antd.css';
@@ -35,6 +36,7 @@ const ListArtisan = () => {
 		objectArtisan = arrayArtisan[d];
 		listData.push(objectArtisan);
 	}
+
 	//console.log('select', regions);
 	//console.log('select', jobs);
 	/**
@@ -140,8 +142,7 @@ const ListArtisan = () => {
 		};
 		return (
 			<Button
-				className="home-button-search"
-				id="buttons"
+				className="home-button-search buttonListArtisan"
 				style={{ color: 'white', backgroundColor: '#bb9574', border: 'none' }}
 				onClick={handleSearch}
 			>
@@ -193,11 +194,14 @@ const ListArtisan = () => {
 					},
 					pageSize: 5
 				}}
+				grid={{
+					gutter: 16
+				}}
 				dataSource={listData}
 				renderItem={(item) => (
-					<List.Item>
+					<List.Item className="antListItem">
 						<List.Item.Meta
-							className="ant-list-item"
+							className="ant-list-item "
 							avatar={
 								<img style={{ width: '60px' }} src={`src/styles/pictures/company/${item.picture}`} />
 							}

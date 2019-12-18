@@ -9,17 +9,21 @@ import { Link, withRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { sendLogin, deconnect } from 'src/store/register/actions';
 import cookies from 'js-cookie';
+
 import { artisanData } from 'src/store/artisan/actions';
+
 /**
  * Local imports
  */
 import './style.sass';
 import logo from './picture/logo-zartisan.svg';
 import FormLogin from 'src/components/FormLogin';
+
 import FormRegisterArtisan from 'src/components/FormRegisterArtisan';
 import { sendRegisterArtisan } from 'src/store/register/actions';
 import FormRegisterUser from 'src/components/FormRegisterUser';
 import { sendRegisterUser } from 'src/store/register/actions';
+
 
 /**
  * Code
@@ -47,6 +51,7 @@ const Header = () => {
    * open menu burger
    */
 
+
 	let artisanSelector = useSelector((state) => state.artisan);
 	console.log('burger', artisanSelector);
 
@@ -54,6 +59,7 @@ const Header = () => {
 		setVisible(true);
 		dispatch(artisanData(tokenEmail));
 	};
+
 
 	/**
    * close menu burger
@@ -115,7 +121,9 @@ const Header = () => {
 		() => {
 			if (connect === true) {
 				handleCancel();
+
 				hideModalRegisterArtisan();
+
 				connectModalVisible();
 				setTimeout(closeModalWelcome, 2000);
 			}
@@ -126,6 +134,7 @@ const Header = () => {
 	/**
    * button for navigate towards form register artisan (use withRouter for manage history url)
    */
+
 	// const ButtonGoToArtisanForm = withRouter(({ history }) => {
 	//   return (
 	//     <Button
@@ -142,38 +151,49 @@ const Header = () => {
 	// });
 
 	const ButtonGoToArtisanForm = () => {
+
 		return (
 			<Button
 				id="buttons"
 				onClick={() => {
 					handleCancel();
+
 					showModalRegisterArtisan();
+
 				}}
 				style={{ width: '40%', margin: '1.5em' }}
 			>
 				Professionnel
 			</Button>
 		);
+
 	};
+
 
 	/**
    * button for navigate towards form register user (use withRouter for manage history url)
    */
 
+
 	const ButtonGoToUserForm = () => {
+
 		return (
 			<Button
 				id="buttons"
 				onClick={() => {
 					handleCancel();
+
 					showModalRegisterUser();
+
 				}}
 				style={{ width: '40%' }}
 			>
 				Particulier
 			</Button>
 		);
+
 	};
+
 
 	/**
    * admin connection
@@ -188,6 +208,7 @@ const Header = () => {
 			return null;
 		}
 	};
+
 
 	let tokenEmail = '';
 	let admin = '';
@@ -259,6 +280,7 @@ const Header = () => {
 		};
 	};
 
+
 	return (
 		<div id="zheader">
 			<Row className="header" type="flex" justify="space-around">
@@ -282,11 +304,13 @@ const Header = () => {
 										</a>
 									)}
 									<Modal footer={null} title="Connexion" visible={modalLogin} onCancel={handleCancel}>
+
 										<FormLogin
 											artisanSelector={artisanSelector}
 											handleSubmitLogin={handleSubmitLogin}
 											handleCancel={handleCancel}
 										/>
+
 									</Modal>
 									<Modal visible={connectVisible} onCancel={closeModalWelcome} footer={null}>
 										<p>Bonjour vous êtes connecté</p>
@@ -332,6 +356,7 @@ const Header = () => {
 						</Link>
 					</Col>
 				</Col>
+
 				<Modal
 					footer={null}
 					title="Inscription Particulier"
@@ -349,6 +374,7 @@ const Header = () => {
 			>
 				<FormRegisterArtisan handleFormArtisan={handleFormArtisan} />
 			</Modal>
+
 		</div>
 	);
 };
