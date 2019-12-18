@@ -156,7 +156,10 @@ const ListArtisan = () => {
 
 	const LinkArtisan = withRouter(({ history, item }) => {
 		const handleSearch = () => {
-			dispatch(artisanData(item.id, item.email));
+			dispatch(artisanData(item.email));
+			{
+				'item compagny', item.company;
+			}
 			setTimeout(() => {
 				history.push(`/page-artisan/${item.company}`);
 			}, 1000);

@@ -1,8 +1,7 @@
 export const ARTISAN_DATA = 'artisan/actions/ARTISAN_DATA';
 
-export const artisanData = (id, email) => ({
+export const artisanData = (email) => ({
 	type: ARTISAN_DATA,
-	id,
 	email
 });
 

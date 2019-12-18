@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Icon, Input, Button } from 'antd';
 import 'antd/dist/antd.css';
 import './style.sass';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
-const FormLogin = ({ handleSubmitLogin, handleCancel }) => {
+const FormLogin = ({ handleSubmitLogin, handleCancel, artisanSelector }) => {
+	console.log('data artisan ', artisanSelector);
+	let dataArtisan = artisanSelector[0].company;
+	console.log('madata', artisanSelector[0].company);
+
+	console.log('daaaaata', dataArtisan);
+
 	const [ email, setEmail ] = useState('');
 	const [ password, setPassword ] = useState('');
 
@@ -17,6 +25,24 @@ const FormLogin = ({ handleSubmitLogin, handleCancel }) => {
 		//	console.log(event.target.value);
 		setPassword(event.target.value);
 	};
+
+	const ButtonLogin = withRouter(({ history }) => {
+		return (
+			<Button
+				type="default"
+				id="buttons"
+				onClick={() => {
+					console.log('ok');
+					history.push(`/page-artisan/${dataArtisan}`);
+				}}
+				htmlType="submit"
+				className="login-form-button"
+				style={{ color: 'white', background: '#bb9574' }}
+			>
+				Se connecter
+			</Button>
+		);
+	});
 
 	return (
 		<div>
@@ -39,15 +65,7 @@ const FormLogin = ({ handleSubmitLogin, handleCancel }) => {
 						Mot de passe oublié
 					</Link>
 				</Form.Item>
-				<Button
-					type="default"
-					id="buttons"
-					htmlType="submit"
-					className="login-form-button"
-					style={{ color: 'white', background: '#bb9574' }}
-				>
-					Se connecter
-				</Button>
+				<ButtonLogin />
 			</Form>
 		</div>
 	);
