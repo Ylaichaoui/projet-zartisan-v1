@@ -8,27 +8,15 @@ import { useDispatch } from 'react-redux';
 /**
  * Local imports
  */
-import { sendRegisterUser } from 'src/store/register/actions';
+
 import './style.sass';
 
-const FormRegisterUser = () => {
+const FormRegisterUser = ({ handleFormUser }) => {
 	const dispatch = useDispatch();
 
 	const [ email, setEmail ] = useState('');
 	const [ password, setPassword ] = useState('');
 	const [ passwordCheck, setPasswordCheck ] = useState('');
-
-	//submit of form
-	const handleFormUser = (email, password, passwordCheck) => {
-		return (event) => {
-			//console.log(email, password, passwordCheck);
-			event.preventDefault();
-			if (password === passwordCheck && password !== '') {
-				// console.log('mots est correct');
-				dispatch(sendRegisterUser(email, password));
-			}
-		};
-	};
 
 	const emailChangeValue = (event) => {
 		setEmail(event.target.value);

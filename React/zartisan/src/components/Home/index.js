@@ -141,7 +141,7 @@ const Home = () => {
 	const ButtonSearchArtisanList = withRouter(({ history }) => {
 		const handleSearch = () => {
 			dispatch(postHomeSearch(regionChange, idJob));
-			console.log('recherche : ', regionChange, jobChange);
+			//console.log('recherche : ', regionChange, jobChange);
 			setTimeout(() => {
 				history.push('/liste-artisan');
 			}, 1000);

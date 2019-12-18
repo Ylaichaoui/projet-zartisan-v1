@@ -9,12 +9,21 @@ import { Link, withRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { sendLogin, deconnect } from 'src/store/register/actions';
 import cookies from 'js-cookie';
+
+import { artisanData } from 'src/store/artisan/actions';
+
 /**
  * Local imports
  */
 import './style.sass';
 import logo from './picture/logo-zartisan.svg';
 import FormLogin from 'src/components/FormLogin';
+
+import FormRegisterArtisan from 'src/components/FormRegisterArtisan';
+import { sendRegisterArtisan } from 'src/store/register/actions';
+import FormRegisterUser from 'src/components/FormRegisterUser';
+import { sendRegisterUser } from 'src/store/register/actions';
+
 
 /**
  * Code
@@ -41,9 +50,16 @@ const Header = () => {
 	/**
    * open menu burger
    */
+
+
+	let artisanSelector = useSelector((state) => state.artisan);
+	console.log('burger', artisanSelector);
+
 	const showDrawer = () => {
 		setVisible(true);
+		dispatch(artisanData(tokenEmail));
 	};
+
 
 	/**
    * close menu burger
@@ -105,6 +121,9 @@ const Header = () => {
 		() => {
 			if (connect === true) {
 				handleCancel();
+
+				hideModalRegisterArtisan();
+
 				connectModalVisible();
 				setTimeout(closeModalWelcome, 2000);
 			}
@@ -115,39 +134,66 @@ const Header = () => {
 	/**
    * button for navigate towards form register artisan (use withRouter for manage history url)
    */
-	const ButtonGoToArtisanForm = withRouter(({ history }) => {
+
+	// const ButtonGoToArtisanForm = withRouter(({ history }) => {
+	//   return (
+	//     <Button
+	//       id="buttons"
+	//       onClick={() => {
+	//         handleCancel();
+	//         //return history.push("/inscription/professionnel");
+	//       }}
+	//       style={{ width: "40%", margin: "1.5em" }}
+	//     >
+	//       Professionnel
+	//     </Button>
+	//   );
+	// });
+
+	const ButtonGoToArtisanForm = () => {
+
 		return (
 			<Button
 				id="buttons"
 				onClick={() => {
 					handleCancel();
-					return history.push('/inscription/professionnel');
+
+					showModalRegisterArtisan();
+
 				}}
 				style={{ width: '40%', margin: '1.5em' }}
 			>
 				Professionnel
 			</Button>
 		);
-	});
+
+	};
+
 
 	/**
    * button for navigate towards form register user (use withRouter for manage history url)
    */
 
-	const ButtonGoToUserForm = withRouter(({ history }) => {
+
+	const ButtonGoToUserForm = () => {
+
 		return (
 			<Button
 				id="buttons"
 				onClick={() => {
 					handleCancel();
-					return history.push('/inscription/particulier');
+
+					showModalRegisterUser();
+
 				}}
 				style={{ width: '40%' }}
 			>
 				Particulier
 			</Button>
 		);
-	});
+
+	};
+
 
 	/**
    * admin connection
@@ -163,11 +209,77 @@ const Header = () => {
 		}
 	};
 
+
+	let tokenEmail = '';
 	let admin = '';
 	if (token != null) {
 		admin = parseJwt(token).roles[0];
+		tokenEmail = parseJwt(token).username;
+		console.log(tokenEmail);
 		console.log(parseJwt(token).roles[0]);
 	}
+
+	/**
+ * register artisan modal
+ */
+	const [ registerVisibleArtisan, setRegisterVisibleArtisan ] = useState(false);
+
+	const showModalRegisterArtisan = () => {
+		setRegisterVisibleArtisan(true);
+	};
+
+	const hideModalRegisterArtisan = () => {
+		setTimeout(() => {
+			setRegisterVisibleArtisan(false), 2000;
+		});
+		console.log('handle cancel');
+	};
+
+	//submit of form
+	const handleFormArtisan = (email, password, passwordCheck, siret) => {
+		return (event) => {
+			// console.log(email, password, passwordCheck);
+			event.preventDefault();
+			if (password === passwordCheck && password !== '') {
+				// console.log('mots est correct');
+				dispatch(sendRegisterArtisan(email, password, siret));
+			}
+		};
+	};
+
+	/**
+ * register user modal
+ */
+
+	/**
+ * register artisan modal
+ */
+	const [ registerVisibleUser, setRegisterVisibleUser ] = useState(false);
+
+	const showModalRegisterUser = () => {
+		setRegisterVisibleUser(true);
+	};
+
+	const hideModalRegisterUser = () => {
+		setTimeout(() => {
+			setRegisterVisibleUser(false), 2000;
+		});
+		console.log('handle cancel');
+	};
+
+	//submit of form
+	const handleFormUser = (email, password, passwordCheck) => {
+		return (event) => {
+			//console.log(email, password, passwordCheck);
+			event.preventDefault();
+			if (password === passwordCheck && password !== '') {
+				// console.log('mots est correct');
+				dispatch(sendRegisterUser(email, password));
+			}
+			hideModalRegisterUser();
+		};
+	};
+
 
 	return (
 		<div id="zheader">
@@ -192,7 +304,13 @@ const Header = () => {
 										</a>
 									)}
 									<Modal footer={null} title="Connexion" visible={modalLogin} onCancel={handleCancel}>
-										<FormLogin handleSubmitLogin={handleSubmitLogin} handleCancel={handleCancel} />
+
+										<FormLogin
+											artisanSelector={artisanSelector}
+											handleSubmitLogin={handleSubmitLogin}
+											handleCancel={handleCancel}
+										/>
+
 									</Modal>
 									<Modal visible={connectVisible} onCancel={closeModalWelcome} footer={null}>
 										<p>Bonjour vous êtes connecté</p>
@@ -238,7 +356,25 @@ const Header = () => {
 						</Link>
 					</Col>
 				</Col>
+
+				<Modal
+					footer={null}
+					title="Inscription Particulier"
+					visible={registerVisibleUser}
+					onCancel={hideModalRegisterUser}
+				>
+					<FormRegisterUser handleFormUser={handleFormUser} />
+				</Modal>
 			</Row>
+			<Modal
+				footer={null}
+				title="Inscription Artisan"
+				visible={registerVisibleArtisan}
+				onCancel={hideModalRegisterArtisan}
+			>
+				<FormRegisterArtisan handleFormArtisan={handleFormArtisan} />
+			</Modal>
+
 		</div>
 	);
 };
