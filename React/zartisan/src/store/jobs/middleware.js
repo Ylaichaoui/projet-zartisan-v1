@@ -12,14 +12,17 @@ export default (store) => (next) => (action) => {
        */
 		case GET_JOBS: {
 			return axios({
-				method: 'get',
-				url: 'http://localhost:8001/v1/job/category/list'
+				method: 'post',
+				url: 'http://localhost:8001/v1/job/category/listV2',
+				data: {
+					region: action.region
+				}
 			})
 				.then((response) => {
 					//console.log(response);
 					if (response.status === 200) {
 						//console.log('jobs');
-						//console.log(response.data);
+						console.log('jobs middleware data ', response.data);
 						store.dispatch(jobs(response.data));
 					}
 				})
