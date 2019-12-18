@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import 'antd/dist/antd.css';
+
 import {
 	Row,
 	Col,
@@ -18,7 +19,9 @@ import {
 } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+
 import classNames from 'classnames';
+
 
 import './style.sass';
 import moment from 'moment';
@@ -27,15 +30,21 @@ import { sendRate } from 'src/store/rate/actions';
 import { alertAdvice } from 'src/store/advice/actions';
 import { sendAdvice } from 'src/store/advice/actions';
 
+import { artisanData } from 'src/store/artisan/actions';
+
+
 const { TextArea } = Input;
 const PageArtisan = () => {
 	const artisanSelector = useSelector((state) => state.artisan);
+
 	//console.log("big object", artisanSelector);
 	const averageRate = useSelector((state) => state.rate);
 	//console.log('note moyenne', averageRate);
 
 	const advice = useSelector((state) => state.advice);
+
 	//console.log("object advice", advice);
+
 
 	let artisanObject = {};
 	for (let artisan in artisanSelector) {
@@ -47,7 +56,9 @@ const PageArtisan = () => {
 		artisanObject.averageRate = averageRate;
 	}
 
-	//console.log(artisanObject);
+
+	console.log('artisan object', artisanObject);
+
 
 	const connect = useSelector((state) => state.connect);
 	let token = '';
@@ -92,36 +103,13 @@ const PageArtisan = () => {
 	}
 
 	//console.log(arrayAdvice);
-	const data = [
-		{
-			actions: [ <span key="comment-list-reply-to-0">Reply to</span> ],
-			author: 'Han Solo',
-			avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-			content: (
-				<p>
-					We supply a series of design principles, practical patterns and high quality design resources
-					(Sketch and Axure), to help people create their product prototypes beautifully and efficiently.
-				</p>
-			),
-			datetime: (
-				<Tooltip title={moment().subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss')}>
-					<span>{moment().subtract(1, 'days').fromNow()}</span>
-				</Tooltip>
-			)
-		}
-	];
 
 	//console.log('picture: ', artisanObject.picture, 'note : ', artisanObject.averageRate);
 
 	const Rating = () => {
-		return (
-			<Rate
-				className="ratingCompany"
-				style={{ fontSize: '1em' }}
-				disabled
-				defaultValue={artisanObject.averageRate}
-			/>
-		);
+
+		return <Rate className="ratingCompany" style={{ fontSize: '1em' }} disabled defaultValue={artisanObject.averageRate} />;
+
 	};
 	/**
    * Rate a artisan
@@ -143,6 +131,11 @@ const PageArtisan = () => {
    */
 	const dispatch = useDispatch();
 	const idArtisan = artisanObject.id;
+
+	const emailArtisan = artisanObject.email;
+
+	console.log('request artisan', idArtisan, emailArtisan);
+
 
 	const hide = () => {
 		setVisibleRate(false);
@@ -180,7 +173,9 @@ const PageArtisan = () => {
 					return history.push('/inscription/particulier');
 				}}
 				id="buttons"
+
 				className="buttonInscription"
+
 			>
 				Contacter
 			</Button>
@@ -222,6 +217,11 @@ const PageArtisan = () => {
 		//console.log("mail", mail, "artisanid", idArtisan, "body", changeAdvice);
 		hidePopAdvice();
 		dispatch(sendAdvice(mail, idArtisan, changeAdvice));
+
+		setTimeout(() => {
+			dispatch(artisanData(idArtisan, emailArtisan));
+		}, 2000);
+
 	};
 
 	//console.log("changeAdvice : ", changeAdvice);
@@ -270,7 +270,11 @@ const PageArtisan = () => {
 		//console.log(event.target.value);
 		//console.log('hello');
 		dispatch(alertAdvice(event.target.value));
-		setIdAdvice(event.target.value);
+
+		setTimeout(() => {
+			dispatch(artisanData(idArtisan, emailArtisan));
+		}, 2000);
+
 	};
 
 	return (
@@ -279,7 +283,9 @@ const PageArtisan = () => {
 				<div className="page-artisan-description">
 					<Row>
 						<div>
+
 							<div id="companyName">
+
 								<h4>{artisanObject.company}</h4>
 							</div>
 						</div>
@@ -293,21 +299,7 @@ const PageArtisan = () => {
 										src={`../src/styles/pictures/company/${artisanObject.picture}`}
 									/>
 									<Rating />
-									{user !== -1 || artisanUser !== -1 ? (
-										<div className="evaluez">
-											<Popover
-												placement="right"
-												trigger="click"
-												onVisibleChange={handleVisibleChange}
-												visible={visibleRate}
-												content={content}
-											>
-												<a>évaluez </a>
-											</Popover>
-										</div>
-									) : (
-										''
-									)}
+
 								</div>
 							</Col>
 							<Col span={12}>
@@ -321,7 +313,9 @@ const PageArtisan = () => {
 
 							{user !== -1 || artisanUser !== -1 ? (
 								<Col span={24}>
+
 									<div className="divDescriptionEmailPhone">
+
 										<p>
 											Email : <a href={`mailto:${artisanObject.email}`}>{artisanObject.email}</a>
 										</p>
@@ -369,10 +363,30 @@ const PageArtisan = () => {
 
 			<div className="page-artisan-commentary" />
 
-			<ButtonAdvice />
-			<Modal footer={null} visible={visibleSendAdvice} onCancel={hidePopAdvice}>
-				{areaComment}
-			</Modal>
+			<Row>
+				<Col span={24} id="back-patch">
+					<ButtonAdvice />
+					<Modal footer={null} visible={visibleSendAdvice} onCancel={hidePopAdvice}>
+						{areaComment}
+					</Modal>
+
+					{user !== -1 || artisanUser !== -1 ? (
+						<div>
+							<Popover
+								placement="bottom"
+								trigger="click"
+								onVisibleChange={handleVisibleChange}
+								visible={visibleRate}
+								content={content}
+							>
+								<Button id="buttons">Evaluez</Button>
+							</Popover>
+						</div>
+					) : (
+						''
+					)}
+				</Col>
+			</Row>
 
 			{user !== -1 || artisanUser !== -1 ? (
 				<div id="background-com">
@@ -386,7 +400,9 @@ const PageArtisan = () => {
 						dataSource={arrayAdvice}
 						renderItem={(item) => (
 							<li>
-								{/* {console.log("commentary", item)} */}
+
+								{console.log('commentary', item)}
+
 								<Comment
 									author={item.userAuthor.firstname}
 									avatar={`../src/styles/pictures/user/${item.userAuthor.picture}`}
@@ -395,7 +411,9 @@ const PageArtisan = () => {
 										<div>
 											{item.createdAt}{' '}
 											<Button id="design" value={item.id} onClick={handleAlert}>
-												{item.userAuthor.isReported === true ? (
+
+												{item.isReported ? (
+
 													<Icon style={{ color: 'red' }} type="alert" />
 												) : (
 													<Icon type="alert" />

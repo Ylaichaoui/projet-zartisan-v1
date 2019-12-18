@@ -28,15 +28,17 @@ class ApiJobController extends AbstractController
     public function categoryListV2(UserRepository $userRepository, JobRepository $jobRepository, Request $request)
     {
         $jobs = $userRepository->findByRegion($request->get('region'));
-        foreach($jobs as $job){
-            $jobData[] = $job[1];
+        if($jobs != NULL){
+            foreach($jobs as $job){
+                $jobData[] = $job[1];
+            }
+            $jobs = [];
+            foreach($jobData as $job){
+                $jobs[] = $jobRepository->find($job);
+            }
+            return $this->json($jobs , 200, [],['groups' => 'job_search']);
         }
-        $jobs = [];
-        foreach($jobData as $job){
-            $jobs[] = $jobRepository->find($job);
-        }
-
-        return $this->json($jobs , 200, [],['groups' => 'job_search']);
+        return $this->json($jobs, 200);
     }
 
     /**

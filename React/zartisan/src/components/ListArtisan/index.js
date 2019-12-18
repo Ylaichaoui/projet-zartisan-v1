@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, List, Avatar, Icon, Dropdown, Menu, Button, Cascader, Rate } from 'antd';
 
+import classNames from 'classnames';
+
 import 'antd/dist/antd.css';
 import './style.sass';
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,6 +13,7 @@ import { withRouter, Link } from 'react-router-dom';
 import { artisanData } from 'src/store/artisan/actions';
 
 const ListArtisan = () => {
+	const dispatch = useDispatch();
 	/**
 	 *  search object from home
 	 */
@@ -34,19 +37,6 @@ const ListArtisan = () => {
 		listData.push(objectArtisan);
 	}
 
-	//console.log(objectArtisan);
-
-	//console.log('hello', listData);
-
-	useEffect(() => {
-		dispatch(getRegions());
-		dispatch(getJobs());
-
-		//console.log(getRegions(Cookies.get("TOKEN");));
-	}, []);
-	const dispatch = useDispatch();
-	const regions = useSelector((state) => state.regions);
-	const jobs = useSelector((state) => state.jobs);
 	//console.log('select', regions);
 	//console.log('select', jobs);
 	/**
@@ -54,11 +44,30 @@ const ListArtisan = () => {
 	*/
 	const changeRegion = (event) => {
 		setRegion(event.item.props.value);
+		dispatch(getJobs(event.item.props.value));
+		console.log('region', event.item.props.value);
+		visibleJobDropdown();
+		//setJobChange('Choisissez votre métier');
 	};
 
-	/**
-	* list item menu
-	*/
+	useEffect(() => {
+		console.log('new ', jobs);
+		if (jobs != null) {
+			//setJobChange('Choisissez votre métier');
+		} else {
+			setJobChange('Aucun métier');
+		}
+	});
+
+	useEffect(() => {
+		dispatch(getRegions());
+		//dispatch(getJobs());
+
+		//console.log(getRegions(Cookies.get("TOKEN");));
+	}, []);
+
+	const regions = useSelector((state) => state.regions);
+	let jobs = useSelector((state) => state.jobs);
 
 	const itemRegions = regions.map((regionObject) => {
 		const array = [];
@@ -79,55 +88,59 @@ const ListArtisan = () => {
 		return item;
 	});
 
-	//	console.log('array', itemRegions);
 
 	const menuRegion = <Menu>{itemRegions}</Menu>;
 	const [ regionChange, setRegion ] = useState('Choisissez une Région');
 
-	const [ jobChange, setJob ] = useState([]);
-
 	/**
-   * list item menu
-   */
-	let arrayJobb = [];
-	for (let j in jobs) {
-		//console.log('forin', jobs[j]);
-		arrayJobb = jobs[j];
-	}
+	 * menu jobs
+	 */
 
-	//console.log(arrayJobb);
+	const [ jobChange, setJobChange ] = useState('Choisissez votre métier');
 
-	const itemJobs = arrayJobb.map((job) => {
-		//console.log('first-map', job);
-		let nameValue = '';
-		let idValue = '';
-		let arrayMyJobs = [];
-		for (let j in job.jobs) {
-			nameValue = job.jobs[j].name;
-			idValue = job.jobs[j].id;
-			arrayMyJobs.push({ value: idValue, label: nameValue });
-		}
-		//console.log(arrayMyJobs);
-		//console.log('forindansmap', nameValue, idValue);
+	const [ visibleButtonJobs, setvisibleButtonJobs ] = useState(false);
 
-		const newObjectJob = {
-			value: job.id,
-			label: job.name,
-			children: arrayMyJobs
-		};
-		//console.log('nouveau objet : ', newObjectJob);
-		return newObjectJob;
+	const [ idJob, setIdJob ] = useState('');
+
+	const klsDisplayButton = classNames('home-button-region -cascader-jobs button-job', {
+		'button-job--display': visibleButtonJobs == true
 	});
 
-	//console.log(itemJobs);
-
-	const onChangeJob = (event) => {
-		setJob(event);
+	const visibleJobDropdown = () => {
+		setvisibleButtonJobs(true);
 	};
+
+	let arrayJobs = jobs[0];
+	//console.log('array', arrayJobs);
+	let jobartisan = '';
+
+	if (arrayJobs != undefined) {
+		jobartisan = arrayJobs.map((job) => {
+			const handleJobChange = (event) => {
+				console.log('id job', event.item.props.eventKey);
+				chooseJob(event.item.props.value);
+				setIdJob(event.item.props.eventKey);
+			};
+
+			const chooseJob = (job) => {
+				setJobChange(job);
+			};
+
+			return (
+				<Menu.Item onClick={handleJobChange} key={job.id} value={job.name}>
+					{job.name}
+				</Menu.Item>
+			);
+		});
+		//console.log('final ', jobartisan);
+	}
+
+	const menuJobs = <Menu>{jobartisan}</Menu>;
 
 	const ButtonSearchArtisanList = () => {
 		const handleSearch = () => {
-			dispatch(postHomeSearch(regionChange, jobChange[1]));
+			dispatch(postHomeSearch(regionChange, idJob));
+
 		};
 		return (
 			<Button
@@ -163,12 +176,12 @@ const ListArtisan = () => {
 						{regionChange} <Icon type="down" />
 					</Button>
 				</Dropdown>
-				<Cascader
-					className="home-cascader-jobs"
-					options={itemJobs}
-					placeholder="Choisissez un métier"
-					onChange={onChangeJob}
-				/>
+
+				<Dropdown overlay={menuJobs} placement="bottomLeft">
+					<Button className={klsDisplayButton} style={{ backgroundColor: '#bb9574', color: 'white' }}>
+						{jobChange} <Icon type="down" />
+					</Button>
+				</Dropdown>
 				<ButtonSearchArtisanList />
 			</Row>
 
@@ -181,12 +194,13 @@ const ListArtisan = () => {
 					},
 					pageSize: 5
 				}}
-				grid={{
+
+        grid={{
 					gutter: 16
 				}}
 				dataSource={listData}
 				renderItem={(item) => (
-					<List.Item className="antListItem">
+					<List.Item>
 						<List.Item.Meta
 							className="ant-list-item"
 							avatar={

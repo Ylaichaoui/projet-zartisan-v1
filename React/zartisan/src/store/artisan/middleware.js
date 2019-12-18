@@ -11,7 +11,7 @@ export default (store) => (next) => (action) => {
 
 			return axios({
 				method: 'post',
-				url: `http://localhost:8001/v1/artisan/single?id=${action.id}`,
+				url: `http://localhost:8001/v1/artisan/single`,
 				data: {
 					email: action.email
 				}
@@ -36,13 +36,3 @@ export default (store) => (next) => (action) => {
 	}
 	next(action);
 };
-
-/*
-  nc
-  asy function asyncFunc() {
-	// fetch data from a url endpoint
-	const response = await axios.post("/some_url_endpoint");
-	const data = await response.json();
-  
-	return data;
-  }*/
