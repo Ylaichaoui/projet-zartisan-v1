@@ -88,7 +88,6 @@ const ListArtisan = () => {
 		return item;
 	});
 
-
 	const menuRegion = <Menu>{itemRegions}</Menu>;
 	const [ regionChange, setRegion ] = useState('Choisissez une Région');
 
@@ -140,7 +139,6 @@ const ListArtisan = () => {
 	const ButtonSearchArtisanList = () => {
 		const handleSearch = () => {
 			dispatch(postHomeSearch(regionChange, idJob));
-
 		};
 		return (
 			<Button
@@ -194,15 +192,14 @@ const ListArtisan = () => {
 					},
 					pageSize: 5
 				}}
-
-        grid={{
+				grid={{
 					gutter: 16
 				}}
 				dataSource={listData}
 				renderItem={(item) => (
-					<List.Item>
+					<List.Item className="antListItem">
 						<List.Item.Meta
-							className="ant-list-item"
+							className="ant-list-item "
 							avatar={
 								<img style={{ width: '60px' }} src={`src/styles/pictures/company/${item.picture}`} />
 							}
