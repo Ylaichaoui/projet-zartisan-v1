@@ -142,8 +142,7 @@ const ListArtisan = () => {
 		};
 		return (
 			<Button
-				className="home-button-search"
-				id="buttons"
+				className="home-button-search buttonListArtisan"
 				style={{ color: 'white', backgroundColor: '#bb9574', border: 'none' }}
 				onClick={handleSearch}
 			>
