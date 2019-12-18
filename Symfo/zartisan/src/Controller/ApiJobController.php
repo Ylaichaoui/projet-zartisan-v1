@@ -38,7 +38,7 @@ class ApiJobController extends AbstractController
             }
             return $this->json($jobs , 200, [],['groups' => 'job_search']);
         }
-        return $this->json(['success' => 'no job'], 200);
+        return $this->json($jobs, 200);
     }
 
     /**
