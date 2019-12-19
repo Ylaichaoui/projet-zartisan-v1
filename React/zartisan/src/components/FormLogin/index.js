@@ -8,7 +8,7 @@ import cookies from 'js-cookie';
 
 const FormLogin = ({ handleSubmitLogin, handleCancel }) => {
 	// let artisanSelector = useSelector((state) => state.artisan);
-	// console.log('burger', artisanSelector);
+	//console.log('burger', artisanSelector);
 	// let token = cookies.get('TOKEN');
 
 	// let parseJwt = (token) => {
@@ -26,8 +26,8 @@ const FormLogin = ({ handleSubmitLogin, handleCancel }) => {
 	// 	admin = parseJwt(token).roles[0];
 	// 	artisanUser = parseJwt(token).roles.indexOf('ROLE_ARTISAN');
 	// 	tokenEmail = parseJwt(token).username;
-	// 	console.log(tokenEmail);
-	// 	console.log(parseJwt(token).roles[0]);
+	//console.log(tokenEmail);
+	//console.log(parseJwt(token).roles[0]);
 	// }
 
 	// let dataArtisan = '';
@@ -39,12 +39,12 @@ const FormLogin = ({ handleSubmitLogin, handleCancel }) => {
 	const [ password, setPassword ] = useState('');
 
 	const mailChangeValue = (event) => {
-		// console.log(event.target.value);
+		//console.log(event.target.value);
 		setEmail(event.target.value);
 	};
 	//console.log(email);
 	const passwordChangeValue = (event) => {
-		//	console.log(event.target.value);
+		//console.log(event.target.value);
 		setPassword(event.target.value);
 	};
 

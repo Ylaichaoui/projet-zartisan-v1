@@ -26,13 +26,13 @@ export default (store) => (next) => (action) => {
 					//console.log(response);
 					if (response.status === 200) {
 						//console.log('jobs');
-						console.log('jobs middleware data ', response.data);
+						//console.log('jobs middleware data ', response.data);
 						store.dispatch(jobs(response.data));
 					}
 				})
 				.catch(function(error) {
 					// handle error
-					console.log(error);
+					//console.log(error);
 				})
 				.finally(function() {
 					// always executed

@@ -165,7 +165,7 @@ export default (store) => (next) => (action) => {
 				email: action.email,
 				password: action.password
 			};
-			console.log(data);
+			//console.log(data);
 
 			return axios({
 				method: 'post',
@@ -173,13 +173,13 @@ export default (store) => (next) => (action) => {
 				data
 			})
 				.then((response) => {
-					console.log(response);
+					//console.log(response);
 					if (response.status === 200) {
-						console.log('test reussi');
+						//console.log('test reussi');
 					}
 				})
 				.catch(function(error) {
-					console.log(error);
+					//console.log(error);
 				})
 				.finally(function() {});
 		}

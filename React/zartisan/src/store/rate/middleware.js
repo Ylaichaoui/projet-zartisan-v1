@@ -13,7 +13,7 @@ export default (store) => (next) => (action) => {
      * rate
      */
 		case SEND_RATE: {
-			console.log('middleware rate');
+			//console.log('middleware rate');
 			const token = cookies.get('TOKEN');
 			return axios({
 				method: 'post',
@@ -34,7 +34,7 @@ export default (store) => (next) => (action) => {
 				})
 				.catch(function(error) {
 					// handle error
-					console.log(error);
+					//console.log(error);
 				})
 				.finally(function() {
 					// always executed

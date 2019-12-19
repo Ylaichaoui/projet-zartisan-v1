@@ -24,7 +24,7 @@ export default (store) => (next) => (action) => {
 				headers: { Authorization: `Bearer ${token}` }
 			})
 				.then((response) => {
-					//	console.log(response);
+					//console.log(response);
 					if (response.status === 200) {
 						//console.log(response.data);
 						store.dispatch(alertSuccess(response.data));
@@ -32,7 +32,7 @@ export default (store) => (next) => (action) => {
 				})
 				.catch(function(error) {
 					// handle error
-					console.log(error);
+					//console.log(error);
 				})
 				.finally(function() {
 					// always executed
@@ -60,7 +60,7 @@ export default (store) => (next) => (action) => {
 				})
 				.catch(function(error) {
 					// handle error
-					console.log(error);
+					//console.log(error);
 				})
 				.finally(function() {
 					// always executed

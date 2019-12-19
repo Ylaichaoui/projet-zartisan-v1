@@ -222,16 +222,16 @@ const Header = () => {
 		setTimeout(() => {
 			setRegisterVisibleArtisan(false), 2000;
 		});
-		console.log('handle cancel');
+		//console.log('handle cancel');
 	};
 
 	//submit of form
 	const handleFormArtisan = (email, password, passwordCheck, siret) => {
 		return (event) => {
-			// console.log(email, password, passwordCheck);
+			//console.log(email, password, passwordCheck);
 			event.preventDefault();
 			if (password === passwordCheck && password !== '') {
-				// console.log('mots est correct');
+				//console.log('mots est correct');
 				if (parseJwt(token) != null) {
 					dispatch(sendRegisterArtisan(email, password, siret));
 				}
@@ -256,7 +256,7 @@ const Header = () => {
 		setTimeout(() => {
 			setRegisterVisibleUser(false), 2000;
 		});
-		console.log('handle cancel');
+		//console.log('handle cancel');
 	};
 
 	//submit of form
@@ -265,7 +265,7 @@ const Header = () => {
 			//console.log(email, password, passwordCheck);
 			event.preventDefault();
 			if (password === passwordCheck && password !== '') {
-				// console.log('mots est correct');
+				//console.log('mots est correct');
 				dispatch(sendRegisterUser(email, password));
 			}
 			hideModalRegisterUser();
