@@ -32,4 +32,5 @@ class AdviceRepository extends ServiceEntityRepository
       
         return $result->getQuery()->getResult();
     }
+
 }
