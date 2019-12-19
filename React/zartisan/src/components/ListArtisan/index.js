@@ -143,7 +143,7 @@ const ListArtisan = () => {
 		return (
 			<Button
 				className="home-button-search buttonListArtisan"
-				style={{ color: 'white', backgroundColor: '#bb9574', border: 'none' }}
+				style={{ color: 'white', backgroundColor: '#cbb099', border: 'none' }}
 				onClick={handleSearch}
 			>
 				Recherche
@@ -172,13 +172,16 @@ const ListArtisan = () => {
 		<div className="list-artisan-content">
 			<Row type="flex" justify="space-around" align="middle">
 				<Dropdown overlay={menuRegion} placement="bottomLeft">
-					<Button className="home-button-region" style={{ backgroundColor: '#bb9574', color: 'white' }}>
+					<Button className="home-button-region" style={{ backgroundColor: '#cbb099', color: 'white' }}>
 						{regionChange} <Icon type="down" />
 					</Button>
 				</Dropdown>
 
 				<Dropdown overlay={menuJobs} placement="bottomLeft">
-					<Button className={klsDisplayButton} style={{ backgroundColor: '#bb9574', color: 'white' }}>
+					<Button
+						className={klsDisplayButton}
+						style={{ backgroundColor: 'white', color: '#bb9574', border: '1px solid #bb9574' }}
+					>
 						{jobChange} <Icon type="down" />
 					</Button>
 				</Dropdown>
