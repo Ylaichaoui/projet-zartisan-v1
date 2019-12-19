@@ -80,7 +80,7 @@ class ApiArtisanController extends AbstractController
 
             $em->persist($user);
             $em->flush();
-            return $this->json($user, 200, []);
+            return $this->json($user, 200, [], ['groups' => 'user_artisan_single']);
         }
         return $this->json(['error' => 'unexpected information for edit request'], 304, []);
     }
@@ -96,11 +96,9 @@ class ApiArtisanController extends AbstractController
             if ($request->get('email')) {
                 $user = $userRepository->isFoundMail($request->get('email'));
                 if ($user == NULL) {
-
                     return $this->json(['error' => 'no user register'], 304, []);
 
                 }
-
                 return $this->json([$user] , 200, [], ['groups' => 'user_artisan_single']);
             }
             return $this->json(['error' => 'no email found'], 304, []);
