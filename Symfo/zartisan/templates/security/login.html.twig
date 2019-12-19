@@ -7,13 +7,13 @@
 <form method="post" id="form_login">
     <div class="login">
         <label for="inputEmail"></label>
-        <input type="email" value="{{ last_username }}" name="email" id="Email" class="form-control" 
+        <input class="bouttonLog" type="email" value="{{ last_username }}" name="email" id="Email" class="form-control" 
             placeholder="Email" required autofocus> 
         <label for="inputPassword"></label>
-        <input type="password" name="password" id="inputPassword" class="form-control" 
+        <input class="bouttonLog" type="password" name="password" id="inputPassword" class="form-control" 
             placeholder="password" required>
         <input type="hidden" name="_csrf_token"value="{{ csrf_token('authenticate') }}"> 
-        <input type="submit" value="Sign In">
+        <input id="buttonslog" type="submit" value="Sign In">
     </div>
     <div class="shadow"></div>
 </form>
