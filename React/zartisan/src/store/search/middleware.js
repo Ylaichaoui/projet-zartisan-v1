@@ -1,6 +1,11 @@
 import { POST_HOME_SEARCH } from 'src/store/search/actions';
 import { homeSearch } from 'src/store/search/actions';
 import axios from 'axios';
+/**
+ * NAME SERVER
+ */
+import { NAME_SERVER } from 'src/store/register/actions';
+
 export default (store) => (next) => (action) => {
 	switch (action.type) {
 		/**
@@ -10,7 +15,7 @@ export default (store) => (next) => (action) => {
 			//console.log(action.region, action.job);
 			return axios({
 				method: 'post',
-				url: 'http://localhost:8001/v1/artisan/recherche',
+				url: `${NAME_SERVER}/v1/artisan/recherche`,
 				data: {
 					idJob: action.job,
 					nameRegion: action.region

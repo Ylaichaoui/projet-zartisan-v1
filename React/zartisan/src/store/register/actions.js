@@ -38,3 +38,5 @@ export const DECONNEXION = 'register/actions/DECONNEXION';
 export const deconnect = () => ({
 	type: DECONNEXION
 });
+
+export const NAME_SERVER = 'http://localhost:8001';

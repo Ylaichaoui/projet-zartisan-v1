@@ -5,6 +5,10 @@ import { alertSuccess } from 'src/store/advice/actions';
 import { ALERT_ADVICE } from 'src/store/advice/actions';
 import { SEND_ADVICE } from 'src/store/advice/actions';
 import { advice } from 'src/store/advice/actions';
+/**
+ * NAME SERVER
+ */
+import { NAME_SERVER } from 'src/store/register/actions';
 
 export default (store) => (next) => (action) => {
 	switch (action.type) {
@@ -13,7 +17,7 @@ export default (store) => (next) => (action) => {
 			let token = cookies.get('TOKEN');
 			return axios({
 				method: 'post',
-				url: 'http://localhost:8001/api/v1/advice/report',
+				url: `${NAME_SERVER}/api/v1/advice/report`,
 				data: {
 					id: action.id
 				},
@@ -39,7 +43,7 @@ export default (store) => (next) => (action) => {
 			let token = cookies.get('TOKEN');
 			return axios({
 				method: 'post',
-				url: 'http://localhost:8001/api/v1/advice/add',
+				url: `${NAME_SERVER}/api/v1/advice/add`,
 				data: {
 					email: action.mail,
 					body: action.body,

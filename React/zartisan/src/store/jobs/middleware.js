@@ -1,6 +1,10 @@
 import axios from 'axios';
 import { GET_JOBS } from 'src/store/jobs/actions';
 import { jobs } from 'src/store/jobs/actions';
+/**
+ * NAME SERVER
+ */
+import { NAME_SERVER } from 'src/store/register/actions';
 
 export default (store) => (next) => (action) => {
 	switch (action.type) {
@@ -13,7 +17,7 @@ export default (store) => (next) => (action) => {
 		case GET_JOBS: {
 			return axios({
 				method: 'post',
-				url: 'http://localhost:8001/v1/job/category/listV2',
+				url: `${NAME_SERVER}/v1/job/category/listV2`,
 				data: {
 					region: action.region
 				}

@@ -23,7 +23,10 @@ import FormRegisterArtisan from 'src/components/FormRegisterArtisan';
 import { sendRegisterArtisan } from 'src/store/register/actions';
 import FormRegisterUser from 'src/components/FormRegisterUser';
 import { sendRegisterUser } from 'src/store/register/actions';
-
+/**
+ * NAME SERVER
+ */
+import { NAME_SERVER } from 'src/store/register/actions';
 /**
  * Code
  */
@@ -300,7 +303,7 @@ const Header = () => {
 
 									{connect === true && admin !== 'ROLE_ADMIN' ? <a href="#">Profil</a> : ''}
 									{connect === true && admin === 'ROLE_ADMIN' ? (
-										<a href="http://localhost:8001/admin">Admin</a>
+										<a href={`${NAME_SERVER}/admin`}>Admin </a>
 									) : (
 										''
 									)}
