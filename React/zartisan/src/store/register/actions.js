@@ -39,4 +39,4 @@ export const deconnect = () => ({
 	type: DECONNEXION
 });
 
-export const NAME_SERVER = 'http://localhost:8001';
+export const NAME_SERVER = 'http://ec2-52-90-234-146.compute-1.amazonaws.com';
