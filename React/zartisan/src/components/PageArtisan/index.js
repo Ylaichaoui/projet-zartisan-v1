@@ -404,11 +404,11 @@ const PageArtisan = () => {
 						dataSource={arrayAdvice}
 						renderItem={(item) => (
 							<li>
-								{/* {console.log('commentary', item)} */}
+								{console.log('commentary', item)}
 
 								<Comment
-									author={item.userAuthor.firstname}
-									avatar={`../src/styles/pictures/user/${item.userAuthor.picture}`}
+									// author={item.userAuthor.firstname}
+									// avatar={`../src/styles/pictures/user/${item.userAuthor.picture}`}
 									content={item.body}
 									datetime={
 										<div>
