@@ -5,12 +5,11 @@ import './style.sass';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 
-const FormLogin = ({ handleSubmitLogin, handleCancel, artisanSelector }) => {
-	console.log('data artisan ', artisanSelector);
-	let dataArtisan = artisanSelector[0].company;
-	console.log('madata', artisanSelector[0].company);
-
-	console.log('daaaaata', dataArtisan);
+const FormLogin = ({ handleSubmitLogin, handleCancel, artisanSelector, artisanUser }) => {
+	let dataArtisan = '';
+	if (artisanUser != -1) {
+		dataArtisan = artisanSelector[0].company;
+	}
 
 	const [ email, setEmail ] = useState('');
 	const [ password, setPassword ] = useState('');
@@ -32,7 +31,9 @@ const FormLogin = ({ handleSubmitLogin, handleCancel, artisanSelector }) => {
 				id="buttons"
 				onClick={() => {
 					console.log('ok');
-					history.push(`/page-artisan/${dataArtisan}`);
+					if (artisanUser != -1) {
+						history.push(`/page-artisan/${dataArtisan}`);
+					}
 				}}
 				htmlType="submit"
 				className="login-form-button"
