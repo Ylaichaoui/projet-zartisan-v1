@@ -3,6 +3,7 @@ import { Form, Input, Row, Button, Modal } from 'antd';
 import { useDispatch } from 'react-redux';
 import { sendPasswordForget } from 'src/store/register/actions';
 import { useHistory } from 'react-router-dom';
+import './style.sass';
 
 const ForgettenPassword = () => {
 	const dispatch = useDispatch();
@@ -42,7 +43,7 @@ const ForgettenPassword = () => {
 	};
 
 	return (
-		<div className="register-user">
+		<div className="forgottenPassword">
 			<Row type="flex" justify="space-around" align="middle">
 				<Form className="user-form" onSubmit={handleFormUser(email, password, passwordCheck)}>
 					<h6>Mot de passe oublié</h6>
