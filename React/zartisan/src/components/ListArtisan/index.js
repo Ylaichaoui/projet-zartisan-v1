@@ -157,7 +157,7 @@ const ListArtisan = () => {
 
 	const LinkArtisan = withRouter(({ history, item }) => {
 		const handleSearch = () => {
-			dispatch(artisanData(item.email));
+			dispatch(artisanData(item.id, item.email));
 			{
 				'item compagny', item.company;
 			}

@@ -24,7 +24,6 @@ import { sendRegisterArtisan } from 'src/store/register/actions';
 import FormRegisterUser from 'src/components/FormRegisterUser';
 import { sendRegisterUser } from 'src/store/register/actions';
 
-
 /**
  * Code
  */
@@ -51,15 +50,10 @@ const Header = () => {
    * open menu burger
    */
 
-
-	let artisanSelector = useSelector((state) => state.artisan);
-	console.log('burger', artisanSelector);
-
 	const showDrawer = () => {
 		setVisible(true);
-		dispatch(artisanData(tokenEmail));
+		//dispatch(artisanData(tokenEmail));
 	};
-
 
 	/**
    * close menu burger
@@ -152,7 +146,6 @@ const Header = () => {
 	// });
 
 	const ButtonGoToArtisanForm = () => {
-
 		return (
 			<Button
 				id="buttons"
@@ -160,24 +153,19 @@ const Header = () => {
 					handleCancel();
 
 					showModalRegisterArtisan();
-
 				}}
 				style={{ width: '40%', margin: '1.5em' }}
 			>
 				Professionnel
 			</Button>
 		);
-
 	};
-
 
 	/**
    * button for navigate towards form register user (use withRouter for manage history url)
    */
 
-
 	const ButtonGoToUserForm = () => {
-
 		return (
 			<Button
 				id="buttons"
@@ -185,16 +173,13 @@ const Header = () => {
 					handleCancel();
 
 					showModalRegisterUser();
-
 				}}
 				style={{ width: '40%' }}
 			>
 				Particulier
 			</Button>
 		);
-
 	};
-
 
 	/**
    * admin connection
@@ -210,16 +195,15 @@ const Header = () => {
 		}
 	};
 
-
-	let tokenEmail = '';
+	//let tokenEmail = '';
 	let admin = '';
-	let artisanUser = -1;
+	//let artisanUser = -1;
 	if (token != null) {
 		admin = parseJwt(token).roles[0];
-		artisanUser = parseJwt(token).roles.indexOf('ROLE_ARTISAN');
-		tokenEmail = parseJwt(token).username;
-		console.log(tokenEmail);
-		console.log(parseJwt(token).roles[0]);
+		//artisanUser = parseJwt(token).roles.indexOf('ROLE_ARTISAN');
+		//tokenEmail = parseJwt(token).username;
+		//console.log(tokenEmail);
+		//console.log(parseJwt(token).roles[0]);
 	}
 
 	/**
@@ -285,7 +269,6 @@ const Header = () => {
 		};
 	};
 
-
 	return (
 		<div id="zheader">
 			<Row className="header" type="flex" justify="space-around">
@@ -309,14 +292,7 @@ const Header = () => {
 										</a>
 									)}
 									<Modal footer={null} title="Connexion" visible={modalLogin} onCancel={handleCancel}>
-
-										<FormLogin
-											artisanUser={artisanUser}
-											artisanSelector={artisanSelector}
-											handleSubmitLogin={handleSubmitLogin}
-											handleCancel={handleCancel}
-										/>
-
+										<FormLogin handleSubmitLogin={handleSubmitLogin} handleCancel={handleCancel} />
 									</Modal>
 									<Modal visible={connectVisible} onCancel={closeModalWelcome} footer={null}>
 										<p>Bonjour vous êtes connecté</p>
@@ -380,7 +356,6 @@ const Header = () => {
 			>
 				<FormRegisterArtisan handleFormArtisan={handleFormArtisan} />
 			</Modal>
-
 		</div>
 	);
 };
