@@ -35,7 +35,7 @@ const { TextArea } = Input;
 const PageArtisan = () => {
 	const artisanSelector = useSelector((state) => state.artisan);
 
-	//console.log("big object", artisanSelector);
+	console.log('big object', artisanSelector);
 	const averageRate = useSelector((state) => state.rate);
 	//console.log('note moyenne', averageRate);
 
@@ -44,10 +44,14 @@ const PageArtisan = () => {
 	//console.log("object advice", advice);
 
 	let artisanObject = {};
+	let adviceObject = [];
 	for (let artisan in artisanSelector) {
 		//console.log(artisanSelector[artisan]);
-		artisanObject = artisanSelector[artisan];
+		artisanObject = artisanSelector[0];
+		adviceObject = artisanSelector[1];
 	}
+
+	console.log('Object value comment', artisanObject, adviceObject);
 
 	if (averageRate != null) {
 		artisanObject.averageRate = averageRate;
@@ -58,7 +62,7 @@ const PageArtisan = () => {
 	const connect = useSelector((state) => state.connect);
 	let token = '';
 	if (connect === true) {
-		//console.log('je suis connecté');
+		console.log('je suis connecté');
 		token = cookies.get('TOKEN');
 	}
 
@@ -134,7 +138,7 @@ const PageArtisan = () => {
 
 	const emailArtisan = artisanObject.email;
 
-	console.log('request artisan', idArtisan, emailArtisan);
+	//console.log('request artisan', idArtisan, emailArtisan);
 
 	const hide = () => {
 		setVisibleRate(false);
@@ -165,19 +169,21 @@ const PageArtisan = () => {
 	/**
    * button for navigate towards form register user (use withRouter for manage history url)
    */
-	const ButtonContact = withRouter(({ history }) => {
+	const contentContact = (
+		<div>
+			<p>Pour accéder aux informations de contact connectez-vous.</p>
+		</div>
+	);
+
+	const ButtonContact = () => {
 		return (
-			<Button
-				onClick={() => {
-					return history.push('/inscription/particulier');
-				}}
-				id="buttons"
-				className="buttonInscription"
-			>
-				Contacter
-			</Button>
+			<Popover placement="bottom" content={contentContact} trigger="click">
+				<Button id="buttons" className="buttonInscription">
+					Contacter
+				</Button>
+			</Popover>
 		);
-	});
+	};
 
 	/**
    * button advice
@@ -211,7 +217,7 @@ const PageArtisan = () => {
 	const handleAreaComment = (event) => {
 		event.preventDefault();
 
-		//console.log("mail", mail, "artisanid", idArtisan, "body", changeAdvice);
+		//console.log('mail', mail, 'artisanid', idArtisan, 'body', changeAdvice);
 		hidePopAdvice();
 		dispatch(sendAdvice(mail, idArtisan, changeAdvice));
 
@@ -237,38 +243,49 @@ const PageArtisan = () => {
 		</div>
 	);
 
-	const ButtonAdvice = withRouter(({ history }) => {
+	const contentAdvice = (
+		<div>
+			<p>Pour accéder aux commentaires connectez-vous.</p>
+		</div>
+	);
+
+	const ButtonAdvice = () => {
 		const handleAdvice = () => {
 			if (user !== -1 || artisanUser !== -1) {
 				//console.log("commentaire");
 				visiblePopAdvice();
-			} else {
-				history.push('/inscription/particulier');
 			}
 		};
 
-		return (
-			<div>
+		if (user !== -1 || artisanUser !== -1) {
+			return (
 				<Button onClick={handleAdvice} id="buttons">
 					Donnez votre avis
 				</Button>
-			</div>
-		);
-	});
+			);
+		} else {
+			return (
+				<Popover placement="bottom" content={contentAdvice} trigger="click">
+					<div>
+						<Button id="buttons">Donnez votre avis</Button>
+					</div>
+				</Popover>
+			);
+		}
+	};
 
 	/**
    * report a advice
    */
 
-	const [ idAdvice, setIdAdvice ] = useState(null);
-
 	const handleAlert = (event) => {
-		//console.log(event.target.value);
-		//console.log('hello');
+		console.log(event.target.value);
+		console.log('hello');
 		dispatch(alertAdvice(event.target.value));
 
 		setTimeout(() => {
 			dispatch(artisanData(idArtisan, emailArtisan));
+			console.log('alert', idArtisan, emailArtisan);
 		}, 2000);
 	};
 
@@ -380,13 +397,13 @@ const PageArtisan = () => {
 			{user !== -1 || artisanUser !== -1 ? (
 				<div id="background-com">
 					<div id="com">
-						{arrayAdvice.length} <Icon type="message" />
+						{adviceObject.length} <Icon type="message" />
 					</div>
 					<List
 						className="comment-list"
 						id="comment"
 						itemLayout="horizontal"
-						dataSource={arrayAdvice}
+						dataSource={adviceObject}
 						renderItem={(item) => (
 							<li>
 								{console.log('commentary', item)}

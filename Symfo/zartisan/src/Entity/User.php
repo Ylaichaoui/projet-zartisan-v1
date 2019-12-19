@@ -18,19 +18,19 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"user_artisan_single", "user_user_single", "user_advice","user_artisan_search"})
+     * @Groups({"user_artisan_single", "user_user_single", "user_advice","user_artisan_search","user_artisan_advice"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"user_artisan_single", "user_user_single", "user_artisan_search"})
+     * @Groups({"user_artisan_single", "user_user_single", "user_artisan_search","user_artisan_advice"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
-     * @Groups({"user_artisan_single", "user_user_single"})
+     * @Groups({"user_artisan_single", "user_user_single","user_artisan_advice"})
      */
     private $roles = [];
 
@@ -42,61 +42,61 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"user_artisan_single", "user_user_single"})
+     * @Groups({"user_artisan_single", "user_user_single","user_artisan_advice"})
      */
     private $mailToken;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"user_artisan_single", "user_user_single"})
+     * @Groups({"user_artisan_single", "user_user_single","user_artisan_advice"})
      */
     private $isConfirmMail;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"user_artisan_single", "user_user_single"})
+     * @Groups({"user_artisan_single", "user_user_single","user_artisan_advice"})
      */
     private $isStatus;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"user_artisan_single", "user_user_single"})
+     * @Groups({"user_artisan_single", "user_user_single","user_artisan_advice"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"user_artisan_single", "user_user_single"})
+     * @Groups({"user_artisan_single", "user_user_single","user_artisan_advice"})
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     * @Groups({"user_user_single","user_artisan_single"})
+     * @Groups({"user_user_single","user_artisan_single","user_artisan_advice"})
      */
     private $birthday;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"user_artisan_single","user_artisan_search"})
+     * @Groups({"user_artisan_single","user_artisan_search","user_artisan_advice"})
      */
     private $company;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"user_artisan_single","user_artisan_search"})
+     * @Groups({"user_artisan_single","user_artisan_search","user_artisan_advice"})
      */
     private $companyDescription;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single","user_artisan_advice"})
      */
     private $naf;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"user_artisan_single", "user_user_single"})
+     * @Groups({"user_artisan_single", "user_user_single","user_artisan_advice"})
      */
     private $adressSupp;
 
@@ -108,55 +108,55 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups({"user_artisan_single", "user_user_single"})
+     * @Groups({"user_artisan_single", "user_user_single","user_artisan_advice"})
      */
     private $extNumberWay;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"user_artisan_single", "user_user_single"})
+     * @Groups({"user_artisan_single", "user_user_single","user_artisan_advice"})
      */
     private $numberWay;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups({"user_artisan_single", "user_user_single"})
+     * @Groups({"user_artisan_single", "user_user_single","user_artisan_advice"})
      */
     private $typeWay;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"user_artisan_single", "user_user_single"})
+     * @Groups({"user_artisan_single", "user_user_single","user_artisan_advice"})
      */
     private $way;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups({"user_artisan_single", "user_user_single"})
+     * @Groups({"user_artisan_single", "user_user_single","user_artisan_advice"})
      */
     private $postalCode;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups({"user_artisan_single", "user_user_single"})
+     * @Groups({"user_artisan_single", "user_user_single","user_artisan_advice"})
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=10, nullable=true)
-     * @Groups({"user_artisan_single", "user_user_single"})
+     * @Groups({"user_artisan_single", "user_user_single","user_artisan_advice"})
      */
     private $phone;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"user_artisan_single","user_artisan_search"})
+     * @Groups({"user_artisan_single","user_artisan_search","user_artisan_advice"})
      */
     private $isVerified;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"user_artisan_single", "user_user_single","user_artisan_search"})
+     * @Groups({"user_artisan_single", "user_user_single","user_artisan_search","user_artisan_advice"})
      */
     private $picture;
 
@@ -168,13 +168,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups({"user_artisan_single","user_artisan_search"})
+     * @Groups({"user_artisan_single","user_artisan_search","user_artisan_advice"})
      */
     private $region;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"user_artisan_single","user_artisan_search"})
+     * @Groups({"user_artisan_single","user_artisan_search","user_artisan_advice"})
      */
     private $averageRate;
 
@@ -186,13 +186,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"user_artisan_single", "user_user_single"})
+     * @Groups({"user_artisan_single", "user_user_single","user_artisan_advice"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"user_artisan_single", "user_user_single"})
+     * @Groups({"user_artisan_single", "user_user_single","user_artisan_advice"})
      */
     private $updatedAt;
 

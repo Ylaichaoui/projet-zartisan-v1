@@ -134,6 +134,7 @@ class SecurityController extends AbstractController
             $user->setPicture("user6.png"); 
             $user->setRoles(["ROLE_UNDEFINED_USER"]);
             $user->setIsStatus(true);
+            $user->setFirstname("unknown");
             $user->setIsVerified(false);
             $user->setIsReported(false);
 
