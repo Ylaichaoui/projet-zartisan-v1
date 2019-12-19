@@ -111,6 +111,7 @@ const Header = () => {
 	const handleSubmitLogin = (email, password) => {
 		return (event) => {
 			event.preventDefault();
+
 			dispatch(sendLogin(email, password));
 		};
 	};
@@ -212,8 +213,10 @@ const Header = () => {
 
 	let tokenEmail = '';
 	let admin = '';
+	let artisanUser = -1;
 	if (token != null) {
 		admin = parseJwt(token).roles[0];
+		artisanUser = parseJwt(token).roles.indexOf('ROLE_ARTISAN');
 		tokenEmail = parseJwt(token).username;
 		console.log(tokenEmail);
 		console.log(parseJwt(token).roles[0]);
@@ -242,7 +245,9 @@ const Header = () => {
 			event.preventDefault();
 			if (password === passwordCheck && password !== '') {
 				// console.log('mots est correct');
-				dispatch(sendRegisterArtisan(email, password, siret));
+				if (parseJwt(token) != null) {
+					dispatch(sendRegisterArtisan(email, password, siret));
+				}
 			}
 		};
 	};
@@ -306,6 +311,7 @@ const Header = () => {
 									<Modal footer={null} title="Connexion" visible={modalLogin} onCancel={handleCancel}>
 
 										<FormLogin
+											artisanUser={artisanUser}
 											artisanSelector={artisanSelector}
 											handleSubmitLogin={handleSubmitLogin}
 											handleCancel={handleCancel}
