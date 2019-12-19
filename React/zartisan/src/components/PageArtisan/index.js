@@ -35,7 +35,7 @@ const { TextArea } = Input;
 const PageArtisan = () => {
 	const artisanSelector = useSelector((state) => state.artisan);
 
-	//console.log("big object", artisanSelector);
+	console.log('big object', artisanSelector);
 	const averageRate = useSelector((state) => state.rate);
 	//console.log('note moyenne', averageRate);
 
@@ -44,10 +44,14 @@ const PageArtisan = () => {
 	//console.log("object advice", advice);
 
 	let artisanObject = {};
+	let adviceObject = [];
 	for (let artisan in artisanSelector) {
 		//console.log(artisanSelector[artisan]);
-		artisanObject = artisanSelector[artisan];
+		artisanObject = artisanSelector[0];
+		adviceObject = artisanSelector[1];
 	}
+
+	console.log('Object value comment', artisanObject, adviceObject);
 
 	if (averageRate != null) {
 		artisanObject.averageRate = averageRate;
@@ -134,7 +138,7 @@ const PageArtisan = () => {
 
 	const emailArtisan = artisanObject.email;
 
-	console.log('request artisan', idArtisan, emailArtisan);
+	//console.log('request artisan', idArtisan, emailArtisan);
 
 	const hide = () => {
 		setVisibleRate(false);
@@ -213,7 +217,7 @@ const PageArtisan = () => {
 	const handleAreaComment = (event) => {
 		event.preventDefault();
 
-		console.log('mail', mail, 'artisanid', idArtisan, 'body', changeAdvice);
+		//console.log('mail', mail, 'artisanid', idArtisan, 'body', changeAdvice);
 		hidePopAdvice();
 		dispatch(sendAdvice(mail, idArtisan, changeAdvice));
 
@@ -274,11 +278,9 @@ const PageArtisan = () => {
    * report a advice
    */
 
-	const [ idAdvice, setIdAdvice ] = useState(null);
-
 	const handleAlert = (event) => {
-		//console.log(event.target.value);
-		//console.log('hello');
+		console.log(event.target.value);
+		console.log('hello');
 		dispatch(alertAdvice(event.target.value));
 
 		setTimeout(() => {
@@ -395,20 +397,20 @@ const PageArtisan = () => {
 			{user !== -1 || artisanUser !== -1 ? (
 				<div id="background-com">
 					<div id="com">
-						{arrayAdvice.length} <Icon type="message" />
+						{adviceObject.length} <Icon type="message" />
 					</div>
 					<List
 						className="comment-list"
 						id="comment"
 						itemLayout="horizontal"
-						dataSource={arrayAdvice}
+						dataSource={adviceObject}
 						renderItem={(item) => (
 							<li>
 								{console.log('commentary', item)}
 
 								<Comment
-									// author={item.userAuthor.firstname}
-									// avatar={`../src/styles/pictures/user/${item.userAuthor.picture}`}
+									author={item.userAuthor.firstname}
+									avatar={`../src/styles/pictures/user/${item.userAuthor.picture}`}
 									content={item.body}
 									datetime={
 										<div>

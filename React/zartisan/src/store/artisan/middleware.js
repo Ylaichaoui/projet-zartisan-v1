@@ -20,7 +20,7 @@ export default (store) => (next) => (action) => {
 					//console.log(response);
 					if (response.status === 200) {
 						//console.log('ok artisan');
-						//console.log(response.data);
+						console.log('response', response.data);
 
 						store.dispatch(artisanInfo(response.data));
 					}
