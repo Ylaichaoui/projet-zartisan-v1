@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class MailController extends AbstractController
 {
     // Set private data for send mail mail 
-    private $baseUrl = "http://localhost:8001/confirmation";
+    private $baseUrl = "http://ec2-52-90-234-146.compute-1.amazonaws.com/confirmation";
     private $securityManager;
     private $em;
     private $userRepository;
