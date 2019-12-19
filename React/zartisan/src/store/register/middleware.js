@@ -60,7 +60,7 @@ export default (store) => (next) => (action) => {
 
 			return axios({
 				method: 'post',
-				url: `'${NAME_SERVER}/register/user'`, // first check with static home page
+				url: `${NAME_SERVER}/register/user`, // first check with static home page
 				data
 			})
 				.then((response) => {
