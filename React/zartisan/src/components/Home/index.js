@@ -166,7 +166,10 @@ const Home = () => {
 				{/* ############################################################# */}
 
 				<Dropdown overlay={menuJobs} placement="bottomLeft">
-					<Button className={klsDisplayButton} style={{ backgroundColor: '#bb9574', color: 'white' }}>
+					<Button
+						className={klsDisplayButton}
+						style={{ backgroundColor: 'white', color: '#bb9574', border: '1px solid #bb9574' }}
+					>
 						{jobChange} <Icon type="down" />
 					</Button>
 				</Dropdown>
