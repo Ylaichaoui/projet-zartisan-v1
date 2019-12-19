@@ -20,32 +20,32 @@ class Advice
 
     /**
      * @ORM\Column(type="text")
-     * @Groups({"user_advice","user_artisan_single"})
+     * @Groups({"user_advice","user_artisan_single","user_artisan_advice"})
      */
     private $body;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single","user_artisan_advice"})
      */
     private $isStatus;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single","user_artisan_advice"})
      */
     private $isReported;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single","user_artisan_advice"})
      */
     public $createdAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="advices")
      * @ORM\JoinColumn(nullable=false)
-     * 
+     * @Groups("user_artisan_advice")
      */
     private $userAuthor;
 

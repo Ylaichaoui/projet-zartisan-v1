@@ -40,7 +40,6 @@ class Rate
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="rates")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups("user_artisan_single")
      */
     private $userAuthor;
 
