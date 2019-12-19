@@ -45,7 +45,7 @@ class Advice
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="advices")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups("user_artisan_single")
+     * 
      */
     private $userAuthor;
 
