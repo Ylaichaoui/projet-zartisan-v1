@@ -212,7 +212,7 @@ const Header = () => {
 	const [ registerVisibleArtisan, setRegisterVisibleArtisan ] = useState(false);
 
 	const showModalRegisterArtisan = () => {
-		setRegisterVisibleArtisan(true);
+		setRegisterVisibleArtisan(true), 2000;
 	};
 
 	const hideModalRegisterArtisan = () => {
