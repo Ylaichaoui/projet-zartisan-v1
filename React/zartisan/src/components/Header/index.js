@@ -23,7 +23,10 @@ import FormRegisterArtisan from 'src/components/FormRegisterArtisan';
 import { sendRegisterArtisan } from 'src/store/register/actions';
 import FormRegisterUser from 'src/components/FormRegisterUser';
 import { sendRegisterUser } from 'src/store/register/actions';
-
+/**
+ * NAME SERVER
+ */
+import { NAME_SERVER } from 'src/store/register/actions';
 /**
  * Code
  */
@@ -219,16 +222,16 @@ const Header = () => {
 		setTimeout(() => {
 			setRegisterVisibleArtisan(false), 2000;
 		});
-		console.log('handle cancel');
+		//console.log('handle cancel');
 	};
 
 	//submit of form
 	const handleFormArtisan = (email, password, passwordCheck, siret) => {
 		return (event) => {
-			// console.log(email, password, passwordCheck);
+			//console.log(email, password, passwordCheck);
 			event.preventDefault();
 			if (password === passwordCheck && password !== '') {
-				// console.log('mots est correct');
+				//console.log('mots est correct');
 				if (parseJwt(token) != null) {
 					dispatch(sendRegisterArtisan(email, password, siret));
 				}
@@ -253,7 +256,7 @@ const Header = () => {
 		setTimeout(() => {
 			setRegisterVisibleUser(false), 2000;
 		});
-		console.log('handle cancel');
+		//console.log('handle cancel');
 	};
 
 	//submit of form
@@ -262,7 +265,7 @@ const Header = () => {
 			//console.log(email, password, passwordCheck);
 			event.preventDefault();
 			if (password === passwordCheck && password !== '') {
-				// console.log('mots est correct');
+				//console.log('mots est correct');
 				dispatch(sendRegisterUser(email, password));
 			}
 			hideModalRegisterUser();
@@ -300,7 +303,7 @@ const Header = () => {
 
 									{connect === true && admin !== 'ROLE_ADMIN' ? <a href="#">Profil</a> : ''}
 									{connect === true && admin === 'ROLE_ADMIN' ? (
-										<a href="http://localhost:8001/admin">Admin</a>
+										<a href={`${NAME_SERVER}/admin`}>Admin </a>
 									) : (
 										''
 									)}

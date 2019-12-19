@@ -11,6 +11,10 @@ import { SEND_REGISTER_USER } from 'src/store/register/actions';
 import { SEND_REGISTER_ARTISAN } from 'src/store/register/actions';
 import { SEND_LOGIN } from 'src/store/register/actions';
 import { CONNECT } from 'src/store/register/actions';
+/**
+ * NAME SERVER
+ */
+import { NAME_SERVER } from 'src/store/register/actions';
 
 export default (store) => (next) => (action) => {
 	switch (action.type) {
@@ -20,7 +24,7 @@ export default (store) => (next) => (action) => {
 		case SEND_LOGIN: {
 			return axios({
 				method: 'post',
-				url: 'http://localhost:8001/api/login_check', // first check with static home page
+				url: `${NAME_SERVER}/api/login_check`, // first check with static home page
 				data: {
 					username: action.username,
 					password: action.password
@@ -56,7 +60,7 @@ export default (store) => (next) => (action) => {
 
 			return axios({
 				method: 'post',
-				url: 'http://localhost:8001/register/user', // first check with static home page
+				url: `${NAME_SERVER}/register/user`, // first check with static home page
 				data
 			})
 				.then((response) => {
@@ -65,7 +69,7 @@ export default (store) => (next) => (action) => {
 						// console.log('login');
 						axios({
 							method: 'post',
-							url: 'http://localhost:8001/api/login_check', // first check with static home page
+							url: `${NAME_SERVER}/api/login_check`, // first check with static home page
 							data: {
 								username: action.email,
 								password: action.password
@@ -110,7 +114,7 @@ export default (store) => (next) => (action) => {
 
 			return axios({
 				method: 'post',
-				url: 'http://localhost:8001/register/artisan', // first check with static home page
+				url: `${NAME_SERVER}/register/artisan`, // first check with static home page
 				data
 			})
 				.then((response) => {
@@ -119,7 +123,7 @@ export default (store) => (next) => (action) => {
 						// console.log('login');
 						axios({
 							method: 'post',
-							url: 'http://localhost:8001/api/login_check', // first check with static home page
+							url: `${NAME_SERVER}/api/login_check`, // first check with static home page
 							data: {
 								username: action.email,
 								password: action.password
@@ -161,21 +165,21 @@ export default (store) => (next) => (action) => {
 				email: action.email,
 				password: action.password
 			};
-			console.log(data);
+			//console.log(data);
 
 			return axios({
 				method: 'post',
-				url: 'http://localhost:8001/resetPassMail',
+				url: `${NAME_SERVER}/resetPassMail`,
 				data
 			})
 				.then((response) => {
-					console.log(response);
+					//console.log(response);
 					if (response.status === 200) {
-						console.log('test reussi');
+						//console.log('test reussi');
 					}
 				})
 				.catch(function(error) {
-					console.log(error);
+					//console.log(error);
 				})
 				.finally(function() {});
 		}

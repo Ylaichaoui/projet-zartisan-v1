@@ -16,7 +16,7 @@ const ForgettenPassword = () => {
 			//console.log(email, password);
 			event.preventDefault();
 			if (password === passwordCheck && password !== '') {
-				// console.log('mots est correct');
+				//console.log('mots est correct');
 				dispatch(sendPasswordForget(email, password));
 			}
 		};
@@ -24,16 +24,16 @@ const ForgettenPassword = () => {
 
 	const emailChangeValue = (event) => {
 		setEmail(event.target.value);
-		console.log(event.target.value);
+		//console.log(event.target.value);
 	};
 
 	const passwordChangeValue = (event) => {
 		setPassword(event.target.value);
-		console.log(event.target.value);
+		//console.log(event.target.value);
 	};
 	const passwordCheckChangeValue = () => {
 		setPasswordCheck(event.target.value);
-		console.log(event.target.value);
+		//console.log(event.target.value);
 	};
 
 	let history = useHistory();

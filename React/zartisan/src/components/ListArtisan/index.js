@@ -45,13 +45,13 @@ const ListArtisan = () => {
 	const changeRegion = (event) => {
 		setRegion(event.item.props.value);
 		dispatch(getJobs(event.item.props.value));
-		console.log('region', event.item.props.value);
+		//console.log('region', event.item.props.value);
 		visibleJobDropdown();
 		//setJobChange('Choisissez votre métier');
 	};
 
 	useEffect(() => {
-		console.log('new ', jobs);
+		//console.log('new ', jobs);
 		if (jobs != null) {
 			//setJobChange('Choisissez votre métier');
 		} else {
@@ -78,7 +78,7 @@ const ListArtisan = () => {
 		}
 		//console.log('spray', array);
 		const item = array.map((region) => {
-			//	console.log('item', region.id);
+			//console.log('item', region.id);
 			return (
 				<Menu.Item onClick={changeRegion} key={region.id} value={region.name}>
 					{region.name}
@@ -116,7 +116,7 @@ const ListArtisan = () => {
 	if (arrayJobs != undefined) {
 		jobartisan = arrayJobs.map((job) => {
 			const handleJobChange = (event) => {
-				console.log('id job', event.item.props.eventKey);
+				//console.log('id job', event.item.props.eventKey);
 				chooseJob(event.item.props.value);
 				setIdJob(event.item.props.eventKey);
 			};
@@ -193,7 +193,7 @@ const ListArtisan = () => {
 				size="small"
 				pagination={{
 					onChange: (page) => {
-						console.log(page);
+						//console.log(page);
 					},
 					pageSize: 5
 				}}

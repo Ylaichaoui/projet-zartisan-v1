@@ -26,13 +26,13 @@ const Home = () => {
 		setRegion(event.item.props.value);
 
 		dispatch(getJobs(event.item.props.value));
-		console.log('region', event.item.props.value);
+		//console.log('region', event.item.props.value);
 		visibleJobDropdown();
 		//setJobChange('Choisissez votre métier');
 	};
 
 	useEffect(() => {
-		console.log('new ', jobs);
+		//console.log('new ', jobs);
 		if (jobs != null) {
 			//setJobChange('Choisissez votre métier');
 		} else {
@@ -50,12 +50,12 @@ const Home = () => {
 	const regions = useSelector((state) => state.regions);
 	let jobs = useSelector((state) => state.jobs);
 
-	console.log(jobs);
+	//console.log(jobs);
 	if (jobs.length != 0) {
 		if (jobs == null) {
-			console.log('success');
+			//console.log('success');
 		} else {
-			console.log('no success');
+			//console.log('no success');
 		}
 	}
 
@@ -76,7 +76,7 @@ const Home = () => {
 		}
 		//console.log('spray', array);
 		const item = array.map((region) => {
-			//	console.log('item', region.id);
+			//console.log('item', region.id);
 			return (
 				<Menu.Item onClick={changeRegion} key={region.id} value={region.name}>
 					{region.name}
@@ -86,7 +86,7 @@ const Home = () => {
 		return item;
 	});
 
-	console.log('arrayRegion', itemRegions);
+	//console.log('arrayRegion', itemRegions);
 
 	const menuRegion = <Menu>{itemRegions}</Menu>;
 
@@ -115,7 +115,7 @@ const Home = () => {
 	if (arrayJobs != undefined) {
 		jobartisan = arrayJobs.map((job) => {
 			const handleJobChange = (event) => {
-				console.log('id job', event.item.props.eventKey);
+				//console.log('id job', event.item.props.eventKey);
 				chooseJob(event.item.props.value);
 				setIdJob(event.item.props.eventKey);
 			};

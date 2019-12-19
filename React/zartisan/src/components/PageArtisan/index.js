@@ -35,7 +35,6 @@ const { TextArea } = Input;
 const PageArtisan = () => {
 	const artisanSelector = useSelector((state) => state.artisan);
 
-	console.log('big object', artisanSelector);
 	const averageRate = useSelector((state) => state.rate);
 	//console.log('note moyenne', averageRate);
 
@@ -51,18 +50,13 @@ const PageArtisan = () => {
 		adviceObject = artisanSelector[1];
 	}
 
-	console.log('Object value comment', artisanObject, adviceObject);
-
 	if (averageRate != null) {
 		artisanObject.averageRate = averageRate;
 	}
 
-	console.log('artisan object', artisanObject);
-
 	const connect = useSelector((state) => state.connect);
 	let token = '';
 	if (connect === true) {
-		console.log('je suis connecté');
 		token = cookies.get('TOKEN');
 	}
 
@@ -210,7 +204,7 @@ const PageArtisan = () => {
 
 	const changeArea = (value) => {
 		let valueArea = value.target.value;
-		// console.log(valueArea);
+		//console.log(valueArea);
 		changeValueArea(valueArea);
 	};
 
@@ -279,13 +273,10 @@ const PageArtisan = () => {
    */
 
 	const handleAlert = (event) => {
-		console.log(event.target.value);
-		console.log('hello');
 		dispatch(alertAdvice(event.target.value));
 
 		setTimeout(() => {
 			dispatch(artisanData(idArtisan, emailArtisan));
-			console.log('alert', idArtisan, emailArtisan);
 		}, 2000);
 	};
 
@@ -406,8 +397,6 @@ const PageArtisan = () => {
 						dataSource={adviceObject}
 						renderItem={(item) => (
 							<li>
-								{console.log('commentary', item)}
-
 								<Comment
 									author={item.userAuthor.firstname}
 									avatar={`../src/styles/pictures/user/${item.userAuthor.picture}`}
