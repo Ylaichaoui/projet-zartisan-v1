@@ -171,7 +171,7 @@ const PageArtisan = () => {
    */
 	const contentContact = (
 		<div>
-			<p>Pour accéder aux informations de contact connectez-vous.</p>
+			<p>Pour accéder aux informations de contact veuillez-vous enregistrer et valider votre adresse email</p>
 		</div>
 	);
 
@@ -245,7 +245,7 @@ const PageArtisan = () => {
 
 	const contentAdvice = (
 		<div>
-			<p>Pour accéder aux commentaires connectez-vous.</p>
+			<p>Pour accéder aux commentaires veuillez-vous enregistrer et valider votre adresse email</p>
 		</div>
 	);
 
