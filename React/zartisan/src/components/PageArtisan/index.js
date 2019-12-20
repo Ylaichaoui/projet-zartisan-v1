@@ -33,6 +33,8 @@ import { artisanData } from 'src/store/artisan/actions';
 import Carousel1 from 'src/styles/pictures/caroussel/artisan10.jpg';
 import Carousel2 from 'src/styles/pictures/caroussel/artisan11.jpg';
 import Carousel3 from 'src/styles/pictures/caroussel/artisan12.jpg';
+import Picture0 from 'src/styles/pictures/company/artisan.png';
+import Company1 from 'src/styles/pictures/company/company3';
 
 const { TextArea } = Input;
 const PageArtisan = () => {
@@ -282,8 +284,7 @@ const PageArtisan = () => {
 			dispatch(artisanData(idArtisan, emailArtisan));
 		}, 2000);
 	};
-	const images = require.context('../src/styles/pictures/company', true);
-	let imgCompany = images('./' + artisanObject.picture);
+
 	return (
 		<div id="page-artisan">
 			<Row>
@@ -299,7 +300,7 @@ const PageArtisan = () => {
 						<Row>
 							<Col span={12}>
 								<div>
-									<img className="description-picture" src={imgCompany} />
+									<img className="description-picture" src={Company1} />
 									<Rating />
 									{user !== -1 || artisanUser !== -1 ? (
 										<div>
@@ -396,7 +397,7 @@ const PageArtisan = () => {
 							<li>
 								<Comment
 									author={item.userAuthor.firstname}
-									avatar={`../src/styles/pictures/user/${item.userAuthor.picture}`}
+									avatar={Picture0}
 									content={item.body}
 									datetime={
 										<div>
