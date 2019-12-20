@@ -85,7 +85,9 @@ class ApiCompanyManager
             $user->setFirstname($this->getFirstnameFromApi());
             $user->setLastname($this->getLastnameFromApi());
             $user->setPhone($this->getPhoneFromApi());
-            $user->setBirthday(\DateTime::createFromFormat('Y-m-d', $this->getBirthdayFromApi()));
+            if($this->getBirthdayFromApi() != NULL){
+                $user->setBirthday(\DateTime::createFromFormat('Y-m-d', $this->getBirthdayFromApi()));
+            }
             $this->em->persist($user);
             $this->em->flush();
         }
