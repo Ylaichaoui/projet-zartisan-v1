@@ -34,7 +34,7 @@ import Carousel1 from 'src/styles/pictures/caroussel/artisan10.jpg';
 import Carousel2 from 'src/styles/pictures/caroussel/artisan11.jpg';
 import Carousel3 from 'src/styles/pictures/caroussel/artisan12.jpg';
 import Picture0 from 'src/styles/pictures/company/artisan.png';
-import Company1 from 'src/styles/pictures/company/company3';
+import Company1 from 'src/styles/pictures/company/company3.png';
 
 const { TextArea } = Input;
 const PageArtisan = () => {

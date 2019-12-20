@@ -11,7 +11,7 @@ import { getJobs } from 'src/store/jobs/actions';
 import { postHomeSearch } from 'src/store/search/actions';
 import { withRouter, Link } from 'react-router-dom';
 import { artisanData } from 'src/store/artisan/actions';
-import Picture1 from 'src/styles/pictures/company/compagny3.png';
+import Picture1 from 'src/styles/pictures/company/company3.png';
 
 const ListArtisan = () => {
 	const dispatch = useDispatch();
