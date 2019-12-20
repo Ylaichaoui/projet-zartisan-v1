@@ -11,6 +11,7 @@ import { getJobs } from 'src/store/jobs/actions';
 import { postHomeSearch } from 'src/store/search/actions';
 import { withRouter, Link } from 'react-router-dom';
 import { artisanData } from 'src/store/artisan/actions';
+import Picture1 from 'src/styles/pictures/company/compagny3.png';
 
 const ListArtisan = () => {
 	const dispatch = useDispatch();
@@ -205,9 +206,7 @@ const ListArtisan = () => {
 					<List.Item className="antListItem">
 						<List.Item.Meta
 							className="ant-list-item "
-							avatar={
-								<img style={{ width: '60px' }} src={`src/styles/pictures/company/${item.picture}`} />
-							}
+							avatar={<img style={{ width: '60px' }} src={Picture1} />}
 							title={<LinkArtisan item={item} />}
 							description={item.companyDescription}
 						/>
