@@ -300,7 +300,7 @@ const PageArtisan = () => {
 								<div>
 									<img
 										className="description-picture"
-										src={require(`../src/styles/pictures/company/${artisanObject.picture}`)}
+										src={`../src/styles/pictures/company/${artisanObject.picture}`}
 									/>
 									<Rating />
 									{user !== -1 || artisanUser !== -1 ? (
