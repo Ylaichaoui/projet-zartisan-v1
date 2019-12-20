@@ -38,7 +38,7 @@ class ApiCompanyManager
 
     public function getFirstnameFromApi()
     {
-        if(isset ($this->apiData["result"]["contacts"]["main_corporate_officier"])){
+        if(isset ($this->apiData["result"]["contacts"]["main_corporate_officier"]) && isset ($this->apiData["result"]["contacts"]["main_corporate_officier"]["firstName"])){
             $firstname = $this->apiData["result"]["contacts"]["main_corporate_officier"]["firstName"];
         }else{
             $firstname = NULL;
@@ -48,7 +48,7 @@ class ApiCompanyManager
 
     public function getLastnameFromApi()
     {
-        if(isset ($this->apiData["result"]["contacts"]["main_corporate_officier"])){
+        if(isset ($this->apiData["result"]["contacts"]["main_corporate_officier"]) && isset ($this->apiData["result"]["contacts"]["main_corporate_officier"]["lastName"])){
             $lastname = $this->apiData["result"]["contacts"]["main_corporate_officier"]["lastName"];
         }else{
             $lastname = NULL;
@@ -88,7 +88,7 @@ class ApiCompanyManager
             $user->setLastname($this->getLastnameFromApi());
             $phone = $this->getPhoneFromApi();
             if($phone != NULL){
-                $user->setPhone($phone[0]);
+                $user->setPhone($phone["value"]);
             }
             if($this->getBirthdayFromApi() != NULL){
                 $user->setBirthday(\DateTime::createFromFormat('Y-m-d', $this->getBirthdayFromApi()));
