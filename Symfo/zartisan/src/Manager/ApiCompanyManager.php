@@ -76,6 +76,8 @@ class ApiCompanyManager
         return $birthday;
     }
 
+
+
     public function setCompanyDataApi($user)
     {
         $this->siret = $user->getSiret();
@@ -84,7 +86,10 @@ class ApiCompanyManager
             // Save all data from api
             $user->setFirstname($this->getFirstnameFromApi());
             $user->setLastname($this->getLastnameFromApi());
-            $user->setPhone($this->getPhoneFromApi());
+            $phone = $this->getPhoneFromApi();
+            if($phone != NULL){
+                $user->setPhone($phone[0]);
+            }
             if($this->getBirthdayFromApi() != NULL){
                 $user->setBirthday(\DateTime::createFromFormat('Y-m-d', $this->getBirthdayFromApi()));
             }
