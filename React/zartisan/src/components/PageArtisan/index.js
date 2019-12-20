@@ -282,7 +282,8 @@ const PageArtisan = () => {
 			dispatch(artisanData(idArtisan, emailArtisan));
 		}, 2000);
 	};
-
+	const images = require.context('../src/styles/pictures/company', true);
+	let imgCompany = images('./' + artisanObject.picture);
 	return (
 		<div id="page-artisan">
 			<Row>
@@ -298,10 +299,7 @@ const PageArtisan = () => {
 						<Row>
 							<Col span={12}>
 								<div>
-									<img
-										className="description-picture"
-										src={`../src/styles/pictures/company/${artisanObject.picture}`}
-									/>
+									<img className="description-picture" src={imgCompany} />
 									<Rating />
 									{user !== -1 || artisanUser !== -1 ? (
 										<div>
