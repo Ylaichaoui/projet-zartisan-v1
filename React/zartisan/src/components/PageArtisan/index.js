@@ -30,7 +30,7 @@ import { alertAdvice } from 'src/store/advice/actions';
 import { sendAdvice } from 'src/store/advice/actions';
 
 import { artisanData } from 'src/store/artisan/actions';
-import Carousel1 from '../../styles/pictures/caroussel/artisan2.jpeg';
+import Carousel1 from 'src/styles/pictures/caroussel/artisan10.jpg';
 
 const { TextArea } = Input;
 const PageArtisan = () => {
