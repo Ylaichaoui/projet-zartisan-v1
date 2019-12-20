@@ -41,7 +41,7 @@ class ApiCompanyManager
         if(isset ($this->apiData["result"]["contacts"]["main_corporate_officier"]) && isset ($this->apiData["result"]["contacts"]["main_corporate_officier"]["firstName"])){
             $firstname = $this->apiData["result"]["contacts"]["main_corporate_officier"]["firstName"];
         }else{
-            $firstname = NULL;
+            $firstname = "unknown";
         }
         return $firstname;
     }
@@ -51,7 +51,7 @@ class ApiCompanyManager
         if(isset ($this->apiData["result"]["contacts"]["main_corporate_officier"]) && isset ($this->apiData["result"]["contacts"]["main_corporate_officier"]["lastName"])){
             $lastname = $this->apiData["result"]["contacts"]["main_corporate_officier"]["lastName"];
         }else{
-            $lastname = NULL;
+            $lastname = "unknown";
         }
         return $lastname;
     }
