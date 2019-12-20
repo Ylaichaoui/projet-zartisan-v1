@@ -30,7 +30,7 @@ import { alertAdvice } from 'src/store/advice/actions';
 import { sendAdvice } from 'src/store/advice/actions';
 
 import { artisanData } from 'src/store/artisan/actions';
-import carrousel1 from 'src/styles/pictures/caroussel/artisan2.jpeg';
+import Carousel1 from '../../styles/pictures/caroussel/artisan2.jpeg';
 
 const { TextArea } = Input;
 const PageArtisan = () => {
@@ -355,7 +355,7 @@ const PageArtisan = () => {
 				<Carousel autoplay>
 					<div>
 						<h3>
-							<img className="imgCarousel" src={carrousel1} alt="" />
+							<img className="imgCarousel" src={Carousel1} alt="" />
 						</h3>
 					</div>
 					<div>
