@@ -88,7 +88,7 @@ class ApiCompanyManager
             $user->setLastname($this->getLastnameFromApi());
             $phone = $this->getPhoneFromApi();
             if($phone != NULL){
-                $user->setPhone($phone[0]);
+                $user->setPhone($phone["value"]);
             }
             if($this->getBirthdayFromApi() != NULL){
                 $user->setBirthday(\DateTime::createFromFormat('Y-m-d', $this->getBirthdayFromApi()));
