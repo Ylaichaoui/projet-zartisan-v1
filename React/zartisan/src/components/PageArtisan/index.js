@@ -31,6 +31,8 @@ import { sendAdvice } from 'src/store/advice/actions';
 
 import { artisanData } from 'src/store/artisan/actions';
 import Carousel1 from 'src/styles/pictures/caroussel/artisan10.jpg';
+import Carousel2 from 'src/styles/pictures/caroussel/artisan11.jpg';
+import Carousel3 from 'src/styles/pictures/caroussel/artisan12.jpg';
 
 const { TextArea } = Input;
 const PageArtisan = () => {
@@ -298,7 +300,7 @@ const PageArtisan = () => {
 								<div>
 									<img
 										className="description-picture"
-										src={`../src/styles/pictures/company/${artisanObject.picture}`}
+										src={require(`../src/styles/pictures/company/${artisanObject.picture}`)}
 									/>
 									<Rating />
 									{user !== -1 || artisanUser !== -1 ? (
@@ -360,16 +362,12 @@ const PageArtisan = () => {
 					</div>
 					<div>
 						<h3>
-							<img className="imgCarousel" src="../src/styles/pictures/caroussel/artisan4.jpeg" alt="" />
+							<img className="imgCarousel" src={Carousel2} alt="" />
 						</h3>
 					</div>
 					<div>
 						<h3>
-							<img
-								className="imgCarousel"
-								src="../src/styles/pictures/caroussel/artisan3.jpeg"
-								alt=""
-							/>{' '}
+							<img className="imgCarousel" src={Carousel3} alt="" />{' '}
 						</h3>
 					</div>
 				</Carousel>
