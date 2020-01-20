@@ -1,3 +1,2 @@
 *.php linguist-detectable=false
-*.js linguist-detectable=false
-*.react linguist-detectable=true
+*.js linguist-detectable=true
