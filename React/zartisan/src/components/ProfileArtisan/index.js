@@ -13,6 +13,8 @@ import {
 import "antd/dist/antd.css";
 
 const ProfileArtisan = () => {
+  const { TextArea } = Input;
+
   const artisanSelector = useSelector(state => state.artisan);
 
   const [loading, setLoading] = useState(false);
@@ -80,11 +82,47 @@ const ProfileArtisan = () => {
                 uploadButton
               )}
             </Upload>
-          </Form.Item>
-
-          <Form.Item>
             <Button type="primary" id="buttons" htmlType="submit">
               Confirmer
+            </Button>
+          </Form.Item>
+          <Form.Item>
+            <Input placeholder="Basic usage" value="jean" disabled={true} />
+            <Input value="SIRET" disabled />
+            <Input disabled value="Entreprise" />
+          </Form.Item>
+          <Form.Item>
+            <Input disabled value="Adresse" />
+            <Input disabled value="Code postal" />
+            <Input disabled value="Ville" />
+            <Input disabled value="Téléphone" />
+            <Input disabled value="Mail" />
+          </Form.Item>
+          <Form.Item>
+            <TextArea rows={4} />
+          </Form.Item>
+          <Form.Item>
+            <input
+              type="file"
+              name="image_uploads"
+              accept=".jpg, .jpeg, .png"
+              multiple
+            />
+            <Button type="primary" id="buttons" htmlType="submit">
+              Ajouter
+            </Button>
+            <Button type="primary" id="buttons" htmlType="submit">
+              Supprimer
+            </Button>
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" id="buttons" htmlType="submit">
+              Sauvegarder
+            </Button>
+          </Form.Item>
+          <Form.Item>
+            <Button type="danger" htmlType="submit">
+              Supprimer le compte
             </Button>
           </Form.Item>
         </Form>
