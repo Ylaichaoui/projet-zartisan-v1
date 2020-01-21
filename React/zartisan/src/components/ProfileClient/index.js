@@ -12,7 +12,7 @@ import {
 } from "antd";
 import "antd/dist/antd.css";
 
-const ProfileArtisan = () => {
+const ProfileClient = () => {
   const { TextArea } = Input;
 
   const artisanSelector = useSelector(state => state.artisan);
@@ -87,16 +87,14 @@ const ProfileArtisan = () => {
             </Button>
           </Form.Item>
           <Form.Item>
-            <Input placeholder="Basic usage" value="jean" disabled={true} />
-            <Input value="SIRET" disabled />
-            <Input disabled value="Entreprise" />
+            <Input placeholder="Nom et prénom" />
           </Form.Item>
           <Form.Item>
-            <Input disabled value="Adresse" />
-            <Input disabled value="Code postal" />
-            <Input disabled value="Ville" />
-            <Input disabled value="Téléphone" />
-            <Input disabled value="Mail" />
+            <Input placeholder="Adresse" />
+            <Input placeholder="Code postal" />
+            <Input placeholder="Ville" />
+            <Input placeholder="Téléphone" />
+            <Input placeholder="Mail" />
           </Form.Item>
           <Form.Item>
             <TextArea rows={4} />
@@ -131,4 +129,4 @@ const ProfileArtisan = () => {
   );
 };
 
-export default ProfileArtisan;
+export default ProfileClient;

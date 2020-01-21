@@ -24,6 +24,7 @@ import FormRegisterUser from "src/components/FormRegisterUser";
 import FormRegisterArtisan from "src/components/FormRegisterArtisan";
 import ForgettenPassword from "src/components/ForgottenPassword";
 import ProfileArtisan from "../ProfileArtisan";
+import ProfileClient from "../ProfileClient";
 
 /**
  * Code
@@ -54,6 +55,9 @@ const App = () => {
           </Route>
           <Route exact path="/profil-artisan">
             <ProfileArtisan />
+          </Route>
+          <Route exact path="/profil-client">
+            <ProfileClient />
           </Route>
           <Route exact path="/mentions-legal">
             <LegalNotices />
