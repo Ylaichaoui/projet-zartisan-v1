@@ -195,11 +195,15 @@ const Header = () => {
     }
   };
 
-  //let tokenEmail = '';
-  let admin = "";
-  //let artisanUser = -1;
+  let admin = -1;
+  let user = -1;
+  let artisanUser = -1;
   if (token != null) {
-    admin = parseJwt(token).roles[0];
+    admin = parseJwt(token).roles.indexOf("ROLE_ADMIN");
+    //console.log(admin);
+    user = parseJwt(token).roles.indexOf("ROLE_USER");
+    artisanUser = parseJwt(token).roles.indexOf("ROLE_ARTISAN");
+    console.log(parseJwt(token));
     //artisanUser = parseJwt(token).roles.indexOf('ROLE_ARTISAN');
     //tokenEmail = parseJwt(token).username;
     //console.log(tokenEmail);
@@ -323,12 +327,16 @@ const Header = () => {
                     <p>Bonjour vous êtes connecté</p>
                   </Modal>
 
-                  {connect === true && admin !== "ROLE_ADMIN" ? (
-                    <a href="#">Profil</a>
+                  {connect === true && admin === -1 ? (
+                    connect === true && artisanUser !== -1 ? (
+                      <Link to="/profil-artisan">Profil</Link>
+                    ) : (
+                      <Link to="/profil-client">Profil</Link>
+                    )
                   ) : (
                     ""
                   )}
-                  {connect === true && admin === "ROLE_ADMIN" ? (
+                  {connect === true && admin !== -1 ? (
                     <a href={`${NAME_SERVER}/admin`}>Admin </a>
                   ) : (
                     ""
