@@ -198,14 +198,14 @@ const Header = () => {
   let admin = -1;
   let user = -1;
   let artisanUser = -1;
+  let tokenEmail = "";
   if (token != null) {
     admin = parseJwt(token).roles.indexOf("ROLE_ADMIN");
     //console.log(admin);
     user = parseJwt(token).roles.indexOf("ROLE_USER");
     artisanUser = parseJwt(token).roles.indexOf("ROLE_ARTISAN");
-    console.log(parseJwt(token));
+    tokenEmail = parseJwt(token).username;
     //artisanUser = parseJwt(token).roles.indexOf('ROLE_ARTISAN');
-    //tokenEmail = parseJwt(token).username;
     //console.log(tokenEmail);
     //console.log(parseJwt(token).roles[0]);
   }
@@ -273,6 +273,12 @@ const Header = () => {
     };
   };
 
+  const handleClickProfile = item => {
+    dispatch(artisanData(1, tokenEmail));
+    onClose();
+    console.log(handleClickProfile);
+  };
+
   return (
     <div id="zheader">
       <Row className="header" type="flex" justify="space-around">
@@ -329,9 +335,13 @@ const Header = () => {
 
                   {connect === true && admin === -1 ? (
                     connect === true && artisanUser !== -1 ? (
-                      <Link to="/profil-artisan">Profil</Link>
+                      <Link to="/profil-artisan" onClick={handleClickProfile}>
+                        Profil
+                      </Link>
                     ) : (
-                      <Link to="/profil-client">Profil</Link>
+                      <Link to="/profil-client" onClick={handleClickProfile}>
+                        Profil
+                      </Link>
                     )
                   ) : (
                     ""
