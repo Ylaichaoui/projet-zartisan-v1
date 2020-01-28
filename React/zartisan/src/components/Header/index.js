@@ -276,7 +276,6 @@ const Header = () => {
   const handleClickProfile = item => {
     dispatch(artisanData(1, tokenEmail));
     onClose();
-    console.log(handleClickProfile);
   };
 
   return (

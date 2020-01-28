@@ -222,7 +222,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="bigint", nullable=true)
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single","user_artisan_advice"})
      */
     private $siret;
 

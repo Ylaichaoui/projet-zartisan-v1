@@ -16,6 +16,7 @@ const ProfileArtisan = () => {
   const { TextArea } = Input;
 
   const artisanSelector = useSelector(state => state.artisan);
+  console.log(artisanSelector);
 
   const [loading, setLoading] = useState(false);
 
