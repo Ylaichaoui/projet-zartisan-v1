@@ -18,6 +18,11 @@ const ProfileArtisan = () => {
   const artisanSelector = useSelector(state => state.artisan);
   console.log(artisanSelector);
 
+  let artisanObject = {};
+  for (let artisan in artisanSelector) {
+    //console.log(artisanSelector[artisan]);
+    artisanObject = artisanSelector[0];
+  }
   const [loading, setLoading] = useState(false);
 
   const getBase64 = (img, callback) => {
@@ -87,17 +92,30 @@ const ProfileArtisan = () => {
               Confirmer
             </Button>
           </Form.Item>
-          <Form.Item>
-            <Input placeholder="Basic usage" value="jean" disabled={true} />
-            <Input value="SIRET" disabled />
-            <Input disabled value="Entreprise" />
+          <Form.Item label="Nom et Prénom">
+            <Input
+              placeholder="Nom Prénom"
+              value={`${artisanObject.firstname} ${artisanObject.lastname}`}
+              disabled={true}
+            />{" "}
+          </Form.Item>{" "}
+          <Form.Item label="Siret et Entreprise">
+            <Input value={artisanObject.siret} disabled />
+            <Input disabled value={artisanObject.company} />
           </Form.Item>
-          <Form.Item>
-            <Input disabled value="Adresse" />
-            <Input disabled value="Code postal" />
-            <Input disabled value="Ville" />
-            <Input disabled value="Téléphone" />
-            <Input disabled value="Mail" />
+          <Form.Item label="Adresse">
+            <Input
+              disabled
+              value={`${artisanObject.numberWay} ${artisanObject.way}`}
+            />
+            <Input disabled value={artisanObject.postalCode} />
+            <Input disabled value={artisanObject.city} />
+          </Form.Item>
+          <Form.Item label="Télephone">
+            <Input disabled value={artisanObject.phone} />
+          </Form.Item>
+          <Form.Item label="Email">
+            <Input disabled value={artisanObject.email} />
           </Form.Item>
           <Form.Item>
             <TextArea rows={4} />
