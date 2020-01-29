@@ -8,7 +8,8 @@ import {
   TextArea,
   Upload,
   Icon,
-  message
+  message,
+  Modal
 } from "antd";
 import "antd/dist/antd.css";
 
@@ -16,7 +17,7 @@ const ProfileArtisan = () => {
   const { TextArea } = Input;
 
   const artisanSelector = useSelector(state => state.artisan);
-  console.log(artisanSelector);
+  //console.log(artisanSelector);
 
   let artisanObject = {};
   for (let artisan in artisanSelector) {
@@ -61,12 +62,50 @@ const ProfileArtisan = () => {
   const uploadButton = (
     <div>
       <Icon type={loading ? "loading" : "plus"} />
-      <div className="ant-upload-text">Upload</div>
+      <div className="ant-upload-text">Chargement</div>
     </div>
   );
 
   const { imageUrl } = loading;
-  console.log("imageUrl " + imageUrl);
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //upload file
+
+  const [fileList, setFileList] = useState("");
+  const [previewImage, setPreviewImage] = useState("");
+  const [previewVisible, setPreviewVisible] = useState(false);
+
+  const getBaseFile = file => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+  };
+
+  const handleCancel = () => setPreviewVisible(false);
+
+  const handlePreview = async file => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBaseFile(file.originFileObj);
+    }
+
+    setPreviewVisible(true);
+    setPreviewImage(file.url || file.preview);
+  };
+
+  //const handleChangeFile = ({ fileList }) => setFileList({ fileList });
+  const handleChangeFile = fileList => {
+    return setFileList(fileList.fileList);
+  };
+
+  const uploadButtonFile = (
+    <div>
+      <Icon type="plus" />
+      <div className="ant-upload-text">Chargement</div>
+    </div>
+  );
 
   return (
     <div>
@@ -120,30 +159,37 @@ const ProfileArtisan = () => {
           <Form.Item>
             <TextArea rows={4} />
           </Form.Item>
-          <Form.Item>
-            <input
-              type="file"
-              name="image_uploads"
-              accept=".jpg, .jpeg, .png"
-              multiple
-            />
-            <Button type="primary" className="buttons" htmlType="submit">
-              Ajouter
-            </Button>
-            <Button type="primary" className="buttons" htmlType="submit">
-              Supprimer
-            </Button>
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" className="buttons" htmlType="submit">
-              Sauvegarder
-            </Button>
-          </Form.Item>
-          <Form.Item>
-            <Button type="danger" htmlType="submit">
-              Supprimer le compte
-            </Button>
-          </Form.Item>
+          <div className="clearfix">
+            <Form.Item>
+              <Upload
+                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                listType="picture-card"
+                onPreview={handlePreview}
+                onChange={handleChangeFile}
+              >
+                {fileList.length >= 4 ? null : uploadButtonFile}
+              </Upload>
+              <Modal
+                visible={previewVisible}
+                footer={null}
+                onCancel={handleCancel}
+              >
+                <img
+                  alt="example"
+                  style={{ width: "100%" }}
+                  src={previewImage}
+                />
+              </Modal>
+              <Button type="primary" className="buttons" htmlType="submit">
+                Sauvegarder
+              </Button>
+            </Form.Item>
+            <Form.Item>
+              <Button type="danger" htmlType="submit">
+                Supprimer le compte
+              </Button>
+            </Form.Item>
+          </div>
         </Form>
       </Row>
     </div>
