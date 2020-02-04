@@ -62,14 +62,13 @@ const ProfileArtisan = () => {
   const uploadButton = (
     <div>
       <Icon type={loading ? "loading" : "plus"} />
-      <div className="ant-upload-text">Chargement</div>
+      <div className="ant-upload-text">Télécharger image profil</div>
     </div>
   );
 
   const { imageUrl } = loading;
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  //upload file
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
   const [fileList, setFileList] = useState("");
   const [previewImage, setPreviewImage] = useState("");
@@ -95,7 +94,6 @@ const ProfileArtisan = () => {
     setPreviewImage(file.url || file.preview);
   };
 
-  //const handleChangeFile = ({ fileList }) => setFileList({ fileList });
   const handleChangeFile = fileList => {
     return setFileList(fileList.fileList);
   };
@@ -103,7 +101,7 @@ const ProfileArtisan = () => {
   const uploadButtonFile = (
     <div>
       <Icon type="plus" />
-      <div className="ant-upload-text">Chargement</div>
+      <div className="ant-upload-text">Ajouter des images</div>
     </div>
   );
 
@@ -123,6 +121,12 @@ const ProfileArtisan = () => {
             >
               {imageUrl ? (
                 <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />
+              ) : artisanObject.picture != undefined ? (
+                <img
+                  src={`../src/styles/pictures/company/${artisanObject.picture}`}
+                  alt="avatar"
+                  style={{ width: "100%" }}
+                />
               ) : (
                 uploadButton
               )}
@@ -137,9 +141,11 @@ const ProfileArtisan = () => {
               value={`${artisanObject.firstname} ${artisanObject.lastname}`}
               disabled={true}
             />{" "}
-          </Form.Item>{" "}
-          <Form.Item label="Siret et Entreprise">
+          </Form.Item>
+          <Form.Item label="Siret">
             <Input value={artisanObject.siret} disabled />
+          </Form.Item>
+          <Form.Item label="Entreprise">
             <Input disabled value={artisanObject.company} />
           </Form.Item>
           <Form.Item label="Adresse">
@@ -156,7 +162,7 @@ const ProfileArtisan = () => {
           <Form.Item label="Email">
             <Input disabled value={artisanObject.email} />
           </Form.Item>
-          <Form.Item>
+          <Form.Item label="Description">
             <TextArea rows={4} />
           </Form.Item>
           <div className="clearfix">
