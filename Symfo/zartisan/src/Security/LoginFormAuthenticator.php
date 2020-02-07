@@ -86,11 +86,11 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         }
 
         if (in_array('ROLE_ADMIN', $token->getRoleNames())) {
-            return new RedirectResponse('http://ec2-52-90-234-146.compute-1.amazonaws.com');
-            //return new RedirectResponse($this->urlGenerator->generate('main'));
+            //return new RedirectResponse('http://ec2-52-90-234-146.compute-1.amazonaws.com');
+            return new RedirectResponse($this->urlGenerator->generate('main'));
         } else {
-            return new RedirectResponse('http://ec2-52-90-234-146.compute-1.amazonaws.com');
-            //return new RedirectResponse($this->urlGenerator->generate('main'));
+            //return new RedirectResponse('http://ec2-52-90-234-146.compute-1.amazonaws.com');
+            return new RedirectResponse($this->urlGenerator->generate('main'));
         }
     }
 

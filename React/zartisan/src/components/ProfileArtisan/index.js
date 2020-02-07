@@ -12,8 +12,12 @@ import {
   Modal
 } from "antd";
 import "antd/dist/antd.css";
+import { artisanEdit } from "src/store/artisan/actions";
+import { NAME_SERVER } from "src/store/register/actions";
 
 const ProfileArtisan = () => {
+  const dispatch = useDispatch();
+
   const { TextArea } = Input;
 
   const artisanSelector = useSelector(state => state.artisan);
@@ -24,6 +28,8 @@ const ProfileArtisan = () => {
     //console.log(artisanSelector[artisan]);
     artisanObject = artisanSelector[0];
   }
+  console.log("object", artisanObject);
+
   const [loading, setLoading] = useState(false);
 
   const getBase64 = (img, callback) => {
@@ -51,14 +57,16 @@ const ProfileArtisan = () => {
     }
     if (info.file.status === "done") {
       // Get this url from response in real world.
-      getBase64(info.file.originFileObj, imageUrl =>
-        setLoading({
+      getBase64(info.file.originFileObj, imageUrl => {
+        setPictureAvatar(imageUrl);
+        return setLoading({
           imageUrl,
           loading: false
-        })
-      );
+        });
+      });
     }
   };
+
   const uploadButton = (
     <div>
       <Icon type={loading ? "loading" : "plus"} />
@@ -67,12 +75,19 @@ const ProfileArtisan = () => {
   );
 
   const { imageUrl } = loading;
+  //console.log(imageUrl);
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////
-
   const [fileList, setFileList] = useState("");
   const [previewImage, setPreviewImage] = useState("");
   const [previewVisible, setPreviewVisible] = useState(false);
+  const [description, setDescription] = useState(
+    artisanObject.companyDescription
+  );
+  const [pictureAvatar, setPictureAvatar] = useState(artisanObject.picture);
+  const [pictureGalery, setPictureGalery] = useState(
+    artisanObject.pictureFolder
+  );
 
   const getBaseFile = file => {
     return new Promise((resolve, reject) => {
@@ -105,6 +120,37 @@ const ProfileArtisan = () => {
     </div>
   );
 
+  useEffect(() => {
+    if (description === undefined) {
+      setDescription(artisanObject.companyDescription);
+    }
+
+    if (pictureAvatar === undefined) {
+      setPictureAvatar(artisanObject.picture);
+    }
+    if (pictureGalery === undefined) {
+      setPictureGalery(artisanObject.pictureFolder);
+    }
+  });
+
+  //console.log("pictureGalery", pictureGalery);
+
+  const handleSaveClick = () => {
+    dispatch(
+      artisanEdit(
+        artisanObject.email,
+        description,
+        pictureAvatar,
+        pictureGalery
+      )
+    );
+  };
+
+  const handleContentDescription = event => {
+    const content = event.target.value;
+    setDescription(content);
+  };
+
   return (
     <div>
       <Row type="flex" justify="space-around" align="middle">
@@ -123,7 +169,8 @@ const ProfileArtisan = () => {
                 <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />
               ) : artisanObject.picture != undefined ? (
                 <img
-                  src={`../src/styles/pictures/company/${artisanObject.picture}`}
+                  //src={`../src/styles/pictures/company/${artisanObject.picture}`}
+                  src={`${NAME_SERVER}/${artisanObject.picture}`}
                   alt="avatar"
                   style={{ width: "100%" }}
                 />
@@ -131,9 +178,6 @@ const ProfileArtisan = () => {
                 uploadButton
               )}
             </Upload>
-            <Button type="primary" className="buttons" htmlType="submit">
-              Confirmer
-            </Button>
           </Form.Item>
           <Form.Item label="Nom et Prénom">
             <Input
@@ -163,7 +207,7 @@ const ProfileArtisan = () => {
             <Input disabled value={artisanObject.email} />
           </Form.Item>
           <Form.Item label="Description">
-            <TextArea rows={4} />
+            <TextArea onChange={handleContentDescription} rows={4} />
           </Form.Item>
           <div className="clearfix">
             <Form.Item>
@@ -186,7 +230,12 @@ const ProfileArtisan = () => {
                   src={previewImage}
                 />
               </Modal>
-              <Button type="primary" className="buttons" htmlType="submit">
+              <Button
+                onClick={handleSaveClick}
+                type="primary"
+                className="buttons"
+                htmlType="submit"
+              >
                 Sauvegarder
               </Button>
             </Form.Item>

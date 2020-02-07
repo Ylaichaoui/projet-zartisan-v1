@@ -18,17 +18,17 @@ import {
   Modal
 } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { withRouter } from "react-router-dom";
+//import { withRouter } from "react-router-dom";
 
-import classNames from "classnames";
+//import classNames from "classnames";
 
 import "./style.sass";
-import moment from "moment";
+//import moment from "moment";
 import cookies from "js-cookie";
 import { sendRate } from "src/store/rate/actions";
 import { alertAdvice } from "src/store/advice/actions";
 import { sendAdvice } from "src/store/advice/actions";
-
+import { NAME_SERVER } from "src/store/register/actions";
 import { artisanData } from "src/store/artisan/actions";
 import Carousel1 from "src/styles/pictures/caroussel/artisan10.jpg";
 import Carousel2 from "src/styles/pictures/caroussel/artisan11.jpg";
@@ -308,7 +308,10 @@ const PageArtisan = () => {
             <Row>
               <Col span={12}>
                 <div>
-                  <img className="description-picture" src={Company1} />
+                  <img
+                    className="description-picture"
+                    src={`${NAME_SERVER}/${artisanObject.picture}`}
+                  />
                   <Rating />
                   {user !== -1 || artisanUser !== -1 ? (
                     <div>
