@@ -88,6 +88,7 @@ const ProfileArtisan = () => {
   const [pictureGalery, setPictureGalery] = useState(
     artisanObject.pictureFolder
   );
+  const [phoneArtisan, setPhoneArtisan] = useState(artisanObject.phone);
 
   const getBaseFile = file => {
     return new Promise((resolve, reject) => {
@@ -121,17 +122,14 @@ const ProfileArtisan = () => {
   );
 
   useEffect(() => {
-    if (description === undefined) {
-      setDescription(artisanObject.companyDescription);
-    }
+    setDescription(artisanObject.companyDescription);
 
-    if (pictureAvatar === undefined) {
-      setPictureAvatar(artisanObject.picture);
-    }
-    if (pictureGalery === undefined) {
-      setPictureGalery(artisanObject.pictureFolder);
-    }
-  });
+    setPictureAvatar(artisanObject.picture);
+
+    setPictureGalery(artisanObject.pictureFolder);
+
+    setPhoneArtisan(artisanObject.phone);
+  }, [artisanObject]);
 
   //console.log("pictureGalery", pictureGalery);
 
@@ -141,7 +139,8 @@ const ProfileArtisan = () => {
         artisanObject.email,
         description,
         pictureAvatar,
-        pictureGalery
+        pictureGalery,
+        phoneArtisan
       )
     );
   };
@@ -207,7 +206,11 @@ const ProfileArtisan = () => {
             <Input disabled value={artisanObject.email} />
           </Form.Item>
           <Form.Item label="Description">
-            <TextArea onChange={handleContentDescription} rows={4} />
+            <TextArea
+              value={description}
+              onChange={handleContentDescription}
+              rows={4}
+            />
           </Form.Item>
           <div className="clearfix">
             <Form.Item>

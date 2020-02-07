@@ -143,7 +143,7 @@ class User implements UserInterface
     private $city;
 
     /**
-     * @ORM\Column(type="string", length=10, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      * @Groups({"user_artisan_single", "user_user_single","user_artisan_advice"})
      */
     private $phone;

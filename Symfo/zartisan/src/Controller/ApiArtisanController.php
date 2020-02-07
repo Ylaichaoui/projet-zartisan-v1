@@ -66,19 +66,21 @@ class ApiArtisanController extends AbstractController
             $user = $userRepository->isFoundMail($userEmail);
 
             $picture64 = ($request->get('picture'));
-            $path = "assets/images/". $userEmail . '/logo/'; // definit chemin du dossier
-            $image_parts = explode(";base64,", $picture64);  // scinde le fichier 0 => "data:image/png", 1 => "imagebase64"
-            $image_type_aux = explode("image/", $image_parts[0]);  // correspopnd 0 => 'data, 1 => 'png' 
-            $image_type = $image_type_aux[1];  // renvoie extension 'png'
-            $image_en_base64 = base64_decode($image_parts[1]);  // correspond au code image decodée de base64
-            $file = $path . uniqid() . '.' . $image_type ;  // création numéro image unique
-            file_put_contents($file, $image_en_base64); // ecrit dans le fichier 
-
-            $user->setPicture($file);
-
-            if($request->get('companyDescription')){
-                $user->setCompanyDescription($request->get('companyDescription'));
+            $image = substr("$picture64",0 , 6);
+            if($image != 'assets') {
+                $path = "assets/images/" . $userEmail . '/logo/'; // definit chemin du dossier
+                $image_parts = explode(";base64,", $picture64);  // scinde le fichier 0 => "data:image/png", 1 => "imagebase64"
+                //dd($image_parts );
+                $image_type_aux = explode("image/", $image_parts[0]);  // correspopnd 0 => 'data, 1 => 'png' 
+                $image_type = $image_type_aux[1];  // renvoie extension 'png'
+                $image_en_base64 = base64_decode($image_parts[1]);  // correspond au code image decodée de base64
+                $file = $path . uniqid() . '.' . $image_type;  // création numéro image unique
+                file_put_contents($file, $image_en_base64); // ecrit dans le fichier 
+                $user->setPicture($file);
             }
+
+            $user->setCompanyDescription($request->get('companyDescription'));
+            
 
             // TODO : Add this in register after set company
             // $user->setPictureFolder($user->getCompany());
