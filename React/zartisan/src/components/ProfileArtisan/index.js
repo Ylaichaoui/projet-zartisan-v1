@@ -28,7 +28,7 @@ const ProfileArtisan = () => {
     //console.log(artisanSelector[artisan]);
     artisanObject = artisanSelector[0];
   }
-  console.log("object", artisanObject);
+  //console.log("object", artisanObject);
 
   const [loading, setLoading] = useState(false);
 
@@ -78,7 +78,7 @@ const ProfileArtisan = () => {
   //console.log(imageUrl);
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////
-  const [fileList, setFileList] = useState("");
+  const [fileList, setFileList] = useState([]);
   const [previewImage, setPreviewImage] = useState("");
   const [previewVisible, setPreviewVisible] = useState(false);
   const [description, setDescription] = useState(
@@ -99,6 +99,22 @@ const ProfileArtisan = () => {
     });
   };
 
+  useEffect(() => {
+    let urlGaleryPicture = [];
+    //console.log('img', pictureGalery, 'filelist', fileList);
+
+    if (fileList.length >= 0) {
+      for (let objectFile in fileList) {
+        urlGaleryPicture.push(fileList[objectFile].thumbUrl);
+
+        //console.log(fileList[objectFile].thumbUrl);
+      }
+      //console.log(urlGaleryPicture);
+      setPictureGalery(urlGaleryPicture);
+    }
+    //console.log(urlGaleryPicture);
+  }, [fileList]);
+
   const handleCancel = () => setPreviewVisible(false);
 
   const handlePreview = async file => {
@@ -111,7 +127,9 @@ const ProfileArtisan = () => {
   };
 
   const handleChangeFile = fileList => {
-    return setFileList(fileList.fileList);
+    if (fileList.file.thumbUrl != "") {
+      return setFileList(fileList.fileList);
+    }
   };
 
   const uploadButtonFile = (
@@ -126,9 +144,10 @@ const ProfileArtisan = () => {
 
     setPictureAvatar(artisanObject.picture);
 
-    setPictureGalery(artisanObject.pictureFolder);
-
     setPhoneArtisan(artisanObject.phone);
+    // if (artisanObject.pictureFolder !== undefined) {
+    //   setFileList(artisanObject.pictureFolder);
+    // }
   }, [artisanObject]);
 
   //console.log("pictureGalery", pictureGalery);
@@ -148,6 +167,12 @@ const ProfileArtisan = () => {
   const handleContentDescription = event => {
     const content = event.target.value;
     setDescription(content);
+  };
+
+  const handlePhone = event => {
+    const contentPhone = event.target.value;
+    //console.log(contentPhone);
+    setPhoneArtisan(contentPhone);
   };
 
   return (
@@ -200,7 +225,7 @@ const ProfileArtisan = () => {
             <Input disabled value={artisanObject.city} />
           </Form.Item>
           <Form.Item label="Télephone">
-            <Input disabled value={artisanObject.phone} />
+            <Input onChange={handlePhone} value={phoneArtisan} />
           </Form.Item>
           <Form.Item label="Email">
             <Input disabled value={artisanObject.email} />
