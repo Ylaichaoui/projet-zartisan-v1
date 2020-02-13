@@ -35,7 +35,14 @@ const ProfileClient = () => {
   return (
     <div>
       <Row type="flex" justify="space-around" align="middle">
-        {userSelect == "" ? <Loader /> : <FormEditUser />}
+        {userSelect == "" ? (
+          <Loader />
+        ) : (
+          <FormEditUser
+            profileUser={profileUser}
+            setProfileUser={setProfileUser}
+          />
+        )}
       </Row>
     </div>
   );

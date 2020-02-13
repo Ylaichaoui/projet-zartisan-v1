@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Upload, Icon, message } from "antd";
+import { NAME_SERVER } from "src/store/register/actions";
 
-const UploadAvatar = () => {
+const UploadAvatar = ({ pictureUser }) => {
   const [loading, setLoading] = useState(false);
 
   const getBase64 = (img, callback) => {
@@ -49,7 +50,6 @@ const UploadAvatar = () => {
 
   return (
     <div>
-      {" "}
       <Upload
         name="avatar"
         listType="picture-card"
@@ -61,6 +61,12 @@ const UploadAvatar = () => {
       >
         {imageUrl ? (
           <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />
+        ) : pictureUser != undefined ? (
+          <img
+            src={`${NAME_SERVER}/${pictureUser}`}
+            alt="avatar"
+            style={{ width: "100%" }}
+          />
         ) : (
           uploadButton
         )}

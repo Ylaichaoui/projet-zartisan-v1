@@ -1,33 +1,94 @@
 import React from "react";
 import { Form, Input, Button } from "antd";
-import UploadAvatar from "../UploadAvatar";
+import UploadAvatar from "src/components/UploadAvatar";
 import "antd/dist/antd.css";
 
-const FormEditUser = () => {
+const FormEditUser = ({ profileUser, setProfileUser }) => {
+  //console.log("form", profileUser);
+
+  const handleChangeValue = keys => {
+    return event => {
+      switch (keys) {
+        case "nickname":
+          setProfileUser({
+            ...profileUser,
+            ...{ nickname: event.target.value }
+          });
+          break;
+        case "lastname":
+          setProfileUser({
+            ...profileUser,
+            ...{ lastname: event.target.value }
+          });
+          break;
+        case "firstname":
+          setProfileUser({
+            ...profileUser,
+            ...{ firstname: event.target.value }
+          });
+          break;
+        case "phone":
+          setProfileUser({
+            ...profileUser,
+            ...{ phone: event.target.value }
+          });
+          break;
+        case "mail":
+          setProfileUser({
+            ...profileUser,
+            ...{ mail: event.target.value }
+          });
+          break;
+        default:
+          console.log("error");
+      }
+    };
+  };
+
   return (
     <Form className="artisan-form">
       <Form.Item>
-        <UploadAvatar />
+        <UploadAvatar pictureUser={profileUser.pictureAvatar} />
       </Form.Item>
 
       <Form.Item label="Pseudo" hasFeedback>
-        <Input placeholder="Pseudo" />
+        <Input
+          placeholder="Pseudo"
+          value={profileUser.nickname}
+          onChange={handleChangeValue("nickname")}
+        />
       </Form.Item>
 
       <Form.Item label="Nom" hasFeedback>
-        <Input placeholder="Nom" />
+        <Input
+          placeholder="Nom"
+          value={profileUser.lastname}
+          onChange={handleChangeValue("lastname")}
+        />
       </Form.Item>
 
       <Form.Item label="Prénom" hasFeedback>
-        <Input placeholder="Prénom" />
+        <Input
+          placeholder="Prénom"
+          value={profileUser.firstname}
+          onChange={handleChangeValue("firstname")}
+        />
       </Form.Item>
 
       <Form.Item label="Téléphone" hasFeedback>
-        <Input placeholder="Téléphone" />
+        <Input
+          placeholder="Téléphone"
+          value={profileUser.phone}
+          onChange={handleChangeValue("phone")}
+        />
       </Form.Item>
 
       <Form.Item label="Mail" hasFeedback>
-        <Input placeholder="Mail" />
+        <Input
+          placeholder="Mail"
+          value={profileUser.mail}
+          onChange={handleChangeValue("mail")}
+        />
       </Form.Item>
 
       <Form.Item>
