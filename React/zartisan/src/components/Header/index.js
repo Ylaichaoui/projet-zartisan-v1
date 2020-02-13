@@ -195,13 +195,17 @@ const Header = () => {
     }
   };
 
-  //let tokenEmail = '';
-  let admin = "";
-  //let artisanUser = -1;
+  let admin = -1;
+  let user = -1;
+  let artisanUser = -1;
+  let tokenEmail = "";
   if (token != null) {
-    admin = parseJwt(token).roles[0];
+    admin = parseJwt(token).roles.indexOf("ROLE_ADMIN");
+    //console.log(admin);
+    user = parseJwt(token).roles.indexOf("ROLE_USER");
+    artisanUser = parseJwt(token).roles.indexOf("ROLE_ARTISAN");
+    tokenEmail = parseJwt(token).username;
     //artisanUser = parseJwt(token).roles.indexOf('ROLE_ARTISAN');
-    //tokenEmail = parseJwt(token).username;
     //console.log(tokenEmail);
     //console.log(parseJwt(token).roles[0]);
   }
@@ -269,6 +273,11 @@ const Header = () => {
     };
   };
 
+  const handleClickProfile = item => {
+    dispatch(artisanData(1, tokenEmail));
+    onClose();
+  };
+
   return (
     <div id="zheader">
       <Row className="header" type="flex" justify="space-around">
@@ -323,12 +332,20 @@ const Header = () => {
                     <p>Bonjour vous êtes connecté</p>
                   </Modal>
 
-                  {connect === true && admin !== "ROLE_ADMIN" ? (
-                    <a href="#">Profil</a>
+                  {connect === true && admin === -1 ? (
+                    connect === true && artisanUser !== -1 ? (
+                      <Link to="/profil-artisan" onClick={handleClickProfile}>
+                        Profil
+                      </Link>
+                    ) : (
+                      <Link to="/profil-client" onClick={handleClickProfile}>
+                        Profil
+                      </Link>
+                    )
                   ) : (
                     ""
                   )}
-                  {connect === true && admin === "ROLE_ADMIN" ? (
+                  {connect === true && admin !== -1 ? (
                     <a href={`${NAME_SERVER}/admin`}>Admin </a>
                   ) : (
                     ""

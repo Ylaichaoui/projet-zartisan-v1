@@ -143,7 +143,7 @@ class User implements UserInterface
     private $city;
 
     /**
-     * @ORM\Column(type="string", length=10, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      * @Groups({"user_artisan_single", "user_user_single","user_artisan_advice"})
      */
     private $phone;
@@ -161,10 +161,10 @@ class User implements UserInterface
     private $picture;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("user_artisan_single")
+     * @ORM\Column(type="json")
+     * @Groups({"user_artisan_single","user_artisan_advice"})
      */
-    private $pictureFolder;
+    private $pictureFolder = [];
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
@@ -222,7 +222,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="bigint", nullable=true)
-     * @Groups("user_artisan_single")
+     * @Groups({"user_artisan_single","user_artisan_advice"})
      */
     private $siret;
 
@@ -584,12 +584,19 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getPictureFolder(): ?string
+
+
+
+
+
+
+
+    public function getPictureFolder(): ?array
     {
         return $this->pictureFolder;
     }
 
-    public function setPictureFolder(?string $pictureFolder): self
+    public function setPictureFolder(?array $pictureFolder): self
     {
         $this->pictureFolder = $pictureFolder;
 
@@ -634,7 +641,7 @@ class User implements UserInterface
 
     public function getCreatedAt()
     {
-        if($this->createdAt != NULL){
+        if ($this->createdAt != NULL) {
             return $this->createdAt->format('d/m/Y H:i:s');
         }
         return $this->createdAt;
@@ -649,7 +656,7 @@ class User implements UserInterface
 
     public function getUpdatedAt()
     {
-        if($this->updatedAt != NULL){
+        if ($this->updatedAt != NULL) {
             return $this->updatedAt->format('d/m/Y H:i:s');
         }
         return $this->updatedAt;

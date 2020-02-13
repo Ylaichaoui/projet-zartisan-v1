@@ -7,6 +7,7 @@ use App\Controller\MailController;
 use App\Entity\User;
 use App\Manager\SecurityManager;
 use App\Repository\UserRepository;
+use App\Services\FoldersUser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,39 +27,42 @@ class SecurityController extends AbstractController
         $this->externeApiController = $externeApiController;
         $this->securityManager = $securityManager;
         $this->mailController = $mailController;
-
     }
 
     /**
      * @Route("/register/artisan", name="app_register_artisan")
      */
-    public function registerArtisan(Request $request, UserPasswordEncoderInterface $passwordEncoder, 
-    UserRepository $userRepository): Response
-    {
+    public function registerArtisan(
+        Request $request,
+        UserPasswordEncoderInterface $passwordEncoder,
+        UserRepository $userRepository,
+        FoldersUser $foldersUser
+    ): Response {
         if ($request->get('email')) {
 
             // Look if exist email
             $error = $this->securityManager->securityEmail($request->get('email'));
-            if(isset($error)){
+
+            if (isset($error)) {
                 return $this->json(['error' => $error], 409);
             }
-            if($userRepository->isFoundMail($request->get('email'))){
+            if ($userRepository->isFoundMail($request->get('email'))) {
                 return $this->json(['error' => 'Email already exist'], 409);
             }
 
             $error = $this->securityManager->securitySiret($request->get('siret'));
-            if(isset($error)){
+            if (isset($error)) {
                 return $this->json(['error' => $error], 409);
             }
             // Look if exist siret
-            if($userRepository->isFound($request->get('siret'))){
+            if ($userRepository->isFound($request->get('siret'))) {
                 return $this->json(['error' => 'Siret already exist'], 409);
             }
             $user = new User();
 
             $user->setEmail($request->get('email'));
-            $error = $this->securityManager->securityPassword($request->get('password'),6,255);
-            if(isset($error)){
+            $error = $this->securityManager->securityPassword($request->get('password'), 6, 255);
+            if (isset($error)) {
                 return $this->json(['error' => $error], 409);
             }
             $user->setPassword(
@@ -73,11 +77,17 @@ class SecurityController extends AbstractController
             $user->setRoles(["ROLE_ARTISAN"]);
             //$user->setRoles(["ROLE_UNDEFINED_ARTISAN"]);
             $user->setIsConfirmMail(false);
-            $user->setPicture("artisan.png"); 
+            $user->setPicture("assets/images_default/craftsmen-1020156_640.jpg");
             $user->setIsStatus(true);
             $user->setIsVerified(false);
             $user->setIsReported(false);
-        
+
+
+            $userRole = 'ARTISAN';
+            $email = $user->setEmail($request->get('email'));
+            $foldersUser->isFolder($email, $userRole);
+
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
@@ -90,13 +100,14 @@ class SecurityController extends AbstractController
                 'POST',
                 ['email' => $user->getEmail()]
             );
-            
+
             // normaly is possible to send mail automatictly to artisan but desactivated for demo
-            // cause of not send mail to real personne
+            // cause of not send mail to real personne            $userRole = 'USER';
+            //$foldersUser->isFolder($userEmail, $userRole);  // verification if folder exist
             // TODO
             // $this->mailController->sendMailValidation($request);
 
-            return $this->json($user , 200, [], ['groups' => 'user_artisan_single']);
+            return $this->json($user, 200, [], ['groups' => 'user_artisan_single']);
         }
         return $this->json(['error' => 'unexpected information for artisan register request'], 304);
     }
@@ -104,24 +115,28 @@ class SecurityController extends AbstractController
     /**
      * @Route("/register/user", name="app_register_user")
      */
-    public function registerUser(Request $request, UserPasswordEncoderInterface $passwordEncoder, SerializerInterface $serializer, 
-    UserRepository $userRepository): Response
-    {
+    public function registerUser(
+        Request $request,
+        UserPasswordEncoderInterface $passwordEncoder,
+        SerializerInterface $serializer,
+        UserRepository $userRepository,
+        FoldersUser $foldersUser
+    ): Response {
         if ($request->get('email')) {
 
             $error = $this->securityManager->securityEmail($request->get('email'));
-            if(isset($error)){
+            if (isset($error)) {
                 return $this->json(['error' => $error], 409);
             }
             // Look if exist email
-            if($userRepository->isFoundMail($request->get('email'))){
+            if ($userRepository->isFoundMail($request->get('email'))) {
                 return $this->json(['error' => 'Email already exist'], 409);
             }
             $user = new User();
 
             $user->setEmail($request->get('email'));
-            $error = $this->securityManager->securityPassword($request->get('password'),6,255);
-            if(isset($error)){
+            $error = $this->securityManager->securityPassword($request->get('password'), 6, 255);
+            if (isset($error)) {
                 return $this->json(['error' => $error], 409);
             }
             $user->setPassword(
@@ -131,12 +146,14 @@ class SecurityController extends AbstractController
                 )
             );
             $user->setIsConfirmMail(false);
-            $user->setPicture("user6.png"); 
+            $user->setPicture("assets/images_default/user-1633249_640.png");
             $user->setRoles(["ROLE_UNDEFINED_USER"]);
             $user->setIsStatus(true);
             $user->setFirstname("unknown");
             $user->setIsVerified(false);
             $user->setIsReported(false);
+
+            $foldersUser->isFolder($user->setEmail($request->get('email')));
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
@@ -146,13 +163,13 @@ class SecurityController extends AbstractController
                 '/Manual-request',
                 'POST',
                 ['email' => $user->getEmail()]
-            );     
-            
+            );
+
             // It send mail auto to new user to confirm his email
             $this->mailController->sendMailValidation($request);
 
             // Serialize data to dont have circle
-            return $this->json($user , 200, [], ['groups' => 'user_user_single']);
+            return $this->json($user, 200, [], ['groups' => 'user_user_single']);
         }
         return $this->json(['error' => 'unexpected information for user register request'], 304);
     }
@@ -164,11 +181,11 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         //if ($this->getUser()) {
-             //return $this->redirectToRoute('main');
+        //return $this->redirectToRoute('main');
         //}
 
         $error = $authenticationUtils->getLastAuthenticationError();
-        
+
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);

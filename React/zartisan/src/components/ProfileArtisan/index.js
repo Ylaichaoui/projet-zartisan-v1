@@ -8,14 +8,27 @@ import {
   TextArea,
   Upload,
   Icon,
-  message
+  message,
+  Modal
 } from "antd";
 import "antd/dist/antd.css";
+import { artisanEdit } from "src/store/artisan/actions";
+import { NAME_SERVER } from "src/store/register/actions";
 
 const ProfileArtisan = () => {
+  const dispatch = useDispatch();
+
   const { TextArea } = Input;
 
   const artisanSelector = useSelector(state => state.artisan);
+  //console.log(artisanSelector);
+
+  let artisanObject = {};
+  for (let artisan in artisanSelector) {
+    //console.log(artisanSelector[artisan]);
+    artisanObject = artisanSelector[0];
+  }
+  //console.log("object", artisanObject);
 
   const [loading, setLoading] = useState(false);
 
@@ -44,23 +57,123 @@ const ProfileArtisan = () => {
     }
     if (info.file.status === "done") {
       // Get this url from response in real world.
-      getBase64(info.file.originFileObj, imageUrl =>
-        setLoading({
+      getBase64(info.file.originFileObj, imageUrl => {
+        setPictureAvatar(imageUrl);
+        return setLoading({
           imageUrl,
           loading: false
-        })
-      );
+        });
+      });
     }
   };
+
   const uploadButton = (
     <div>
       <Icon type={loading ? "loading" : "plus"} />
-      <div className="ant-upload-text">Upload</div>
+      <div className="ant-upload-text">Télécharger image profil</div>
     </div>
   );
 
   const { imageUrl } = loading;
-  console.log("imageUrl " + imageUrl);
+  //console.log(imageUrl);
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////
+  const [fileList, setFileList] = useState([]);
+  const [previewImage, setPreviewImage] = useState("");
+  const [previewVisible, setPreviewVisible] = useState(false);
+  const [description, setDescription] = useState(
+    artisanObject.companyDescription
+  );
+  const [pictureAvatar, setPictureAvatar] = useState(artisanObject.picture);
+  const [pictureGalery, setPictureGalery] = useState(
+    artisanObject.pictureFolder
+  );
+  const [phoneArtisan, setPhoneArtisan] = useState(artisanObject.phone);
+
+  const getBaseFile = file => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+  };
+
+  useEffect(() => {
+    let urlGaleryPicture = [];
+    //console.log('img', pictureGalery, 'filelist', fileList);
+
+    if (fileList.length >= 0) {
+      for (let objectFile in fileList) {
+        urlGaleryPicture.push(fileList[objectFile].thumbUrl);
+
+        //console.log(fileList[objectFile].thumbUrl);
+      }
+      //console.log(urlGaleryPicture);
+      setPictureGalery(urlGaleryPicture);
+    }
+    //console.log(urlGaleryPicture);
+  }, [fileList]);
+
+  const handleCancel = () => setPreviewVisible(false);
+
+  const handlePreview = async file => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBaseFile(file.originFileObj);
+    }
+
+    setPreviewVisible(true);
+    setPreviewImage(file.url || file.preview);
+  };
+
+  const handleChangeFile = fileList => {
+    if (fileList.file.thumbUrl != "") {
+      return setFileList(fileList.fileList);
+    }
+  };
+
+  const uploadButtonFile = (
+    <div>
+      <Icon type="plus" />
+      <div className="ant-upload-text">Ajouter des images</div>
+    </div>
+  );
+
+  useEffect(() => {
+    setDescription(artisanObject.companyDescription);
+
+    setPictureAvatar(artisanObject.picture);
+
+    setPhoneArtisan(artisanObject.phone);
+    // if (artisanObject.pictureFolder !== undefined) {
+    //   setFileList(artisanObject.pictureFolder);
+    // }
+  }, [artisanObject]);
+
+  //console.log("pictureGalery", pictureGalery);
+
+  const handleSaveClick = () => {
+    dispatch(
+      artisanEdit(
+        artisanObject.email,
+        description,
+        pictureAvatar,
+        pictureGalery,
+        phoneArtisan
+      )
+    );
+  };
+
+  const handleContentDescription = event => {
+    const content = event.target.value;
+    setDescription(content);
+  };
+
+  const handlePhone = event => {
+    const contentPhone = event.target.value;
+    //console.log(contentPhone);
+    setPhoneArtisan(contentPhone);
+  };
 
   return (
     <div>
@@ -78,53 +191,88 @@ const ProfileArtisan = () => {
             >
               {imageUrl ? (
                 <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />
+              ) : artisanObject.picture != undefined ? (
+                <img
+                  //src={`../src/styles/pictures/company/${artisanObject.picture}`}
+                  src={`${NAME_SERVER}/${artisanObject.picture}`}
+                  alt="avatar"
+                  style={{ width: "100%" }}
+                />
               ) : (
                 uploadButton
               )}
             </Upload>
-            <Button type="primary" className="buttons" htmlType="submit">
-              Confirmer
-            </Button>
           </Form.Item>
-          <Form.Item>
-            <Input placeholder="Basic usage" value="jean" disabled={true} />
-            <Input value="SIRET" disabled />
-            <Input disabled value="Entreprise" />
+          <Form.Item label="Nom et Prénom">
+            <Input
+              placeholder="Nom Prénom"
+              value={`${artisanObject.firstname} ${artisanObject.lastname}`}
+              disabled={true}
+            />{" "}
           </Form.Item>
-          <Form.Item>
-            <Input disabled value="Adresse" />
-            <Input disabled value="Code postal" />
-            <Input disabled value="Ville" />
-            <Input disabled value="Téléphone" />
-            <Input disabled value="Mail" />
+          <Form.Item label="Siret">
+            <Input value={artisanObject.siret} disabled />
           </Form.Item>
-          <Form.Item>
-            <TextArea rows={4} />
+          <Form.Item label="Entreprise">
+            <Input disabled value={artisanObject.company} />
           </Form.Item>
-          <Form.Item>
-            <input
-              type="file"
-              name="image_uploads"
-              accept=".jpg, .jpeg, .png"
-              multiple
+          <Form.Item label="Adresse">
+            <Input
+              disabled
+              value={`${artisanObject.numberWay} ${artisanObject.way}`}
             />
-            <Button type="primary" className="buttons" htmlType="submit">
-              Ajouter
-            </Button>
-            <Button type="primary" className="buttons" htmlType="submit">
-              Supprimer
-            </Button>
+            <Input disabled value={artisanObject.postalCode} />
+            <Input disabled value={artisanObject.city} />
           </Form.Item>
-          <Form.Item>
-            <Button type="primary" className="buttons" htmlType="submit">
-              Sauvegarder
-            </Button>
+          <Form.Item label="Télephone">
+            <Input onChange={handlePhone} value={phoneArtisan} />
           </Form.Item>
-          <Form.Item>
-            <Button type="danger" htmlType="submit">
-              Supprimer le compte
-            </Button>
+          <Form.Item label="Email">
+            <Input disabled value={artisanObject.email} />
           </Form.Item>
+          <Form.Item label="Description">
+            <TextArea
+              value={description}
+              onChange={handleContentDescription}
+              rows={4}
+            />
+          </Form.Item>
+          <div className="clearfix">
+            <Form.Item>
+              <Upload
+                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                listType="picture-card"
+                onPreview={handlePreview}
+                onChange={handleChangeFile}
+              >
+                {fileList.length >= 4 ? null : uploadButtonFile}
+              </Upload>
+              <Modal
+                visible={previewVisible}
+                footer={null}
+                onCancel={handleCancel}
+              >
+                <img
+                  alt="example"
+                  style={{ width: "100%" }}
+                  src={previewImage}
+                />
+              </Modal>
+              <Button
+                onClick={handleSaveClick}
+                type="primary"
+                className="buttons"
+                htmlType="submit"
+              >
+                Sauvegarder
+              </Button>
+            </Form.Item>
+            <Form.Item>
+              <Button type="danger" htmlType="submit">
+                Supprimer le compte
+              </Button>
+            </Form.Item>
+          </div>
         </Form>
       </Row>
     </div>

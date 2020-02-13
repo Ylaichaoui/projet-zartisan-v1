@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("api/v1/rate", name="api_rate_")
-*/
+ */
 class ApiRateController extends AbstractController
 {
     /**
@@ -20,7 +20,7 @@ class ApiRateController extends AbstractController
      * user add rate for an artisan
      */
     public function add(Request $request, UserRepository $userRepository, EntityManagerInterface $em, RateRepository $rateRepository)
-    {   
+    {
 
         if ($request->get('id')) {
             // search email user and id artisan in the request
@@ -29,16 +29,15 @@ class ApiRateController extends AbstractController
             $value = $request->get('value'); // recupère note donnée
 
             // checked if artisan has a rate         
-            $rate = $rateRepository->isFoundRateByUser($userPro, $userAuthor); 
+            $rate = $rateRepository->isFoundRateByUser($userPro, $userAuthor);
 
             // if rate exist, recovery id of rate
-            if($rate != null){
+            if ($rate != null) {
                 $rateId = $rate[0]->getId();
-            } 
-              
-        
-            if ($userAuthor != null) 
-            {
+            }
+
+
+            if ($userAuthor != null) {
                 // if rate is null for artisan 
                 if ($rate == null) {
                     $rate = new Rate();
@@ -46,7 +45,7 @@ class ApiRateController extends AbstractController
                     $rate->setUserAuthor($userAuthor);
                     $rate->setUserPro($userPro);
                     $em->persist($rate);
-                }else {
+                } else {
                     $rate = $rateRepository->find($rateId);
                     $rate->setValue($value);
                     $rate->setUserAuthor($userAuthor);
@@ -56,18 +55,18 @@ class ApiRateController extends AbstractController
 
                 // recovery average rate for artisan
                 $userAverageRate = $userPro->getAverageRate();
-                
+
                 // recovery all rates of the artisan 
                 $userAverageRate = $rateRepository->findByUserPro($userPro);
 
                 $sum = 0;
-                foreach($userAverageRate as $indexrate ) {
+                foreach ($userAverageRate as $indexrate) {
                     // Need to get value on array of array
                     $sum += $indexrate["value"];
                 }
 
                 // get int of sum value round to 0 decimal
-                $note = intval(round($sum / count($userAverageRate),0));
+                $note = intval(round($sum / count($userAverageRate), 0));
                 $userPro->setAverageRate($note);
                 $em->flush();
 
@@ -77,7 +76,7 @@ class ApiRateController extends AbstractController
             }
         } else {
             return $this->json(['error' => 'unexpected information for edit request'], 304);
-        }   
+        }
     }
 
     /**
@@ -88,12 +87,12 @@ class ApiRateController extends AbstractController
     {
         if ($request->get('id')) {
 
-            $rate = $rateRepository->find($request->get('id')); 
+            $rate = $rateRepository->find($request->get('id'));
 
-            if($rate != null){
-                return $this->json($rate, 200,[],['groups' => 'rate_value']);
+            if ($rate != null) {
+                return $this->json($rate, 200, [], ['groups' => 'rate_value']);
             } else {
-                return $this->json(['error' => 'rate not found'],404);
+                return $this->json(['error' => 'rate not found'], 404);
             }
         } else {
             return $this->json(['error' => 'unexpected information for edit request'], 304);
