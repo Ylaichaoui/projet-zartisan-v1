@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Upload, Icon, message } from "antd";
 import { NAME_SERVER } from "src/store/register/actions";
 
-const UploadAvatar = ({ pictureUser }) => {
+const UploadAvatar = ({ profileUser, setProfileUser }) => {
   const [loading, setLoading] = useState(false);
 
   const getBase64 = (img, callback) => {
@@ -30,12 +30,17 @@ const UploadAvatar = ({ pictureUser }) => {
     }
     if (info.file.status === "done") {
       // Get this url from response in real world.
-      getBase64(info.file.originFileObj, imageUrl =>
-        setLoading({
+      getBase64(info.file.originFileObj, imageUrl => {
+        setProfileUser({
+          ...profileUser,
+          ...{ pictureAvatar: imageUrl }
+        });
+
+        return setLoading({
           imageUrl,
           loading: false
-        })
-      );
+        });
+      });
     }
   };
   const uploadButton = (
@@ -61,9 +66,9 @@ const UploadAvatar = ({ pictureUser }) => {
       >
         {imageUrl ? (
           <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />
-        ) : pictureUser != undefined ? (
+        ) : profileUser.pictureAvatar != undefined ? (
           <img
-            src={`${NAME_SERVER}/${pictureUser}`}
+            src={`${NAME_SERVER}/${profileUser.pictureAvatar}`}
             alt="avatar"
             style={{ width: "100%" }}
           />

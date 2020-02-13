@@ -4,7 +4,7 @@ import UploadAvatar from "src/components/UploadAvatar";
 import "antd/dist/antd.css";
 
 const FormEditUser = ({ profileUser, setProfileUser }) => {
-  //console.log("form", profileUser);
+  console.log("form", profileUser);
 
   const handleChangeValue = keys => {
     return event => {
@@ -45,10 +45,17 @@ const FormEditUser = ({ profileUser, setProfileUser }) => {
     };
   };
 
+  const handleSaveEdit = () => {
+    console.log("save the page edit ");
+  };
+
   return (
     <Form className="artisan-form">
       <Form.Item>
-        <UploadAvatar pictureUser={profileUser.pictureAvatar} />
+        <UploadAvatar
+          profileUser={profileUser}
+          setProfileUser={setProfileUser}
+        />
       </Form.Item>
 
       <Form.Item label="Pseudo" hasFeedback>
@@ -92,7 +99,12 @@ const FormEditUser = ({ profileUser, setProfileUser }) => {
       </Form.Item>
 
       <Form.Item>
-        <Button type="primary" className="buttons" htmlType="submit">
+        <Button
+          type="primary"
+          className="buttons"
+          htmlType="submit"
+          onClick={handleSaveEdit}
+        >
           Sauvegarder
         </Button>
       </Form.Item>
