@@ -24,7 +24,7 @@ import FormRegisterUser from "src/components/FormRegisterUser";
 import FormRegisterArtisan from "src/components/FormRegisterArtisan";
 import ForgettenPassword from "src/components/ForgottenPassword";
 import ProfileArtisan from "../ProfileArtisan";
-import ProfileClient from "../ProfileClient";
+import ProfileClient from "../../pages/ProfileClient";
 
 /**
  * Code
