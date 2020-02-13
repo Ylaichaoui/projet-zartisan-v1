@@ -1,9 +1,10 @@
 import React from "react";
 import { Spin } from "antd";
+import "./style.sass";
 
 const Loader = () => {
   return (
-    <div>
+    <div className="loader">
       <Spin size="large" />
     </div>
   );
